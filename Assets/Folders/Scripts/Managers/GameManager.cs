@@ -11,13 +11,29 @@ public class GameManager : MonoBehaviour
         TurnLeft,
         TurnRight,
     }
-    public Status PlayerStatus = Status.Idle;
-
-    [SerializeField]
-    private GameObject Canvas;
 
     public static GameManager Instance { get; private set; }
     public GameObject PlayerObject { get; private set; }
+
+    [Header("현재 플레이어의 상태")]
+    public Status PlayerStatus = Status.Idle;
+
+    [Header("캔버스 오브젝트")]
+    public GameObject Canvas;
+
+    [Header("코딩블럭 버튼 오브젝트")]
+    public GameObject forwardButton;
+    public GameObject turnLeftButton;
+    public GameObject turnRightButton;
+    public GameObject functionButton;
+
+
+    [Header("코딩블럭 프리팹")]
+    public GameObject forwardPrefab;
+    public GameObject trunLeftPrefab;
+    public GameObject trunRightPrefab;
+    public GameObject functionPrefab;
+
 
     public Stack<CodingBlock> MainMethod { get; private set; } = new Stack<CodingBlock>();
     public Stack<CodingBlock> Function { get; private set; } = new Stack<CodingBlock>();
@@ -66,7 +82,6 @@ public class GameManager : MonoBehaviour
                     break;
 
             }
-
             yield return null;
         }
 
