@@ -38,10 +38,12 @@ public class GameManager : MonoBehaviour
     public GameObject functionLayout;
     private Button mainLayoutButton;
     private Button functionLayoutButton;
+    private Button loopLayoutButton;
 
     [Header("블럭 삭제 버튼")]
     public Button mainDelete;
     public Button functionDelete;
+    public Button loopDelete;
 
     [Header("플레이 & 정지, 스피드업 버튼")]
     public Button playButton;
@@ -53,6 +55,7 @@ public class GameManager : MonoBehaviour
     public Button turnLeftButton;
     public Button turnRightButton;
     public Button functionButton;
+    public Button loopButton;
 
 
     [Header("코딩블럭 프리팹")]
@@ -60,6 +63,7 @@ public class GameManager : MonoBehaviour
     public GameObject turnLeftPrefab;
     public GameObject turnRightPrefab;
     public GameObject functionPrefab;
+    public GameObject loopPrefab;
 
     private void Awake()
     {
@@ -115,7 +119,7 @@ public class GameManager : MonoBehaviour
 
     public void InsertBlock(GameObject prefab)
     {
-        if (prefab == functionPrefab)
+        if (prefab == functionPrefab || prefab == loopPrefab)
         {
             if (MainMethod.Count < 10)
             {
@@ -165,12 +169,13 @@ public class GameManager : MonoBehaviour
     {
         if (MainMethod != null)
         {
-            // TODO: 버튼 비활성화 코드 넣기
+            ButtonsOnOff(false);
             foreach (CodingBlock block in MainMethod)
             {
                 yield return StartCoroutine(block.MoveOrder());
             }
         }
+        ButtonsOnOff(true);
         BlockHighLightOff();
     }
 
@@ -188,6 +193,7 @@ public class GameManager : MonoBehaviour
 
     public void ButtonsOnOff(bool enable)
     {
-
+        mainLayoutButton.GetComponent<Button>().interactable = enable;
+        functionLayoutButton.GetComponent<Button>().interactable = enable;
     }
 }

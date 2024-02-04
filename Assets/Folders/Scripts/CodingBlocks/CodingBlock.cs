@@ -10,7 +10,7 @@ public abstract class CodingBlock : MonoBehaviour
     private readonly WaitForSeconds waitForSeconds = new(1.0f);
     private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
 
-    private void Start()
+    private void Awake()
     {
         highlight = this.transform.GetChild(0).gameObject;
         highlight.SetActive(false);
