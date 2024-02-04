@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01ece739c9283645b99a720cbdf47ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerObject: {fileID: 114938884}
+  playerObject: {fileID: 114938884}
   playerStatus: 0
   currentLayout: 0
   currentProcessing: 0
@@ -487,7 +487,7 @@ MonoBehaviour:
     type: 3}
   functionPrefab: {fileID: 7320503171045899465, guid: 41230cf6e41569d498b59befee72067a,
     type: 3}
-  deltaTimeCount: 0
+  Function: []
 --- !u!1001 &67391855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1554,7 +1554,7 @@ PrefabInstance:
     - target: {fileID: 3314413387029944385, guid: 35427bf7548e5a240b1e7ab1c463b940,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3314413387029944385, guid: 35427bf7548e5a240b1e7ab1c463b940,
         type: 3}
@@ -1564,7 +1564,7 @@ PrefabInstance:
     - target: {fileID: 3314413387029944385, guid: 35427bf7548e5a240b1e7ab1c463b940,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3314413387029944385, guid: 35427bf7548e5a240b1e7ab1c463b940,
         type: 3}

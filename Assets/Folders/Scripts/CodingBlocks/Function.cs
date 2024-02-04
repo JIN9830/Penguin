@@ -5,8 +5,9 @@ using UnityEngine;
 public class Function : CodingBlock
 {
 
-    public override void MoveOrder()
+    public override IEnumerator MoveOrder()
     {
         ToggleHighLight(true);
+        yield return null;
     }
 }

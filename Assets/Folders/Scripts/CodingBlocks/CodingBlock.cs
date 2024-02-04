@@ -5,10 +5,12 @@ using UnityEngine;
 public abstract class CodingBlock : MonoBehaviour
 {
     protected GameManager gameManager = GameManager.Instance;
-    public GameObject highlight;
-    public abstract void MoveOrder();
+    private GameObject highlight;
 
-    private void Awake()
+    private readonly WaitForSeconds waitForSeconds = new(1.0f);
+    private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
+
+    private void Start()
     {
         highlight = this.transform.GetChild(0).gameObject;
         highlight.SetActive(false);
@@ -17,4 +19,6 @@ public abstract class CodingBlock : MonoBehaviour
     {
         highlight.SetActive(enable);
     }
+
+    public abstract IEnumerator MoveOrder();
 }

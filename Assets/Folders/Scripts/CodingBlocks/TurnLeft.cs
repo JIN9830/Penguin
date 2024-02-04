@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TurnLeft : CodingBlock
 {
-    public override void MoveOrder()
+    public override IEnumerator MoveOrder()
     {
         ToggleHighLight(true);
-        gameManager.playerStatus = GameManager.Status.TurnLeft;
+        yield return null;
 
     }
 }

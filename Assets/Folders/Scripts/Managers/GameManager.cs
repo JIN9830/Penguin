@@ -18,20 +18,15 @@ public class GameManager : MonoBehaviour
         Stop,
         Playing,
     }
-    public enum Status
-    {
-        Idle,
-        Forward,
-        TurnLeft,
-        TurnRight,
-    }
-
     public static GameManager Instance { get; private set; }
+
+    public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
+    public List<CodingBlock> Function = new List<CodingBlock>();
+    public List<CodingBlock> Loop = new List<CodingBlock>();
 
     [Header("현재 플레이어의 상태")]
     [SerializeField]
-    private GameObject PlayerObject;
-    public Status playerStatus = Status.Idle;
+    public GameObject playerObject;
     public CurrentLayout currentLayout = CurrentLayout.Main;
     public ProcessingStatus currentProcessing = ProcessingStatus.Stop;
 
@@ -66,18 +61,6 @@ public class GameManager : MonoBehaviour
     public GameObject turnRightPrefab;
     public GameObject functionPrefab;
 
-
-    public float deltaTimeCount = 0;
-
-    public bool isMoving = false;
-
-    private readonly WaitForSeconds waitForSeconds = new(1.0f);
-    private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
-
-    public Stack<CodingBlock> MainMethod { get; private set; } = new Stack<CodingBlock>();
-    public Stack<CodingBlock> Function = new Stack<CodingBlock>();
-
-
     private void Awake()
     {
         #region Singleton Code
@@ -102,8 +85,6 @@ public class GameManager : MonoBehaviour
         MainMethod.Clear();
         Function.Clear();
 
-        StartCoroutine(PlayerMove());
-
         // TODO: 추후에 Awake 메서드로 가야할지 정하기
         #region Codingblocks onClickAddListener
         // : each buttons link to each Prefab
@@ -122,11 +103,11 @@ public class GameManager : MonoBehaviour
         #endregion
 
         #region block delete OnClickAddListener
-        mainDelete.onClick.AddListener(() => {currentLayout = CurrentLayout.Main; DeleteBlock();});
-        functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(); });
+        mainDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
+        functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
         #endregion
 
-        playButton.onClick.AddListener(() => StartCoroutine(PlayBlockCode()));
+        playButton.onClick.AddListener(() => StartCoroutine(PlayBlock()));
         //stopButton.onClick.AddListener(() => { });
         //speedUpButton.onClick.AddListener(() => { });
 
@@ -138,7 +119,7 @@ public class GameManager : MonoBehaviour
         {
             if (MainMethod.Count < 10)
             {
-                MainMethod.Push(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
             }
         }
         else
@@ -146,107 +127,67 @@ public class GameManager : MonoBehaviour
             switch (currentLayout)
             {
                 case CurrentLayout.Main:
-                    if (MainMethod.Count < 10) MainMethod.Push(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
-                    Debug.Log("Main Stack:" + MainMethod.Count);
+                    if (MainMethod.Count < 10) MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
                     break;
 
                 case CurrentLayout.Function:
-                    if (Function.Count < 10) Function.Push(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
-                    Debug.Log("Function Stack:" + Function.Count);
+                    if (Function.Count < 10) Function.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
                     break;
             }
         }
     }
 
-    public void DeleteBlock()
+    public void DeleteBlock(CurrentLayout currentLayout)
     {
         switch (currentLayout)
         {
             case CurrentLayout.Main:
-                if(MainMethod.Count > 0)
+                if (MainMethod.Count > 0)
                 {
-                    CodingBlock lastblock = MainMethod.Pop();
+                    CodingBlock lastblock = MainMethod.Last();
+                    MainMethod.Remove(lastblock);
                     Destroy(lastblock.gameObject);
-                    Debug.Log("Main Stack:" + MainMethod.Count);
-                } break;
+                }
+                break;
 
             case CurrentLayout.Function:
                 if (Function.Count > 0)
                 {
-                    CodingBlock lastblock = Function.Pop();
+                    CodingBlock lastblock = Function.Last();
+                    Function.Remove(lastblock);
                     Destroy(lastblock.gameObject);
-                    Debug.Log("Function Stack:" + Function.Count);
-                } break;
+                }
+                break;
         }
     }
 
-    public IEnumerator PlayBlockCode()
+    public IEnumerator PlayBlock()
     {
         if (MainMethod != null)
         {
             // TODO: 버튼 비활성화 코드 넣기
-
-            foreach(CodingBlock block in MainMethod)
+            foreach (CodingBlock block in MainMethod)
             {
-                if(!isMoving)
-                {
-                    yield return waitForSeconds;
-                    block.MoveOrder();
-                    yield return waitForHalfSeconds;
-                }
-                
+                yield return StartCoroutine(block.MoveOrder());
             }
         }
-        else yield return null;
+        BlockHighLightOff();
     }
 
-    public IEnumerator PlayerMove()
+    public void BlockHighLightOff()
     {
-            switch (playerStatus)
-            {
-                case Status.Idle:
-                    
-                    break;
+        foreach (CodingBlock block in MainMethod)
+        {
+            block.ToggleHighLight(false);
+        }
+        foreach (CodingBlock block in Function)
+        {
+            block.ToggleHighLight(false);
+        }
+    }
 
-                case Status.Forward:
-                    if (Physics.Raycast(PlayerObject.transform.localPosition, PlayerObject.transform.forward, out RaycastHit hit, 0.6f))
-                    {
-                        
-                    }
-                    else
-                    {
-                        while(isMoving)
-                        {
-                            Vector3 playerStartPos;
-                            Vector3 playerNewPos;
+    public void ButtonsOnOff(bool enable)
+    {
 
-                            playerStartPos = PlayerObject.transform.localPosition;
-                            playerNewPos = playerStartPos + PlayerObject.transform.forward;
-
-                            deltaTimeCount += Time.deltaTime;
-                            Vector3 newPos = Vector3.Lerp(playerStartPos, playerNewPos, 0.1f * deltaTimeCount);
-                            PlayerObject.transform.localPosition = newPos;
-
-                            if (deltaTimeCount >= 1)
-                            {
-                                deltaTimeCount = 0;
-                                playerStatus = Status.Idle;
-                                isMoving = false;
-                            } yield return null;
-                        }
-                    }
-                    break;
-
-                case Status.TurnLeft:
-                    
-                    break;
-
-                case Status.TurnRight:
-                    
-                    break;
-
-                default: break;
-            }
-        yield return null;
     }
 }
