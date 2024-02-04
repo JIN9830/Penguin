@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     {
         Main,
         Function,
+        Loop,
     }
     public enum ProcessingStatus
     {
@@ -34,11 +35,14 @@ public class GameManager : MonoBehaviour
     public GameObject Canvas;
 
     [Header("그리드 레이아웃 오브젝트")]
-    public GameObject mainLayout;
-    public GameObject functionLayout;
-    private Button mainLayoutButton;
-    private Button functionLayoutButton;
-    private Button loopLayoutButton;
+    public Button mainLayout;
+    public Button functionLayout;
+    public Button loopLayout;
+
+    [Header("북마크 오브젝트")]
+    public Button mainBookmark;
+    public Button functionBookmark;
+    public Button loopBookmark;
 
     [Header("블럭 삭제 버튼")]
     public Button mainDelete;
@@ -86,8 +90,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // TODO: 스크립트가 시작되면이 아니라 추후에 스테이지가 시작될때 초기화로 변경
         MainMethod.Clear();
         Function.Clear();
+        Loop.Clear();
 
         // TODO: 추후에 Awake 메서드로 가야할지 정하기
         #region Codingblocks onClickAddListener
@@ -96,19 +102,26 @@ public class GameManager : MonoBehaviour
         turnLeftButton.onClick.AddListener(() => InsertBlock(turnLeftPrefab));
         turnRightButton.onClick.AddListener(() => InsertBlock(turnRightPrefab));
         functionButton.onClick.AddListener(() => InsertBlock(functionPrefab));
+        loopButton.onClick.AddListener(() => InsertBlock(loopPrefab));
         #endregion
 
         #region Layout activate onClickAddListener
-        mainLayoutButton = mainLayout.GetComponent<Button>();
-        functionLayoutButton = functionLayout.GetComponent<Button>();
 
-        mainLayoutButton.onClick.AddListener(() => currentLayout = CurrentLayout.Main);
-        functionLayoutButton.onClick.AddListener(() => currentLayout = CurrentLayout.Function);
+        // Coding area
+        mainLayout.onClick.AddListener(() => currentLayout = CurrentLayout.Main);
+        functionLayout.onClick.AddListener(() => currentLayout = CurrentLayout.Function);
+        loopLayout.onClick.AddListener(() => currentLayout = CurrentLayout.Loop);
+
+        // Bookmark
+        mainBookmark.onClick.AddListener(() => {currentLayout = CurrentLayout.Main; BookMark(true);});
+        functionBookmark.onClick.AddListener(() => {currentLayout = CurrentLayout.Loop; BookMark(true);});
+        loopBookmark.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; BookMark(true);});
         #endregion
 
         #region block delete OnClickAddListener
-        mainDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
-        functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
+        mainDelete.onClick.AddListener(() => {currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout);});
+        functionDelete.onClick.AddListener(() => {currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout);});
+        loopDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
         #endregion
 
         playButton.onClick.AddListener(() => StartCoroutine(PlayBlock()));
@@ -133,9 +146,11 @@ public class GameManager : MonoBehaviour
                 case CurrentLayout.Main:
                     if (MainMethod.Count < 10) MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
                     break;
-
                 case CurrentLayout.Function:
                     if (Function.Count < 10) Function.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
+                    break;
+                case CurrentLayout.Loop:
+                    if (Loop.Count < 10) Loop.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
                     break;
             }
         }
@@ -162,6 +177,15 @@ public class GameManager : MonoBehaviour
                     Destroy(lastblock.gameObject);
                 }
                 break;
+
+            case CurrentLayout.Loop:
+                if (Loop.Count > 0)
+                {
+                    CodingBlock lastblock = Loop.Last();
+                    Loop.Remove(lastblock);
+                    Destroy(lastblock.gameObject);
+                }
+                break;
         }
     }
 
@@ -169,13 +193,13 @@ public class GameManager : MonoBehaviour
     {
         if (MainMethod != null)
         {
-            ButtonsOnOff(false);
+            UILock(false);
             foreach (CodingBlock block in MainMethod)
             {
                 yield return StartCoroutine(block.MoveOrder());
             }
         }
-        ButtonsOnOff(true);
+        UILock(true);
         BlockHighLightOff();
     }
 
@@ -189,11 +213,54 @@ public class GameManager : MonoBehaviour
         {
             block.ToggleHighLight(false);
         }
+        foreach(CodingBlock block in Loop)
+        {
+            block.ToggleHighLight(false);
+        }
     }
 
-    public void ButtonsOnOff(bool enable)
+    public void BookMark(bool enable)
     {
-        mainLayoutButton.GetComponent<Button>().interactable = enable;
-        functionLayoutButton.GetComponent<Button>().interactable = enable;
+        switch(currentLayout)
+        {
+            case CurrentLayout.Main:
+                mainLayout.transform.parent.gameObject.SetActive(enable);
+                break;
+
+            case CurrentLayout.Function:
+                functionLayout.transform.parent.gameObject.SetActive(enable);
+                loopLayout.transform.parent.gameObject.SetActive(!enable);
+                break;
+
+            case CurrentLayout.Loop:
+                loopLayout.transform.parent.gameObject.SetActive(enable);
+                functionLayout.transform.parent.gameObject.SetActive(!enable);
+                break;
+        }
+    }
+
+    public void UILock(bool enable)
+    {
+        #region Blocks Lock
+        forwardButton.GetComponent<Button>().enabled = !enable;
+        turnLeftButton.GetComponent<Button>().enabled = !enable;
+        turnRightButton.GetComponent<Button>().enabled= !enable;
+        functionButton.GetComponent<Button>().enabled = !enable;
+        loopButton.GetComponent<Button>().enabled = !enable;
+        #endregion
+
+        #region Layout & Bookmark & Delete Lock
+        mainLayout.GetComponent<Button>().interactable = !enable;
+        functionLayout.GetComponent<Button>().interactable = !enable;
+        loopLayout.GetComponent<Button>().interactable = !enable;
+
+        mainBookmark.GetComponent<Button>().interactable = !enable;
+        functionBookmark.GetComponent<Button>().interactable = !enable;
+        loopBookmark.GetComponent<Button>().interactable = !enable;
+
+        mainDelete.GetComponent<Button>().interactable = !enable;
+        functionDelete.GetComponent<Button>().interactable = !enable;
+        loopDelete.GetComponent<Button>().interactable = !enable;
+        #endregion
     }
 }
