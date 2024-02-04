@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -12,6 +13,11 @@ public class GameManager : MonoBehaviour
         Main,
         Function,
     }
+    public enum ProcessingStatus
+    {
+        Stop,
+        Playing,
+    }
     public enum Status
     {
         Idle,
@@ -21,11 +27,13 @@ public class GameManager : MonoBehaviour
     }
 
     public static GameManager Instance { get; private set; }
-    public GameObject PlayerObject { get; private set; }
 
     [Header("현재 플레이어의 상태")]
+    [SerializeField]
+    private GameObject PlayerObject;
     public Status playerStatus = Status.Idle;
     public CurrentLayout currentLayout = CurrentLayout.Main;
+    public ProcessingStatus currentProcessing = ProcessingStatus.Stop;
 
     [Header("캔버스 오브젝트")]
     public GameObject Canvas;
@@ -39,6 +47,11 @@ public class GameManager : MonoBehaviour
     [Header("블럭 삭제 버튼")]
     public Button mainDelete;
     public Button functionDelete;
+
+    [Header("플레이 & 정지, 스피드업 버튼")]
+    public Button playButton;
+    public Sprite stopImage;
+    public Button speedUpButton;
 
     [Header("코딩블럭 버튼 오브젝트")]
     public Button forwardButton;
@@ -54,8 +67,15 @@ public class GameManager : MonoBehaviour
     public GameObject functionPrefab;
 
 
+    public float deltaTimeCount = 0;
+
+    public bool isMoving = false;
+
+    private readonly WaitForSeconds waitForSeconds = new(1.0f);
+    private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
+
     public Stack<CodingBlock> MainMethod { get; private set; } = new Stack<CodingBlock>();
-    public Stack<CodingBlock> Function { get; private set; } = new Stack<CodingBlock>();
+    public Stack<CodingBlock> Function = new Stack<CodingBlock>();
 
 
     private void Awake()
@@ -74,6 +94,7 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
+        Application.targetFrameRate = 120;
     }
 
     private void Start()
@@ -81,6 +102,9 @@ public class GameManager : MonoBehaviour
         MainMethod.Clear();
         Function.Clear();
 
+        StartCoroutine(PlayerMove());
+
+        // TODO: 추후에 Awake 메서드로 가야할지 정하기
         #region Codingblocks onClickAddListener
         // : each buttons link to each Prefab
         forwardButton.onClick.AddListener(() => InsertBlock(forwardPrefab));
@@ -97,8 +121,15 @@ public class GameManager : MonoBehaviour
         functionLayoutButton.onClick.AddListener(() => currentLayout = CurrentLayout.Function);
         #endregion
 
+        #region block delete OnClickAddListener
         mainDelete.onClick.AddListener(() => {currentLayout = CurrentLayout.Main; DeleteBlock();});
         functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(); });
+        #endregion
+
+        playButton.onClick.AddListener(() => StartCoroutine(PlayBlockCode()));
+        //stopButton.onClick.AddListener(() => { });
+        //speedUpButton.onClick.AddListener(() => { });
+
     }
 
     public void InsertBlock(GameObject prefab)
@@ -137,8 +168,7 @@ public class GameManager : MonoBehaviour
                     CodingBlock lastblock = MainMethod.Pop();
                     Destroy(lastblock.gameObject);
                     Debug.Log("Main Stack:" + MainMethod.Count);
-                }
-                break;
+                } break;
 
             case CurrentLayout.Function:
                 if (Function.Count > 0)
@@ -146,36 +176,77 @@ public class GameManager : MonoBehaviour
                     CodingBlock lastblock = Function.Pop();
                     Destroy(lastblock.gameObject);
                     Debug.Log("Function Stack:" + Function.Count);
-                }
-                break;
+                } break;
         }
     }
 
-    IEnumerator PlayerMove()
+    public IEnumerator PlayBlockCode()
     {
-        while (true)
+        if (MainMethod != null)
         {
+            // TODO: 버튼 비활성화 코드 넣기
+
+            foreach(CodingBlock block in MainMethod)
+            {
+                if(!isMoving)
+                {
+                    yield return waitForSeconds;
+                    block.MoveOrder();
+                    yield return waitForHalfSeconds;
+                }
+                
+            }
+        }
+        else yield return null;
+    }
+
+    public IEnumerator PlayerMove()
+    {
             switch (playerStatus)
             {
                 case Status.Idle:
-                    // 플레이어 대기 상태
+                    
                     break;
 
                 case Status.Forward:
-                    // 플레이어가 앞으로 이동
+                    if (Physics.Raycast(PlayerObject.transform.localPosition, PlayerObject.transform.forward, out RaycastHit hit, 0.6f))
+                    {
+                        
+                    }
+                    else
+                    {
+                        while(isMoving)
+                        {
+                            Vector3 playerStartPos;
+                            Vector3 playerNewPos;
+
+                            playerStartPos = PlayerObject.transform.localPosition;
+                            playerNewPos = playerStartPos + PlayerObject.transform.forward;
+
+                            deltaTimeCount += Time.deltaTime;
+                            Vector3 newPos = Vector3.Lerp(playerStartPos, playerNewPos, 0.1f * deltaTimeCount);
+                            PlayerObject.transform.localPosition = newPos;
+
+                            if (deltaTimeCount >= 1)
+                            {
+                                deltaTimeCount = 0;
+                                playerStatus = Status.Idle;
+                                isMoving = false;
+                            } yield return null;
+                        }
+                    }
                     break;
 
                 case Status.TurnLeft:
-                    // 플레이어가 왼쪽으로 회전
+                    
                     break;
 
                 case Status.TurnRight:
-                    // 플레이어가 오른쪽으로 회전
+                    
                     break;
 
+                default: break;
             }
-            yield return null;
-        }
-
+        yield return null;
     }
 }

@@ -6,6 +6,7 @@ public class TrunRight : CodingBlock
 {
     public override void MoveOrder()
     {
+        ToggleHighLight(true);
         gameManager.playerStatus = GameManager.Status.TurnRight;
 
     }

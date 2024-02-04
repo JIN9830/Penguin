@@ -6,7 +6,9 @@ public class Forward : CodingBlock
 {
     public override void MoveOrder()
     {
+        ToggleHighLight(true);
+        gameManager.isMoving = true;
         gameManager.playerStatus = GameManager.Status.Forward;
-
+        StartCoroutine(gameManager.PlayerMove());
     }
 }

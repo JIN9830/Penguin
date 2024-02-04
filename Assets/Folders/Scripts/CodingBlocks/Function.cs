@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Function : CodingBlock
 {
+
     public override void MoveOrder()
     {
-        
+        ToggleHighLight(true);
     }
 }
