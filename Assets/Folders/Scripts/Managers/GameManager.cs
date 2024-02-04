@@ -193,13 +193,13 @@ public class GameManager : MonoBehaviour
     {
         if (MainMethod != null)
         {
-            UILock(false);
+            UILock(true);
             foreach (CodingBlock block in MainMethod)
             {
                 yield return StartCoroutine(block.MoveOrder());
             }
         }
-        UILock(true);
+        UILock(false);
         BlockHighLightOff();
     }
 
