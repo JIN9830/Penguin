@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -34,6 +36,10 @@ public class GameManager : MonoBehaviour
     private Button mainLayoutButton;
     private Button functionLayoutButton;
 
+    [Header("블럭 삭제 버튼")]
+    public Button mainDelete;
+    public Button functionDelete;
+
     [Header("코딩블럭 버튼 오브젝트")]
     public Button forwardButton;
     public Button turnLeftButton;
@@ -59,12 +65,12 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
-            Debug.Log("인스턴스 생성!");
+            Debug.Log("싱글톤 게임매니저 생성!");
         }
         else
         {
             Destroy(this.gameObject);
-            Debug.Log("중복된 인스턴스 삭제");
+            Debug.Log("중복된 싱글톤 게임매니저 삭제");
         }
         #endregion
 
@@ -75,24 +81,27 @@ public class GameManager : MonoBehaviour
         MainMethod.Clear();
         Function.Clear();
 
-        #region Coding Blocks Initialize
+        #region Codingblocks onClickAddListener
         // : each buttons link to each Prefab
-        forwardButton.onClick.AddListener(() => InsertBlocks(forwardPrefab));
-        turnLeftButton.onClick.AddListener(() => InsertBlocks(turnLeftPrefab));
-        turnRightButton.onClick.AddListener(() => InsertBlocks(turnRightPrefab));
-        functionButton.onClick.AddListener(() => InsertBlocks(functionPrefab));
+        forwardButton.onClick.AddListener(() => InsertBlock(forwardPrefab));
+        turnLeftButton.onClick.AddListener(() => InsertBlock(turnLeftPrefab));
+        turnRightButton.onClick.AddListener(() => InsertBlock(turnRightPrefab));
+        functionButton.onClick.AddListener(() => InsertBlock(functionPrefab));
         #endregion
 
-        #region Layout Activate Buttons Initialize
+        #region Layout activate onClickAddListener
         mainLayoutButton = mainLayout.GetComponent<Button>();
         functionLayoutButton = functionLayout.GetComponent<Button>();
 
         mainLayoutButton.onClick.AddListener(() => currentLayout = CurrentLayout.Main);
         functionLayoutButton.onClick.AddListener(() => currentLayout = CurrentLayout.Function);
         #endregion
+
+        mainDelete.onClick.AddListener(() => {currentLayout = CurrentLayout.Main; DeleteBlock();});
+        functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(); });
     }
 
-    public void InsertBlocks(GameObject prefab)
+    public void InsertBlock(GameObject prefab)
     {
         if (prefab == functionPrefab)
         {
@@ -107,12 +116,38 @@ public class GameManager : MonoBehaviour
             {
                 case CurrentLayout.Main:
                     if (MainMethod.Count < 10) MainMethod.Push(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                    Debug.Log("Main Stack:" + MainMethod.Count);
                     break;
 
                 case CurrentLayout.Function:
                     if (Function.Count < 10) Function.Push(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
+                    Debug.Log("Function Stack:" + Function.Count);
                     break;
             }
+        }
+    }
+
+    public void DeleteBlock()
+    {
+        switch (currentLayout)
+        {
+            case CurrentLayout.Main:
+                if(MainMethod.Count > 0)
+                {
+                    CodingBlock lastblock = MainMethod.Pop();
+                    Destroy(lastblock.gameObject);
+                    Debug.Log("Main Stack:" + MainMethod.Count);
+                }
+                break;
+
+            case CurrentLayout.Function:
+                if (Function.Count > 0)
+                {
+                    CodingBlock lastblock = Function.Pop();
+                    Destroy(lastblock.gameObject);
+                    Debug.Log("Function Stack:" + Function.Count);
+                }
+                break;
         }
     }
 
