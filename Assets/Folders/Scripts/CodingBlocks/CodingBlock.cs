@@ -4,6 +4,6 @@ using UnityEngine;
 
 public abstract class CodingBlock : MonoBehaviour
 {
-    protected GameManager Instance = GameManager.Instance;
+    protected GameManager gameManager = GameManager.Instance;
     public abstract void MoveOrder();
 }

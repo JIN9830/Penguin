@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public enum PlayerStatus
+    public enum Status
     {
         Idle,
         Forward,
         TurnLeft,
-        TrunRight,
+        TurnRight,
     }
-    private PlayerStatus playerStatus = PlayerStatus.Idle;
+    public Status PlayerStatus = Status.Idle;
+
+    [SerializeField]
+    private GameObject Canvas;
 
     public static GameManager Instance { get; private set; }
     public GameObject PlayerObject { get; private set; }
 
     public Stack<CodingBlock> MainMethod { get; private set; } = new Stack<CodingBlock>();
     public Stack<CodingBlock> Function { get; private set; } = new Stack<CodingBlock>();
-
 
 
     private void Awake()
@@ -39,15 +41,32 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void Start()
-    {
 
-    }
 
     IEnumerator PlayerMove()
     {
-        while(true)
+        while (true)
         {
+            switch (PlayerStatus)
+            {
+                case Status.Idle:
+                    // 플레이어 대기 상태
+                    break;
+
+                case Status.Forward:
+                    // 플레이어가 앞으로 이동
+                    break;
+
+                case Status.TurnLeft:
+                    // 플레이어가 왼쪽으로 회전
+                    break;
+
+                case Status.TurnRight: 
+                    // 플레이어가 오른쪽으로 회전
+                    break;
+
+            }
+
             yield return null;
         }
 

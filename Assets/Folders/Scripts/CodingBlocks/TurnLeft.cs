@@ -6,6 +6,7 @@ public class TurnLeft : CodingBlock
 {
     public override void MoveOrder()
     {
+        gameManager.PlayerStatus = GameManager.Status.TurnLeft;
 
     }
 }
