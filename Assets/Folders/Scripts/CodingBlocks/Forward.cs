@@ -14,6 +14,11 @@ public class Forward : CodingBlock
     {
         deltaTimeCount = 0;
     }
+    public override void MoveOrder()
+    {
+        ToggleHighLight(true);
+        GM.isMoving = true;
+    }
 
     private void Update()
     {
@@ -46,12 +51,4 @@ public class Forward : CodingBlock
             }
         }
     }
-
-
-    public override void MoveOrder()
-    {
-        ToggleHighLight(true);
-        GM.isMoving = true;
-    }
-
 }

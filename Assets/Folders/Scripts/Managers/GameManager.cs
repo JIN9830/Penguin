@@ -233,7 +233,6 @@ public class GameManager : MonoBehaviour
             foreach (CodingBlock block in MainMethod)
             {
                 yield return waitForHalfSeconds;
-
                 if (!isPlaying) break;
                 PlayerPosInit();
                 block.GetComponent<CodingBlock>().enabled = true;
@@ -242,6 +241,7 @@ public class GameManager : MonoBehaviour
             }
         }
         isPlaying = false;
+        yield return waitForHalfSeconds;
         UILock(false);
         BlockHighLightOff();
     }
