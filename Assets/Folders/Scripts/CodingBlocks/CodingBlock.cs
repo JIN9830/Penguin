@@ -4,11 +4,7 @@ using UnityEngine;
 
 public abstract class CodingBlock : MonoBehaviour
 {
-    protected GameManager gameManager = GameManager.Instance;
     private GameObject highlight;
-
-    private readonly WaitForSeconds waitForSeconds = new(1.0f);
-    private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
 
     private void Awake()
     {
@@ -20,5 +16,5 @@ public abstract class CodingBlock : MonoBehaviour
         highlight.SetActive(enable);
     }
 
-    public abstract IEnumerator MoveOrder();
+    public abstract void MoveOrder();
 }

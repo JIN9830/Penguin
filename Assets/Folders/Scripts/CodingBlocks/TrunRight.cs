@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class TrunRight : CodingBlock
 {
-    public override IEnumerator MoveOrder()
+    public override void MoveOrder()
     {
         ToggleHighLight(true);
-        yield return null;
 
     }
 }

@@ -1,54 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 public class Forward : CodingBlock
 {
-    private GameObject playerObject;
-
-    private Vector3 playerStartPos;
-    private Vector3 playerNewPos;
-
-    public bool isMoving = false;
-    public float deltaTimeCount = 0;
-
+    private float deltaTimeCount = 0;
     private readonly float DISTANCE = 0.6f;
 
-    private void Start()
+    private void Update()
     {
-        playerObject = gameManager.playerObject;
-    }
-
-
-    public override IEnumerator MoveOrder()
-    {
-        ToggleHighLight(true);
-
-        if (Physics.Raycast(playerObject.transform.localPosition, playerObject.transform.forward, out RaycastHit hit, DISTANCE))
+        if (Physics.Raycast(GameManager.Instance.playerObject.transform.localPosition, GameManager.Instance.playerObject.transform.forward, out RaycastHit hit, DISTANCE))
         {
-
+            return;
         }
         else
         {
-            isMoving = true;
-            playerStartPos = playerObject.transform.localPosition;
-            playerNewPos = playerStartPos + playerObject.transform.forward;
-
-            while (isMoving)
+            if (GameManager.Instance.isMoving == true)
             {
                 deltaTimeCount += Time.deltaTime;
-                Vector3 newPos = Vector3.Lerp(playerStartPos, playerNewPos, 1.5f * deltaTimeCount);
-                playerObject.transform.localPosition = newPos;
+                Vector3 newPos = Vector3.Lerp(GameManager.Instance.playerStartPos, GameManager.Instance.playerNewPos, 1.5f * deltaTimeCount);
+                GameManager.Instance.playerObject.transform.localPosition = newPos;
 
                 if (deltaTimeCount >= 1)
                 {
                     deltaTimeCount = 0;
-                    isMoving = false;
+                    GameManager.Instance.isMoving = false;
+                    this.GetComponent<CodingBlock>().enabled = false;
                 }
-                yield return null;
             }
         }
-
     }
+
+
+    public override void MoveOrder()
+    {
+        ToggleHighLight(true);
+        GameManager.Instance.isMoving = true;
+    }
+
 }

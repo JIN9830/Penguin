@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class TurnLeft : CodingBlock
 {
-    public override IEnumerator MoveOrder()
+    public override void MoveOrder()
     {
         ToggleHighLight(true);
-        yield return null;
 
     }
 }

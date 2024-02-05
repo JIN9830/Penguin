@@ -25,6 +25,15 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> Function = new List<CodingBlock>();
     public List<CodingBlock> Loop = new List<CodingBlock>();
 
+    private readonly WaitForSeconds waitForSeconds = new(1.0f);
+    private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
+
+    public Vector3 playerStartPos;
+    public Vector3 playerNewPos;
+    Coroutine playBlock;
+    public bool isMoving = false;
+    public Animator playerAnimator;
+
     [Header("현재 플레이어의 상태")]
     [SerializeField]
     public GameObject playerObject;
@@ -124,10 +133,13 @@ public class GameManager : MonoBehaviour
         loopDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
         #endregion
 
-        playButton.onClick.AddListener(() => StartCoroutine(PlayBlock()));
+        
+        playButton.onClick.AddListener(() => playBlock = StartCoroutine(PlayBlock())); 
         //stopButton.onClick.AddListener(() => { });
         //speedUpButton.onClick.AddListener(() => { });
 
+
+        playerAnimator = playerObject.GetComponent<Animator>();
     }
 
     public void InsertBlock(GameObject prefab)
@@ -137,6 +149,7 @@ public class GameManager : MonoBehaviour
             if (MainMethod.Count < 10)
             {
                 MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                prefab.GetComponent<CodingBlock>().enabled = false;
             }
         }
         else
@@ -144,13 +157,24 @@ public class GameManager : MonoBehaviour
             switch (currentLayout)
             {
                 case CurrentLayout.Main:
-                    if (MainMethod.Count < 10) MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                    if (MainMethod.Count < 10) {
+                        MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                        prefab.GetComponent<CodingBlock>().enabled = false; 
+                    } 
                     break;
+
                 case CurrentLayout.Function:
-                    if (Function.Count < 10) Function.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
+                    if (Function.Count < 10) {
+                        Function.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
+                        prefab.GetComponent<CodingBlock>().enabled = false;
+                    }
                     break;
+
                 case CurrentLayout.Loop:
-                    if (Loop.Count < 10) Loop.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
+                    if (Loop.Count < 10) {
+                        Loop.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
+                        prefab.GetComponent<CodingBlock>().enabled = false;
+                    }
                     break;
             }
         }
@@ -196,12 +220,24 @@ public class GameManager : MonoBehaviour
             UILock(true);
             foreach (CodingBlock block in MainMethod)
             {
-                yield return StartCoroutine(block.MoveOrder());
+                yield return waitForHalfSeconds;
+                PlayerPosInit();
+                block.GetComponent<CodingBlock>().enabled = true;
+                block.MoveOrder();
+                yield return waitForHalfSeconds;
             }
         }
+        yield return waitForSeconds;
         UILock(false);
         BlockHighLightOff();
     }
+
+    public void PlayerPosInit()
+    {
+        playerStartPos = playerObject.transform.localPosition;
+        playerNewPos = playerStartPos + playerObject.transform.forward;
+    }
+
 
     public void BlockHighLightOff()
     {

@@ -465,6 +465,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Function: []
   Loop: []
+  playerStartPos: {x: 0, y: 0, z: 0}
+  playerNewPos: {x: 0, y: 0, z: 0}
+  isMoving: 0
+  playerAnimator: {fileID: 0}
   playerObject: {fileID: 114938884}
   currentLayout: 0
   currentProcessing: 0
@@ -1838,6 +1842,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8311661690867684508, guid: 35427bf7548e5a240b1e7ab1c463b940,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 952812a57059cb64f91c81799b706d41, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
