@@ -82,10 +82,10 @@ public class GameManager : MonoBehaviour
     private Vector3 playerRestPos;
     private Quaternion playerRestRot;
 
-    public bool isPlaying = false;
+    private Coroutine playBlock;
 
-    Coroutine playBlock;
-    public bool playBlockEnable = false;
+    public bool isPlayBlockRunning = false;
+    public bool playBlockToggle = false;
 
 
     private void Awake()
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
 
         playBlock = StartCoroutine(PlayBlock());
 
-        playButton.onClick.AddListener(() => playBlockEnable = true);
+        playButton.onClick.AddListener(() => playBlockToggle = true);
         stopButton.onClick.AddListener(() => StopBlock());
         //speedUpButton.onClick.AddListener(() => { });
 
@@ -231,24 +231,24 @@ public class GameManager : MonoBehaviour
     {
         while(true)
         {
-            if (!playBlockEnable) yield return new WaitUntil(() => playBlockEnable == true);
+            if (!playBlockToggle) yield return new WaitUntil(() => playBlockToggle == true); // new 연산자 Utills 클래스에 캐스팅하기
 
-            if (!isPlaying && MainMethod != null)
+            if (!isPlayBlockRunning && MainMethod != null)
             {
-                isPlaying = true;
+                isPlayBlockRunning = true;
                 stopButton.gameObject.SetActive(true);
                 UILock(true);
                 foreach (CodingBlock block in MainMethod)
                 {
                     yield return waitForHalfSeconds;
-                    if (!isPlaying) break;
+                    if (!isPlayBlockRunning) break;
                     PlayerPosInit();
                     block.GetComponent<CodingBlock>().enabled = true;
                     block.MoveOrder();
                     yield return waitForHalfSeconds;
                 }
-                isPlaying = false;
-                playBlockEnable = false;
+                isPlayBlockRunning = false;
+                playBlockToggle = false; // while 내부에서 무한반복 PlayBlock 코루틴의 상태를 제어하는 변수
                 yield return waitForHalfSeconds;
                 UILock(false);
                 BlockHighLightOff();
@@ -258,8 +258,8 @@ public class GameManager : MonoBehaviour
 
     public void StopBlock()
     {
-        isPlaying = false;
-        playBlockEnable = false;
+        isPlayBlockRunning = false; // StopBlock 메서드를 호출하면 PlayBlock foreach 문에서 빠져나오게하는 변수
+        playBlockToggle = false;
         BlockHighLightOff();
         playerObject.transform.position = playerRestPos;
         playerObject.transform.rotation = playerRestRot;

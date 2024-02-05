@@ -22,7 +22,7 @@ public class Forward : CodingBlock
 
     private void Update()
     {
-        if(GM.isPlaying == false)
+        if(GM.isPlayBlockRunning == false) // 캐릭터 움직임에 사용되는 변수를 초기화하고 현재 블록 스크립트 비활성화
         {
             deltaTimeCount = 0;
             GM.isMoving = false;
