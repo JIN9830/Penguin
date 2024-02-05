@@ -25,15 +25,6 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> Function = new List<CodingBlock>();
     public List<CodingBlock> Loop = new List<CodingBlock>();
 
-    private readonly WaitForSeconds waitForSeconds = new(1.0f);
-    private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
-
-    public Vector3 playerStartPos;
-    public Vector3 playerNewPos;
-    Coroutine playBlock;
-    public bool isMoving = false;
-    public Animator playerAnimator;
-
     [Header("현재 플레이어의 상태")]
     [SerializeField]
     public GameObject playerObject;
@@ -60,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     [Header("플레이 & 정지, 스피드업 버튼")]
     public Button playButton;
-    public Sprite stopImage;
+    public Button stopButton;
     public Button speedUpButton;
 
     [Header("코딩블럭 버튼 오브젝트")]
@@ -77,6 +68,22 @@ public class GameManager : MonoBehaviour
     public GameObject turnRightPrefab;
     public GameObject functionPrefab;
     public GameObject loopPrefab;
+
+
+    private readonly WaitForSeconds waitForSeconds = new(1.0f);
+    private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
+
+    public Vector3 playerStartPos;
+    public Vector3 playerNewPos;
+    Coroutine playBlock;
+    public bool isMoving = false;
+    public Animator playerAnimator;
+
+    private Vector3 playerRestPos;
+    private Quaternion playerRestRot;
+
+    public bool isPlaying = false;
+
 
     private void Awake()
     {
@@ -103,6 +110,9 @@ public class GameManager : MonoBehaviour
         MainMethod.Clear();
         Function.Clear();
         Loop.Clear();
+
+        playerRestPos = playerObject.transform.position;
+        playerRestRot = playerObject.transform.rotation;
 
         // TODO: 추후에 Awake 메서드로 가야할지 정하기
         #region Codingblocks onClickAddListener
@@ -134,8 +144,8 @@ public class GameManager : MonoBehaviour
         #endregion
 
         
-        playButton.onClick.AddListener(() => playBlock = StartCoroutine(PlayBlock())); 
-        //stopButton.onClick.AddListener(() => { });
+        playButton.onClick.AddListener(() => playBlock = StartCoroutine(PlayBlock()));
+        stopButton.onClick.AddListener(() => StopBlock());
         //speedUpButton.onClick.AddListener(() => { });
 
 
@@ -215,21 +225,34 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator PlayBlock()
     {
-        if (MainMethod != null)
+        if (!isPlaying && MainMethod != null)
         {
+            isPlaying = true;
+            stopButton.gameObject.SetActive(true);
             UILock(true);
             foreach (CodingBlock block in MainMethod)
             {
                 yield return waitForHalfSeconds;
+
+                if (!isPlaying) break;
                 PlayerPosInit();
                 block.GetComponent<CodingBlock>().enabled = true;
                 block.MoveOrder();
                 yield return waitForHalfSeconds;
             }
         }
-        yield return waitForSeconds;
+        isPlaying = false;
         UILock(false);
         BlockHighLightOff();
+    }
+
+    public void StopBlock()
+    {
+        isPlaying = false;
+        BlockHighLightOff();
+        playerObject.transform.position = playerRestPos;
+        playerObject.transform.rotation = playerRestRot;
+        stopButton.gameObject.SetActive(false);
     }
 
     public void PlayerPosInit()
@@ -237,7 +260,6 @@ public class GameManager : MonoBehaviour
         playerStartPos = playerObject.transform.localPosition;
         playerNewPos = playerStartPos + playerObject.transform.forward;
     }
-
 
     public void BlockHighLightOff()
     {
