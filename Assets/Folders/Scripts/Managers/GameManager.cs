@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     public Vector3 playerStartPos;
     public Vector3 playerNewPos;
-    Coroutine playBlock;
+
     public bool isMoving = false;
     public Animator playerAnimator;
 
@@ -83,6 +83,9 @@ public class GameManager : MonoBehaviour
     private Quaternion playerRestRot;
 
     public bool isPlaying = false;
+
+    Coroutine playBlock;
+    public bool playBlockEnable = false;
 
 
     private void Awake()
@@ -143,8 +146,9 @@ public class GameManager : MonoBehaviour
         loopDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
         #endregion
 
-        
-        playButton.onClick.AddListener(() => playBlock = StartCoroutine(PlayBlock()));
+        playBlock = StartCoroutine(PlayBlock());
+
+        playButton.onClick.AddListener(() => playBlockEnable = true);
         stopButton.onClick.AddListener(() => StopBlock());
         //speedUpButton.onClick.AddListener(() => { });
 
@@ -225,30 +229,37 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator PlayBlock()
     {
-        if (!isPlaying && MainMethod != null)
+        while(true)
         {
-            isPlaying = true;
-            stopButton.gameObject.SetActive(true);
-            UILock(true);
-            foreach (CodingBlock block in MainMethod)
+            if (!playBlockEnable) yield return new WaitUntil(() => playBlockEnable == true);
+
+            if (!isPlaying && MainMethod != null)
             {
+                isPlaying = true;
+                stopButton.gameObject.SetActive(true);
+                UILock(true);
+                foreach (CodingBlock block in MainMethod)
+                {
+                    yield return waitForHalfSeconds;
+                    if (!isPlaying) break;
+                    PlayerPosInit();
+                    block.GetComponent<CodingBlock>().enabled = true;
+                    block.MoveOrder();
+                    yield return waitForHalfSeconds;
+                }
+                isPlaying = false;
+                playBlockEnable = false;
                 yield return waitForHalfSeconds;
-                if (!isPlaying) break;
-                PlayerPosInit();
-                block.GetComponent<CodingBlock>().enabled = true;
-                block.MoveOrder();
-                yield return waitForHalfSeconds;
+                UILock(false);
+                BlockHighLightOff();
             }
         }
-        isPlaying = false;
-        yield return waitForHalfSeconds;
-        UILock(false);
-        BlockHighLightOff();
     }
 
     public void StopBlock()
     {
         isPlaying = false;
+        playBlockEnable = false;
         BlockHighLightOff();
         playerObject.transform.position = playerRestPos;
         playerObject.transform.rotation = playerRestRot;

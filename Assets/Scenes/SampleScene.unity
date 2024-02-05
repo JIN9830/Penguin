@@ -501,6 +501,7 @@ MonoBehaviour:
   isMoving: 0
   playerAnimator: {fileID: 0}
   isPlaying: 0
+  playBlockEnable: 0
 --- !u!1001 &67391855
 PrefabInstance:
   m_ObjectHideFlags: 0
