@@ -104,11 +104,7 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-<<<<<<< HEAD
         Application.targetFrameRate = 144;
-=======
-        Application.targetFrameRate = 120;
->>>>>>> parent of 0e8d541 (UI Fixing)
     }
 
     private void Start()
@@ -242,18 +238,21 @@ public class GameManager : MonoBehaviour
                 isPlayBlockRunning = true;
                 stopButton.gameObject.SetActive(true);
                 UILock(true);
+
                 foreach (CodingBlock block in MainMethod)
                 {
+                    if (!isPlayBlockRunning) break; // 정지 버튼을 누르면 실행됨
+
                     yield return waitForHalfSeconds;
-                    if (!isPlayBlockRunning) break;
-                    PlayerPosInit();
+
+                    Player_MoveVectorInit();
                     block.GetComponent<CodingBlock>().enabled = true;
                     block.MoveOrder();
-                    yield return waitForHalfSeconds;
+
+                    if (isPlayBlockRunning) yield return waitForHalfSeconds;
                 }
-                isPlayBlockRunning = false;
-                playBlockToggle = false; // while 내부에서 무한반복 PlayBlock 코루틴의 상태를 제어하는 변수
-                yield return waitForHalfSeconds;
+
+                StopOrder();
                 UILock(false);
                 BlockHighLightOff();
             }
@@ -262,15 +261,20 @@ public class GameManager : MonoBehaviour
 
     public void StopBlock()
     {
-        isPlayBlockRunning = false; // StopBlock 메서드를 호출하면 PlayBlock foreach 문에서 빠져나오게하는 변수
-        playBlockToggle = false;
+        StopOrder();
         BlockHighLightOff();
         playerObject.transform.position = playerRestPos;
         playerObject.transform.rotation = playerRestRot;
         stopButton.gameObject.SetActive(false);
     }
 
-    public void PlayerPosInit()
+    private void StopOrder()
+    {
+        isPlayBlockRunning = false;
+        playBlockToggle = false;
+    }
+
+    public void Player_MoveVectorInit()
     {
         playerStartPos = playerObject.transform.localPosition;
         playerNewPos = playerStartPos + playerObject.transform.forward;
