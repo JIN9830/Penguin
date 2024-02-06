@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameManager;
 
 public class Function : CodingBlock
 {
     public override void MoveOrder()
     {
         ToggleHighLight(true);
+        GM.SelectedMethods(CurrentLayout.Function);
     }
 
     public override IEnumerator Subroutine()
@@ -25,5 +27,7 @@ public class Function : CodingBlock
             if (GM.playBlockToggle == true) yield return GM.waitForHalfSeconds;
         }
         if (GM.playBlockToggle == true) yield return GM.waitForHalfSeconds;
+
+        GM.SelectedMethods(CurrentLayout.Main);
     }
 }

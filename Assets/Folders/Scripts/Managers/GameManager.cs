@@ -14,6 +14,11 @@ public class GameManager : MonoBehaviour
         Function,
         Loop,
     }
+    public enum SelectMethod
+    {
+        Function,
+        Loop,
+    }
     public static GameManager Instance { get; private set; }
 
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
@@ -129,14 +134,14 @@ public class GameManager : MonoBehaviour
         #region Layout activate onClickAddListener
 
         // Coding area
-        mainLayout.onClick.AddListener(() => currentLayout = CurrentLayout.Main);
-        functionLayout.onClick.AddListener(() => currentLayout = CurrentLayout.Function);
-        loopLayout.onClick.AddListener(() => currentLayout = CurrentLayout.Loop);
+        mainLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
+        functionLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
+        loopLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
 
         // Bookmark
-        mainBookmark.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; BookMark(true); });
-        functionBookmark.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; BookMark(true); });
-        loopBookmark.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; BookMark(true); });
+        mainBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
+        functionBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
+        loopBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
         #endregion
 
         #region block delete OnClickAddListener
@@ -283,6 +288,7 @@ public class GameManager : MonoBehaviour
 
         stopButton.gameObject.SetActive(false);
     }
+
     public void PlayerMoveVectorInit()
     {
         playerStartPos = playerObject.transform.localPosition;
@@ -305,22 +311,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void BookMark(bool enable)
+    public void SelectedMethods(CurrentLayout selectMethod)
     {
-        switch (currentLayout)
+        switch (selectMethod)
         {
             case CurrentLayout.Main:
-                mainLayout.transform.parent.gameObject.SetActive(enable);
+                currentLayout = CurrentLayout.Main;
+                mainLayout.transform.parent.gameObject.SetActive(true);
                 break;
 
             case CurrentLayout.Function:
-                functionLayout.transform.parent.gameObject.SetActive(enable);
-                loopLayout.transform.parent.gameObject.SetActive(!enable);
+                currentLayout = CurrentLayout.Function;
+                functionButton.gameObject.SetActive(true);
+                loopButton.gameObject.SetActive(false);
+                functionLayout.transform.parent.gameObject.SetActive(true);
+                loopLayout.transform.parent.gameObject.SetActive(false);
                 break;
 
             case CurrentLayout.Loop:
-                loopLayout.transform.parent.gameObject.SetActive(enable);
-                functionLayout.transform.parent.gameObject.SetActive(!enable);
+                currentLayout = CurrentLayout.Loop;
+                loopButton.gameObject.SetActive(true);
+                functionButton.gameObject.SetActive(false);
+                loopLayout.transform.parent.gameObject.SetActive(true);
+                functionLayout.transform.parent.gameObject.SetActive(false);
                 break;
         }
     }
@@ -349,4 +362,5 @@ public class GameManager : MonoBehaviour
         loopDelete.GetComponent<Button>().interactable = !enable;
         #endregion
     }
+
 }
