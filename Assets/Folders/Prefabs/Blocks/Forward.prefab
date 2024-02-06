@@ -59,7 +59,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30f1c1ce6c3869344a4448468cb98931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deltaTimeCount: 0
 --- !u!114 &309504915641168653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,7 +124,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 3}
-  m_SizeDelta: {x: 220, y: 220}
+  m_SizeDelta: {x: 235, y: 235}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7245747814236949657
 CanvasRenderer:

@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = default;
     }
 
     private void Start()
@@ -238,24 +238,37 @@ public class GameManager : MonoBehaviour
                 isPlayBlockRunning = true;
                 stopButton.gameObject.SetActive(true);
                 UILock(true);
+
                 foreach (CodingBlock block in MainMethod)
                 {
+                    if (!isPlayBlockRunning) break; // 정지버튼을 누르면 동작하는 코드
+
                     yield return waitForHalfSeconds;
-                    if (!isPlayBlockRunning) break;
-                    PlayerPosInit();
+
+                    Player_MoveVectorInit();
                     block.GetComponent<CodingBlock>().enabled = true;
                     block.MoveOrder();
-                    yield return waitForHalfSeconds;
+
+                    if (isPlayBlockRunning) yield return waitForHalfSeconds;
                 }
-                isPlayBlockRunning = false;
-                playBlockToggle = false; // while 내부에서 무한반복 PlayBlock 코루틴의 상태를 제어하는 변수
-                yield return waitForHalfSeconds;
-                UILock(false);
+
+                Stop_PlayBlockCoroutine();
                 BlockHighLightOff();
+                UILock(false);
             }
         }
     }
 
+    private void Stop_PlayBlockCoroutine()  // while 내부에서 돌고있는 PlayBlock 코루틴의 무한반복을 제어하는 메서드 (설명달기)
+    {
+        isPlayBlockRunning = false;
+        playBlockToggle = false;
+    }
+    public void Player_MoveVectorInit() // 플레이어가 움직일때 마다 이동벡터 초기화
+    {
+        playerStartPos = playerObject.transform.localPosition;
+        playerNewPos = playerStartPos + playerObject.transform.forward;
+    }
     public void StopBlock()
     {
         isPlayBlockRunning = false; // StopBlock 메서드를 호출하면 PlayBlock foreach 문에서 빠져나오게하는 변수
@@ -265,13 +278,6 @@ public class GameManager : MonoBehaviour
         playerObject.transform.rotation = playerRestRot;
         stopButton.gameObject.SetActive(false);
     }
-
-    public void PlayerPosInit()
-    {
-        playerStartPos = playerObject.transform.localPosition;
-        playerNewPos = playerStartPos + playerObject.transform.forward;
-    }
-
     public void BlockHighLightOff()
     {
         foreach (CodingBlock block in MainMethod)
