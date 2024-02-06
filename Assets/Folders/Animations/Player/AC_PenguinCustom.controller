@@ -611,19 +611,7 @@ AnimatorController:
   m_Name: AC_PenguinCustom
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Forwrad
-    m_Type: 1
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: TrunLeft
-    m_Type: 1
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: TurnRight
+  - m_Name: Walk
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -820,7 +808,7 @@ AnimatorStateMachine:
     m_Position: {x: -210, y: 660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1961448712505261524}
-    m_Position: {x: 10, y: 660, z: 0}
+    m_Position: {x: 480, y: 120, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

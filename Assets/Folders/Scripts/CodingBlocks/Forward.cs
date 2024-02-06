@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 public class Forward : CodingBlock
@@ -9,6 +8,7 @@ public class Forward : CodingBlock
     private float deltaTimeCount = 0;
     private readonly float DISTANCE = 0.6f;
     private RaycastHit hit;
+    public bool test1;
 
     private void Start()
     {
@@ -22,10 +22,11 @@ public class Forward : CodingBlock
 
     private void Update()
     {
-        if(GM.isPlayBlockRunning == false) // 캐릭터 움직임에 사용되는 변수를 초기화하고 현재 블록 스크립트 비활성화
+        if(GM.playBlockToggle == false) // 캐릭터 움직임에 사용되는 변수를 초기화하고 현재 블록 스크립트 비활성화
         {
             deltaTimeCount = 0;
             GM.isMoving = false;
+            GM.playerAnimator.SetFloat("Walk", deltaTimeCount);
             this.GetComponent<CodingBlock>().enabled = false;
             return;
         }
@@ -38,6 +39,8 @@ public class Forward : CodingBlock
         {
             if (GM.isMoving == true)
             {
+                GM.playerAnimator.SetFloat("Walk", deltaTimeCount);
+
                 deltaTimeCount += Time.deltaTime;
                 Vector3 newPos = Vector3.Lerp(GM.playerStartPos, GM.playerNewPos, 1.5f * deltaTimeCount);
                 GM.playerObject.transform.localPosition = newPos;

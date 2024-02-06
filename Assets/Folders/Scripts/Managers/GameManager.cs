@@ -14,11 +14,6 @@ public class GameManager : MonoBehaviour
         Function,
         Loop,
     }
-    public enum ProcessingStatus
-    {
-        Stop,
-        Playing,
-    }
     public static GameManager Instance { get; private set; }
 
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
@@ -29,7 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public GameObject playerObject;
     public CurrentLayout currentLayout = CurrentLayout.Main;
-    public ProcessingStatus currentProcessing = ProcessingStatus.Stop;
+    public bool playBlockToggle = false;
 
     [Header("캔버스 오브젝트")]
     public GameObject Canvas;
@@ -84,9 +79,6 @@ public class GameManager : MonoBehaviour
 
     private Coroutine playBlock;
 
-    public bool isPlayBlockRunning = false;
-    public bool playBlockToggle = false;
-
 
     private void Awake()
     {
@@ -135,14 +127,14 @@ public class GameManager : MonoBehaviour
         loopLayout.onClick.AddListener(() => currentLayout = CurrentLayout.Loop);
 
         // Bookmark
-        mainBookmark.onClick.AddListener(() => {currentLayout = CurrentLayout.Main; BookMark(true);});
-        functionBookmark.onClick.AddListener(() => {currentLayout = CurrentLayout.Loop; BookMark(true);});
-        loopBookmark.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; BookMark(true);});
+        mainBookmark.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; BookMark(true); });
+        functionBookmark.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; BookMark(true); });
+        loopBookmark.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; BookMark(true); });
         #endregion
 
         #region block delete OnClickAddListener
-        mainDelete.onClick.AddListener(() => {currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout);});
-        functionDelete.onClick.AddListener(() => {currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout);});
+        mainDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
+        functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
         loopDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
         #endregion
 
@@ -171,21 +163,24 @@ public class GameManager : MonoBehaviour
             switch (currentLayout)
             {
                 case CurrentLayout.Main:
-                    if (MainMethod.Count < 10) {
+                    if (MainMethod.Count < 10)
+                    {
                         MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
-                        prefab.GetComponent<CodingBlock>().enabled = false; 
-                    } 
+                        prefab.GetComponent<CodingBlock>().enabled = false;
+                    }
                     break;
 
                 case CurrentLayout.Function:
-                    if (Function.Count < 10) {
+                    if (Function.Count < 10)
+                    {
                         Function.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
                     }
                     break;
 
                 case CurrentLayout.Loop:
-                    if (Loop.Count < 10) {
+                    if (Loop.Count < 10)
+                    {
                         Loop.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
                     }
@@ -229,20 +224,19 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator PlayBlock()
     {
-        while(true)
+        while (true)
         {
-            if (!playBlockToggle) 
-                yield return new WaitUntil(() => playBlockToggle == true); // new 연산자 Utills 클래스에 캐스팅하기
+            if (!playBlockToggle) yield return new WaitUntil(() => playBlockToggle == true); // new 연산자 Utills 클래스에 캐스팅하기
 
-            if (!isPlayBlockRunning && MainMethod != null)
+            if (playBlockToggle && MainMethod != null)
             {
-                isPlayBlockRunning = true;
                 stopButton.gameObject.SetActive(true);
                 UILock(true);
 
                 foreach (CodingBlock block in MainMethod)
                 {
-                    if (!isPlayBlockRunning) break; // 정지 버튼을 누르면 실행됨
+                    if (!playBlockToggle) 
+                        break;
 
                     yield return waitForHalfSeconds;
 
@@ -250,30 +244,26 @@ public class GameManager : MonoBehaviour
                     block.GetComponent<CodingBlock>().enabled = true;
                     block.MoveOrder();
 
-                    if (isPlayBlockRunning) yield return waitForHalfSeconds;
+                    if (playBlockToggle) yield return waitForHalfSeconds;
                 }
 
-                StopOrder();
-                UILock(false);
+                playBlockToggle = false;
                 BlockHighLightOff();
+                UILock(false);
             }
         }
     }
 
     public void StopBlock()
     {
-        StopOrder();
+        playBlockToggle = false;
         BlockHighLightOff();
         playerObject.transform.position = playerRestPos;
         playerObject.transform.rotation = playerRestRot;
         stopButton.gameObject.SetActive(false);
     }
 
-    private void StopOrder()
-    {
-        isPlayBlockRunning = false;
-        playBlockToggle = false;
-    }
+
 
     public void Player_MoveVectorInit()
     {
@@ -291,7 +281,7 @@ public class GameManager : MonoBehaviour
         {
             block.ToggleHighLight(false);
         }
-        foreach(CodingBlock block in Loop)
+        foreach (CodingBlock block in Loop)
         {
             block.ToggleHighLight(false);
         }
@@ -299,7 +289,7 @@ public class GameManager : MonoBehaviour
 
     public void BookMark(bool enable)
     {
-        switch(currentLayout)
+        switch (currentLayout)
         {
             case CurrentLayout.Main:
                 mainLayout.transform.parent.gameObject.SetActive(enable);
@@ -322,7 +312,7 @@ public class GameManager : MonoBehaviour
         #region Blocks Lock
         forwardButton.GetComponent<Button>().enabled = !enable;
         turnLeftButton.GetComponent<Button>().enabled = !enable;
-        turnRightButton.GetComponent<Button>().enabled= !enable;
+        turnRightButton.GetComponent<Button>().enabled = !enable;
         functionButton.GetComponent<Button>().enabled = !enable;
         loopButton.GetComponent<Button>().enabled = !enable;
         #endregion
