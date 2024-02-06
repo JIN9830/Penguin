@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        Application.targetFrameRate = default;
+        Application.targetFrameRate = 144;
     }
 
     private void Start()
