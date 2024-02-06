@@ -8,7 +8,6 @@ public class Forward : CodingBlock
     private float deltaTimeCount = 0;
     private readonly float DISTANCE = 0.6f;
     private RaycastHit hit;
-    public bool test1;
 
     private void Start()
     {

@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     [Header("현재 플레이어의 상태")]
     [SerializeField]
     public GameObject playerObject;
+    public Rigidbody playerRigid;
+    public Animator playerAnimator;
     public CurrentLayout currentLayout = CurrentLayout.Main;
     public bool playBlockToggle = false;
     public bool playFunctionToggle = false;
@@ -84,7 +86,7 @@ public class GameManager : MonoBehaviour
     public Vector3 playerNewPos;
 
     public bool isMoving = false;
-    public Animator playerAnimator;
+
 
     private Vector3 playerRestPos;
     private Quaternion playerRestRot;
@@ -158,6 +160,7 @@ public class GameManager : MonoBehaviour
 
 
         playerAnimator = playerObject.GetComponent<Animator>();
+        playerRigid = playerObject.GetComponent<Rigidbody>();
     }
 
     public void InsertBlock(GameObject prefab)
