@@ -231,7 +231,8 @@ public class GameManager : MonoBehaviour
     {
         while(true)
         {
-            if (!playBlockToggle) yield return new WaitUntil(() => playBlockToggle == true); // new 연산자 Utills 클래스에 캐스팅하기
+            if (!playBlockToggle) 
+                yield return new WaitUntil(() => playBlockToggle == true); // new 연산자 Utills 클래스에 캐스팅하기
 
             if (!isPlayBlockRunning && MainMethod != null)
             {
