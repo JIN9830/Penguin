@@ -9,4 +9,8 @@ public class Loop : CodingBlock
         ToggleHighLight(true);
 
     }
+    public override IEnumerator Subroutine()
+    {
+        yield return null;
+    }
 }

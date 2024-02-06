@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     public GameObject playerObject;
     public CurrentLayout currentLayout = CurrentLayout.Main;
     public bool playBlockToggle = false;
+    public bool playFunctionToggle = false;
+    public bool playLoopToggle = false;
 
     [Header("캔버스 오브젝트")]
     public GameObject Canvas;
@@ -70,8 +72,8 @@ public class GameManager : MonoBehaviour
     public GameObject loopPrefab;
 
 
-    private readonly WaitForSeconds waitForSeconds = new(1.0f);
-    private readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
+    public readonly WaitForSeconds waitForSeconds = new(1.0f);
+    public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
 
     public Vector3 playerStartPos;
     public Vector3 playerNewPos;
@@ -239,7 +241,7 @@ public class GameManager : MonoBehaviour
                 UILock(true);
 
                 foreach (CodingBlock block in MainMethod)
-                {
+                {    
                     if (!playBlockToggle) 
                         break;
 
@@ -247,7 +249,17 @@ public class GameManager : MonoBehaviour
 
                     PlayerMoveVectorInit();
                     block.GetComponent<CodingBlock>().enabled = true;
-                    block.MoveOrder();
+
+                    if (block.gameObject.tag == "Method")
+                    {
+                        block.MoveOrder();
+                        yield return block.StartCoroutine(block.Subroutine());
+                    }
+                    else
+                    {
+                        block.MoveOrder();
+                    }
+                    
 
                     if (playBlockToggle) yield return waitForHalfSeconds;
                 }

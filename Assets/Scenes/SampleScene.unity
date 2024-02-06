@@ -468,6 +468,8 @@ MonoBehaviour:
   playerObject: {fileID: 114938884}
   currentLayout: 0
   playBlockToggle: 0
+  playFunctionToggle: 0
+  playLoopToggle: 0
   Canvas: {fileID: 764931415}
   mainLayout: {fileID: 748663927}
   functionLayout: {fileID: 964708512}

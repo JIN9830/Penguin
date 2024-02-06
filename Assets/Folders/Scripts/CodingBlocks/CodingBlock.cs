@@ -18,4 +18,9 @@ public abstract class CodingBlock : MonoBehaviour
     }
 
     public abstract void MoveOrder();
+
+    public virtual IEnumerator Subroutine()
+    {
+        yield return null;
+    }
 }
