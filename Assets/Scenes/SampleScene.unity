@@ -467,7 +467,7 @@ MonoBehaviour:
   Loop: []
   playerObject: {fileID: 114938884}
   currentLayout: 0
-  currentProcessing: 0
+  playBlockToggle: 0
   Canvas: {fileID: 764931415}
   mainLayout: {fileID: 748663927}
   functionLayout: {fileID: 964708512}
@@ -475,6 +475,7 @@ MonoBehaviour:
   mainBookmark: {fileID: 1095497850}
   functionBookmark: {fileID: 1865761786}
   loopBookmark: {fileID: 1670725981}
+  mainOutline: {fileID: 0}
   mainDelete: {fileID: 650362332}
   functionDelete: {fileID: 734600842}
   loopDelete: {fileID: 138196009}
@@ -500,8 +501,6 @@ MonoBehaviour:
   playerNewPos: {x: 0, y: 0, z: 0}
   isMoving: 0
   playerAnimator: {fileID: 0}
-  isPlayBlockRunning: 0
-  playBlockToggle: 0
 --- !u!1001 &67391855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1016,8 +1015,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 725, y: 17}
-  m_SizeDelta: {x: 300, y: 668}
+  m_AnchoredPosition: {x: 760, y: -0}
+  m_SizeDelta: {x: 300, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &138196009
 MonoBehaviour:
@@ -1083,7 +1082,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 65390cd252d7d94479d8b5c024721643, type: 3}
+  m_Texture: {fileID: 2800000, guid: d663dd1c752212e4ba8fff679a4304be, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -3271,8 +3270,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 725, y: 17}
-  m_SizeDelta: {x: 300, y: 668}
+  m_AnchoredPosition: {x: 760, y: 0}
+  m_SizeDelta: {x: 300, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &650362332
 MonoBehaviour:
@@ -3346,7 +3345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 65390cd252d7d94479d8b5c024721643, type: 3}
+  m_Texture: {fileID: 2800000, guid: d663dd1c752212e4ba8fff679a4304be, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -3599,8 +3598,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 725, y: 17}
-  m_SizeDelta: {x: 300, y: 668}
+  m_AnchoredPosition: {x: 760, y: 0}
+  m_SizeDelta: {x: 300, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &734600841
 MonoBehaviour:
@@ -3622,7 +3621,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 65390cd252d7d94479d8b5c024721643, type: 3}
+  m_Texture: {fileID: 2800000, guid: d663dd1c752212e4ba8fff679a4304be, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -3868,8 +3867,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1750, y: 750}
+  m_AnchoredPosition: {x: 37, y: 0}
+  m_SizeDelta: {x: 1825, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &748663922
 MonoBehaviour:
@@ -3884,7 +3883,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 75
+    m_Left: 90
     m_Right: 0
     m_Top: 100
     m_Bottom: 0
@@ -4533,8 +4532,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1750, y: 750}
+  m_AnchoredPosition: {x: 37, y: 0}
+  m_SizeDelta: {x: 1825, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &861683052
 MonoBehaviour:
@@ -4642,7 +4641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 75
+    m_Left: 90
     m_Right: 0
     m_Top: 100
     m_Bottom: 0
@@ -5134,8 +5133,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1750, y: 750}
+  m_AnchoredPosition: {x: 37, y: 0}
+  m_SizeDelta: {x: 1825, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &964708507
 MonoBehaviour:
@@ -5164,7 +5163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 75
+    m_Left: 90
     m_Right: 0
     m_Top: 100
     m_Bottom: 0
@@ -5838,7 +5837,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -684, y: 379}
-  m_SizeDelta: {x: 380, y: 180}
+  m_SizeDelta: {x: 380, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1095497850
 MonoBehaviour:

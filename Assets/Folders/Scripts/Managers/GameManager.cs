@@ -39,6 +39,11 @@ public class GameManager : MonoBehaviour
     public Button functionBookmark;
     public Button loopBookmark;
 
+    [Header("레이아웃 아웃라인 오브젝트")]
+    public GameObject mainOutline;
+    //public GameObject FunctionOutline;
+    //public GameObject LoopOutline;
+
     [Header("블럭 삭제 버튼")]
     public Button mainDelete;
     public Button functionDelete;
@@ -240,12 +245,14 @@ public class GameManager : MonoBehaviour
 
                     yield return waitForHalfSeconds;
 
-                    Player_MoveVectorInit();
+                    PlayerMoveVectorInit();
                     block.GetComponent<CodingBlock>().enabled = true;
                     block.MoveOrder();
 
                     if (playBlockToggle) yield return waitForHalfSeconds;
                 }
+
+                if (playBlockToggle) yield return waitForHalfSeconds;
 
                 playBlockToggle = false;
                 BlockHighLightOff();
@@ -257,15 +264,14 @@ public class GameManager : MonoBehaviour
     public void StopBlock()
     {
         playBlockToggle = false;
-        BlockHighLightOff();
+        
         playerObject.transform.position = playerRestPos;
         playerObject.transform.rotation = playerRestRot;
+        BlockHighLightOff();
+
         stopButton.gameObject.SetActive(false);
     }
-
-
-
-    public void Player_MoveVectorInit()
+    public void PlayerMoveVectorInit()
     {
         playerStartPos = playerObject.transform.localPosition;
         playerNewPos = playerStartPos + playerObject.transform.forward;
