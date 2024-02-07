@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // TODO: 스크립트가 시작되면이 아니라 추후에 스테이지가 시작될때 초기화로 변경
+        // TODO: 스크립트가 시작될 때가 아니라 추후에 스테이지가 시작될 때 초기화로 추후 변경
         MainMethod.Clear();
         Function.Clear();
         Loop.Clear();
@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
         playerRestPos = playerObject.transform.position;
         playerRestRot = playerObject.transform.rotation;
 
-        // TODO: 추후에 Awake 메서드로 가야할지 정하기
+        // TODO: 나중에 Awake 메서드로 가야할지 정하기
         #region Codingblocks onClickAddListener
         // : each buttons link to each Prefab
         forwardButton.onClick.AddListener(() => InsertBlock(forwardPrefab));
