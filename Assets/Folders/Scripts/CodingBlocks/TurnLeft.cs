@@ -7,13 +7,14 @@ public class TurnLeft : CodingBlock
 {
     Quaternion playerStartRot;
     Quaternion playerEndRot;
-
     public override void MoveOrder()
     {
-        playerStartRot = Gm.playerObject.transform.rotation;
-        playerEndRot = playerStartRot * Quaternion.Euler(0,-90,0);
         ToggleHighLight(true);
-        Gm.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
-        Gm.playerAnimator.SetTrigger("Turn");
+
+        playerStartRot = GM.playerObject.transform.rotation;
+        playerEndRot = playerStartRot * Quaternion.Euler(0,-90,0);
+
+        GM.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
+        GM.playerAnimator.SetTrigger("Turn");
     }
 }

@@ -20,40 +20,41 @@ public class Forward : CodingBlock
 
     private void Update()
     {
-        if(Gm.playBlockToggle == false) // 정지 버튼을 누르면 실행
+        if(GM.playBlockToggle == false) // 정지 버튼을 누르면 실행
         {
             deltaTimeCount = 0;
-            Gm.isMoving = false;
+            GM.isMoving = false;
             this.GetComponent<CodingBlock>().enabled = false;
             return;
         }
 
-        if (Physics.Raycast(Gm.playerObject.transform.localPosition, Gm.playerObject.transform.forward, out hit, DISTANCE))
+        if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE))
         {
             deltaTimeCount = 0;
-            Gm.isMoving = false;
+            GM.isMoving = false;
+            GM.playerAnimator.SetTrigger("Hit");
             this.GetComponent<CodingBlock>().enabled = false;
             return;
         }
         else
         {
-            if(!Gm.isMoving)
+            if(!GM.isMoving)
             {
-                Gm.playerAnimator.SetTrigger("Forward");
-                Gm.isMoving = true;
+                GM.playerAnimator.SetTrigger("Forward");
+                GM.isMoving = true;
             }
 
-            if (Gm.isMoving == true)
+            if (GM.isMoving == true)
             {
 
                 deltaTimeCount += Time.deltaTime;
-                Vector3 newPos = Vector3.Lerp(Gm.playerStartPos, Gm.playerNewPos, 1.5f * deltaTimeCount);
-                Gm.playerObject.transform.localPosition = newPos;
+                Vector3 newPos = Vector3.Lerp(GM.playerStartPos, GM.playerNewPos, 1.5f * deltaTimeCount);
+                GM.playerObject.transform.localPosition = newPos;
 
                 if (deltaTimeCount >= 1)
                 {
                     deltaTimeCount = 0;
-                    Gm.isMoving = false;
+                    GM.isMoving = false;
                     this.GetComponent<CodingBlock>().enabled = false;
                 }
             }

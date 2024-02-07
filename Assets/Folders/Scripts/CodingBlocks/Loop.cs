@@ -8,25 +8,25 @@ public class Loop : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
-        Gm.SelectedMethods(CurrentLayout.Loop);
+        GM.SelectedMethods(CurrentLayout.Loop);
     }
     public override IEnumerator Subroutine()
     {
-        foreach (CodingBlock block in Gm.Loop)
+        foreach (CodingBlock block in GM.Loop)
         {
-            if (Gm.playBlockToggle == false)
+            if (GM.playBlockToggle == false)
                 break;
 
-            yield return Gm.waitForHalfSeconds;
+            yield return GM.waitForHalfSeconds;
 
-            Gm.PlayerMoveVectorInit();
+            GM.PlayerMoveVectorInit();
             block.GetComponent<CodingBlock>().enabled = true;
             block.MoveOrder();
 
-            if (Gm.playBlockToggle == true) yield return Gm.waitForHalfSeconds;
+            if (GM.playBlockToggle == true) yield return GM.waitForHalfSeconds;
         }
-        if (Gm.playBlockToggle == true) yield return Gm.waitForHalfSeconds;
+        if (GM.playBlockToggle == true) yield return GM.waitForHalfSeconds;
 
-        Gm.SelectedMethods(CurrentLayout.Main);
+        GM.SelectedMethods(CurrentLayout.Main);
     }
 }
