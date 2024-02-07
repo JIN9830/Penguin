@@ -466,7 +466,6 @@ MonoBehaviour:
   Function: []
   Loop: []
   playerObject: {fileID: 114938884}
-  playerRigid: {fileID: 0}
   playerAnimator: {fileID: 0}
   currentLayout: 0
   playBlockToggle: 0

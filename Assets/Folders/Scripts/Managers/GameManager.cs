@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     [Header("현재 플레이어의 상태")]
     [SerializeField]
     public GameObject playerObject;
-    public Rigidbody playerRigid;
     public Animator playerAnimator;
     public CurrentLayout currentLayout = CurrentLayout.Main;
     public bool playBlockToggle = false;
@@ -92,6 +91,8 @@ public class GameManager : MonoBehaviour
     private Quaternion playerRestRot;
 
     private Coroutine playBlock;
+
+    private bool isPlayBlockRunning = false;
 
 
     private void Awake()
@@ -160,7 +161,6 @@ public class GameManager : MonoBehaviour
 
 
         playerAnimator = playerObject.GetComponent<Animator>();
-        playerRigid = playerObject.GetComponent<Rigidbody>();
     }
 
     public void InsertBlock(GameObject prefab)
@@ -243,14 +243,15 @@ public class GameManager : MonoBehaviour
         {
             if (!playBlockToggle) yield return new WaitUntil(() => playBlockToggle == true); // new 연산자 Utills 클래스에 캐스팅하기
 
-            if (playBlockToggle && MainMethod != null)
+            if (!isPlayBlockRunning && MainMethod != null)
             {
+                isPlayBlockRunning =true;
                 stopButton.gameObject.SetActive(true);
                 UILock(true);
 
                 foreach (CodingBlock block in MainMethod)
                 {    
-                    if (!playBlockToggle) 
+                    if (!isPlayBlockRunning) 
                         break;
 
                     yield return waitForHalfSeconds;
@@ -269,12 +270,13 @@ public class GameManager : MonoBehaviour
                     }
                     
 
-                    if (playBlockToggle) yield return waitForHalfSeconds;
+                    if (isPlayBlockRunning) yield return waitForHalfSeconds;
                 }
 
-                if (playBlockToggle) yield return waitForHalfSeconds;
+                if (isPlayBlockRunning) yield return waitForHalfSeconds;
 
                 playBlockToggle = false;
+                isPlayBlockRunning = false;
                 BlockHighLightOff();
                 UILock(false);
             }
@@ -284,7 +286,8 @@ public class GameManager : MonoBehaviour
     public void StopBlock()
     {
         playBlockToggle = false;
-        
+        isPlayBlockRunning =false;
+
         playerObject.transform.position = playerRestPos;
         playerObject.transform.rotation = playerRestRot;
         BlockHighLightOff();
