@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class CodingBlock : MonoBehaviour
 {
     private GameObject highlight;
-    protected GameManager GM = GameManager.Instance;
+    protected GameManager Gm = GameManager.Instance;
 
     private void Awake()
     {

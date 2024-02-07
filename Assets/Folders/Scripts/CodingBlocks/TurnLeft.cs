@@ -7,6 +7,6 @@ public class TurnLeft : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
-        GM.playerObject.transform.rotation *= Quaternion.Euler(0, -90, 0);
+        Gm.playerObject.transform.rotation *= Quaternion.Euler(0, -90, 0);
     }
 }
