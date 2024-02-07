@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -288,8 +289,12 @@ public class GameManager : MonoBehaviour
         playBlockToggle = false;
         isPlayBlockRunning =false;
 
-        playerObject.transform.position = playerRestPos;
-        playerObject.transform.rotation = playerRestRot;
+        //playerObject.transform.position = playerRestPos;
+        //playerObject.transform.rotation = playerRestRot;
+
+        playerObject.transform.DOMove(playerRestPos,0.3f);
+        playerObject.transform.DORotateQuaternion(playerRestRot, 0.4f);
+
         BlockHighLightOff();
 
         stopButton.gameObject.SetActive(false);
