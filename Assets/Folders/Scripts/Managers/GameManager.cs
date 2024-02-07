@@ -287,13 +287,10 @@ public class GameManager : MonoBehaviour
     public void StopBlock()
     {
         playBlockToggle = false;
-        isPlayBlockRunning =false;
-
-        //playerObject.transform.position = playerRestPos;
-        //playerObject.transform.rotation = playerRestRot;
+        isPlayBlockRunning = false;
 
         playerObject.transform.DOMove(playerRestPos,0.3f);
-        playerObject.transform.DORotateQuaternion(playerRestRot, 0.4f);
+        playerObject.transform.DORotateQuaternion(playerRestRot, 1f);
 
         BlockHighLightOff();
 

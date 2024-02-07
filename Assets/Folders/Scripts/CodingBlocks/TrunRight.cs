@@ -13,6 +13,6 @@ public class TrunRight : CodingBlock
         playerEndRot = playerStartRot * Quaternion.Euler(0, 90, 0);
         ToggleHighLight(true);
         Gm.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
-        Gm.playerAnimator.SetTrigger("TurnRight");
+        Gm.playerAnimator.SetTrigger("Turn");
     }
 }
