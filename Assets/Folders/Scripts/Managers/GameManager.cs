@@ -95,6 +95,8 @@ public class GameManager : MonoBehaviour
 
     private bool isPlayBlockRunning = false;
 
+    public Rigidbody playerRigid;
+
 
     private void Awake()
     {
@@ -113,7 +115,11 @@ public class GameManager : MonoBehaviour
         #endregion
 
         Application.targetFrameRate = 144;
+
+        playerAnimator = playerObject.GetComponent<Animator>();
+        playerRigid = playerObject.GetComponent<Rigidbody>();
     }
+    
 
     private void Start()
     {
@@ -159,9 +165,6 @@ public class GameManager : MonoBehaviour
         playButton.onClick.AddListener(() => playBlockToggle = true);
         stopButton.onClick.AddListener(() => StopBlock());
         //speedUpButton.onClick.AddListener(() => { });
-
-
-        playerAnimator = playerObject.GetComponent<Animator>();
     }
 
     public void InsertBlock(GameObject prefab)

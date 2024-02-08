@@ -7,8 +7,4 @@ public class UIManager : MonoBehaviour
 {
     private GameManager GM = GameManager.Instance;
 
-    private void Awake()
-    {
-        
-    }
 }

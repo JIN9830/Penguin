@@ -16,29 +16,35 @@ public class Forward : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
+
+        if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE) && hit.collider.CompareTag("Wall")) // 스위치로 바꾸기
+        {
+            deltaTimeCount = 0;
+            GM.isMoving = false;
+            GM.playerAnimator.SetTrigger("Wall");
+            this.GetComponent<CodingBlock>().enabled = false;
+        }
+
+        if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE) && hit.collider.CompareTag("Edge"))
+        {
+            deltaTimeCount = 0;
+            GM.isMoving = false;
+            GM.playerAnimator.SetTrigger("Edge");
+            this.GetComponent<CodingBlock>().enabled = false;
+        }
     }
 
     private void Update()
     {
-        if(GM.playBlockToggle == false) // 정지 버튼을 누르면 실행
+        if (GM.playBlockToggle == false) // 정지 버튼을 누르면 실행
         {
             deltaTimeCount = 0;
             GM.isMoving = false;
             this.GetComponent<CodingBlock>().enabled = false;
-            return;
         }
 
-        if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE))
-        {
-            deltaTimeCount = 0;
-            GM.isMoving = false;
-            GM.playerAnimator.SetTrigger("Hit");
-            this.GetComponent<CodingBlock>().enabled = false;
-            return;
-        }
-        else
-        {
-            if(!GM.isMoving)
+
+            if (!GM.isMoving)
             {
                 GM.playerAnimator.SetTrigger("Forward");
                 GM.isMoving = true;
@@ -58,6 +64,6 @@ public class Forward : CodingBlock
                     this.GetComponent<CodingBlock>().enabled = false;
                 }
             }
-        }
+        
     }
 }
