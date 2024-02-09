@@ -28,8 +28,13 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         if(isCry)
         {
-            isCry = AnimationTimer(3f);
+            isCry = AnimationTimer(2.5f);
             playerAnimator.SetBool("IsCry", isCry);
+        }
+        else if(isDizzy)
+        {
+            isDizzy = AnimationTimer(2.5f);
+            playerAnimator.SetBool("IsDizzy", isDizzy);
         }
     }
 
@@ -58,9 +63,9 @@ public class PlayerAnimationEvent : MonoBehaviour
         {
             spinCount++;
 
-            if (spinCount == 8)
+            if (spinCount == 6)
             {
-                playerAnimator.SetTrigger("IsDizzy");
+                isDizzy = true;
                 spinCount = 0;
             }
         }
