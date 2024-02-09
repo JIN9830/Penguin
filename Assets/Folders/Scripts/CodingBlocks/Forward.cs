@@ -13,26 +13,6 @@ public class Forward : CodingBlock
     {
         deltaTimeCount = 0;
     }
-    public override void MoveOrder()
-    {
-        ToggleHighLight(true);
-
-        if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE) && hit.collider.CompareTag("Wall")) // 스위치로 바꾸기
-        {
-            deltaTimeCount = 0;
-            GM.isMoving = false;
-            GM.playerAnimator.SetTrigger("Wall");
-            this.GetComponent<CodingBlock>().enabled = false;
-        }
-
-        if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE) && hit.collider.CompareTag("Edge"))
-        {
-            deltaTimeCount = 0;
-            GM.isMoving = false;
-            GM.playerAnimator.SetTrigger("Edge");
-            this.GetComponent<CodingBlock>().enabled = false;
-        }
-    }
 
     private void Update()
     {
@@ -43,27 +23,50 @@ public class Forward : CodingBlock
             this.GetComponent<CodingBlock>().enabled = false;
         }
 
+        PlayerMovement();
+    }
 
-            if (!GM.isMoving)
+    public override void MoveOrder()
+    {
+        ToggleHighLight(true);
+
+        if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE))
+        {
+            deltaTimeCount = 0;
+            GM.isMoving = false;
+
+            if (hit.collider.CompareTag("Wall"))
             {
-                GM.playerAnimator.SetTrigger("Forward");
-                GM.isMoving = true;
+                GM.playerAnimator.SetTrigger("WallHit");
+                this.GetComponent<CodingBlock>().enabled = false;
             }
-
-            if (GM.isMoving == true)
+            else if (hit.collider.CompareTag("Edge"))
             {
-
-                deltaTimeCount += Time.deltaTime;
-                Vector3 newPos = Vector3.Lerp(GM.playerStartPos, GM.playerNewPos, 1.5f * deltaTimeCount);
-                GM.playerObject.transform.localPosition = newPos;
-
-                if (deltaTimeCount >= 1)
-                {
-                    deltaTimeCount = 0;
-                    GM.isMoving = false;
-                    this.GetComponent<CodingBlock>().enabled = false;
-                }
+                //GM.playerAnimator.SetTrigger("Edge");
+                this.GetComponent<CodingBlock>().enabled = false;
             }
-        
+        }
+    }
+
+    private void PlayerMovement()
+    {
+        if (!GM.isMoving) {
+            GM.playerAnimator.SetTrigger("Forward");
+            GM.isMoving = true;
+        }
+
+        if (GM.isMoving == true)
+        {
+            deltaTimeCount += Time.deltaTime;
+            Vector3 newPos = Vector3.Lerp(GM.playerStartPos, GM.playerNewPos, 1.5f * deltaTimeCount);
+            GM.playerObject.transform.localPosition = newPos;
+
+            if (deltaTimeCount > 1)
+            {
+                deltaTimeCount = 0;
+                GM.isMoving = false;
+                this.GetComponent<CodingBlock>().enabled = false;
+            }
+        }
     }
 }

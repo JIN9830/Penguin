@@ -95,8 +95,6 @@ public class GameManager : MonoBehaviour
 
     private bool isPlayBlockRunning = false;
 
-    public Rigidbody playerRigid;
-
 
     private void Awake()
     {
@@ -105,19 +103,18 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
-            Debug.Log("싱글톤 게임매니저 생성!");
+            Debug.Log("[Singleton] GameManager is Created!");
         }
         else
         {
             Destroy(this.gameObject);
-            Debug.Log("중복된 싱글톤 게임매니저 삭제");
+            Debug.Log("GameManager is Destroyed");
         }
         #endregion
 
         Application.targetFrameRate = 144;
 
         playerAnimator = playerObject.GetComponent<Animator>();
-        playerRigid = playerObject.GetComponent<Rigidbody>();
     }
     
 
@@ -294,6 +291,7 @@ public class GameManager : MonoBehaviour
 
         playerObject.transform.DOMove(playerRestPos,0.3f);
         playerObject.transform.DORotateQuaternion(playerRestRot, 1f);
+        playerAnimator.SetTrigger("Reset");
 
         BlockHighLightOff();
 

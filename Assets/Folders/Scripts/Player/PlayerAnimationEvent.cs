@@ -4,39 +4,77 @@ using UnityEngine;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
+    private enum FaceAnimations
+    {
+        isCry,
+
+    }
+
+    private bool isCry = false;
+    private bool isDizzy = false;
+    private bool isEmbarrass = false;
+
     private Animator playerAnimator;
-    private int hitCount = 0;
     private int spinCount = 0;
+
+    private float timer = 0;
 
     private void Awake()
     {
         playerAnimator = this.GetComponent<Animator>();
     }
-    public void WallHitAnimation()
-    {
-        playerAnimator.SetTrigger("DeadEyes");
-        hitCount++;
 
-        if (hitCount == 2)
+    private void Update()
+    {
+        if(isCry)
         {
-            playerAnimator.SetTrigger("CryEyes");
-            hitCount = 0;
+            isCry = AnimationTimer(3f);
+            playerAnimator.SetBool("IsCry", isCry);
+        }
+    }
+
+
+    public void WallHitAnimation() // Event calling location (Death 0:04)
+    {
+        if(!isCry)
+        {
+            isCry = true;
+            playerAnimator.SetBool("IsCry", isCry);
         }
     }
 
     public void EdgeHitAniamtion()
     {
-        playerAnimator.SetTrigger("SweatRight");
+        if(!isEmbarrass)
+        {
+
+        }
+        //playerAnimator.SetTrigger("IsEmbarrass");
     }
 
     public void SpinEyesAnimation()
     {
-        spinCount++;
-
-        if (spinCount == 8)
+        if (!isDizzy)
         {
-            playerAnimator.SetTrigger("SpinEyes");
-            spinCount = 0;
+            spinCount++;
+
+            if (spinCount == 8)
+            {
+                playerAnimator.SetTrigger("IsDizzy");
+                spinCount = 0;
+            }
         }
+    }
+    private bool AnimationTimer(float limitTime)
+    {
+        timer += Time.deltaTime;
+
+        if (timer > limitTime)
+        {
+            timer = 0;
+            return false;
+        }
+
+        return true;
     }
 }
