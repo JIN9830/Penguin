@@ -42,7 +42,7 @@ public class Forward : CodingBlock
             }
             else if (hit.collider.CompareTag("Edge"))
             {
-                //GM.playerAnimator.SetTrigger("Edge");
+                GM.playerAnimator.SetTrigger("Edge");
                 this.GetComponent<CodingBlock>().enabled = false;
             }
         }

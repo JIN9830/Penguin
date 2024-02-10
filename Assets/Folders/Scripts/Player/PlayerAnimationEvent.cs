@@ -28,13 +28,18 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         if(isCry)
         {
-            isCry = AnimationTimer(2.5f);
+            isCry = AnimationTimer(2.7f);
             playerAnimator.SetBool("IsCry", isCry);
         }
         else if(isDizzy)
         {
-            isDizzy = AnimationTimer(2.5f);
+            isDizzy = AnimationTimer(2.7f);
             playerAnimator.SetBool("IsDizzy", isDizzy);
+        }
+        else if(isEmbarrass)
+        {
+            isEmbarrass = AnimationTimer(1.8f);
+            playerAnimator.SetBool("IsEmbarrass", isEmbarrass);
         }
     }
 
@@ -52,9 +57,8 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         if(!isEmbarrass)
         {
-
+            isEmbarrass = true;
         }
-        //playerAnimator.SetTrigger("IsEmbarrass");
     }
 
     public void SpinEyesAnimation()
