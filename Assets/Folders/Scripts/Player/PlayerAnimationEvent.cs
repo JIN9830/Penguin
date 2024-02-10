@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
+    private Animator playerAnimator;
+    private float timer = 0;
+
     private bool isCry = false;
     private bool isDizzy = false;
     private bool isEmbarrass = false;
 
-    private Animator playerAnimator;
     private int spinCount = 0;
-
-    private float timer = 0;
 
     private void Awake()
     {
@@ -22,17 +22,17 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         if(isCry)
         {
-            isCry = AnimationTimer(2.7f);
+            isCry = AnimationTimer(2.6f);
             playerAnimator.SetBool("IsCry", isCry);
         }
         else if(isDizzy)
         {
-            isDizzy = AnimationTimer(2.7f);
+            isDizzy = AnimationTimer(2.3f);
             playerAnimator.SetBool("IsDizzy", isDizzy);
         }
         else if(isEmbarrass)
         {
-            isEmbarrass = AnimationTimer(1.8f);
+            isEmbarrass = AnimationTimer(1.6f);
             playerAnimator.SetBool("IsEmbarrass", isEmbarrass);
         }
     }
@@ -47,7 +47,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
-    public void EdgeHitAniamtion()
+    public void EdgeHitAniamtion() // Event calling location (Idle B 0:01)
     {
         if(!isEmbarrass)
         {
@@ -55,13 +55,13 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
-    public void SpinEyesAnimation()
+    public void SpinEyesAnimation() // Event calling location (Spin B 0:04)
     {
         if (!isDizzy)
         {
             spinCount++;
 
-            if (spinCount == 6)
+            if (spinCount == 8)
             {
                 isDizzy = true;
                 spinCount = 0;

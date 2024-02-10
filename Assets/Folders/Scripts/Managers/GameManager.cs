@@ -20,20 +20,27 @@ public class GameManager : MonoBehaviour
         Function,
         Loop,
     }
+
     public static GameManager Instance { get; private set; }
 
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> Function = new List<CodingBlock>();
     public List<CodingBlock> Loop = new List<CodingBlock>();
+    private Coroutine playBlock;
+
+    public bool playBlockToggle { get; private set; } = false;
+    private bool isPlayBlockRunning = false;
 
     [Header("현재 플레이어의 상태")]
     [SerializeField]
     public GameObject playerObject;
     public Animator playerAnimator;
     public CurrentLayout currentLayout = CurrentLayout.Main;
-    public bool playBlockToggle = false;
-    public bool playFunctionToggle = false;
-    public bool playLoopToggle = false;
+    public Vector3 playerStartPos { get; private set; }
+    public Vector3 playerNewPos { get; private set; }
+
+    private Vector3 playerRestPos;
+    private Quaternion playerRestRot;
 
     [Header("캔버스 오브젝트")]
     public GameObject Canvas;
@@ -47,11 +54,6 @@ public class GameManager : MonoBehaviour
     public Button mainBookmark;
     public Button functionBookmark;
     public Button loopBookmark;
-
-    [Header("레이아웃 아웃라인 오브젝트")]
-    public GameObject mainOutline;
-    //public GameObject FunctionOutline;
-    //public GameObject LoopOutline;
 
     [Header("블럭 삭제 버튼")]
     public Button mainDelete;
@@ -78,22 +80,8 @@ public class GameManager : MonoBehaviour
     public GameObject functionPrefab;
     public GameObject loopPrefab;
 
-
     public readonly WaitForSeconds waitForSeconds = new(1.0f);
     public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
-
-    public Vector3 playerStartPos;
-    public Vector3 playerNewPos;
-
-    public bool isMoving = false;
-
-
-    private Vector3 playerRestPos;
-    private Quaternion playerRestRot;
-
-    private Coroutine playBlock;
-
-    private bool isPlayBlockRunning = false;
 
 
     private void Awake()
@@ -326,7 +314,6 @@ public class GameManager : MonoBehaviour
         {
             case CurrentLayout.Main:
                 currentLayout = CurrentLayout.Main;
-                mainLayout.transform.parent.gameObject.SetActive(true);
                 break;
 
             case CurrentLayout.Function:

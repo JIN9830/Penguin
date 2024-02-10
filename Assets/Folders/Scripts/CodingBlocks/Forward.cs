@@ -9,6 +9,8 @@ public class Forward : CodingBlock
     private readonly float DISTANCE = 0.6f;
     private RaycastHit hit;
 
+    public bool isMoving { get; private set; } = false;
+
     private void Start()
     {
         deltaTimeCount = 0;
@@ -19,11 +21,10 @@ public class Forward : CodingBlock
         if (GM.playBlockToggle == false) // 정지 버튼을 누르면 실행
         {
             deltaTimeCount = 0;
-            GM.isMoving = false;
+            isMoving = false;
             this.GetComponent<CodingBlock>().enabled = false;
         }
-
-        PlayerMovement();
+        else PlayerMovement();
     }
 
     public override void MoveOrder()
@@ -33,7 +34,7 @@ public class Forward : CodingBlock
         if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE))
         {
             deltaTimeCount = 0;
-            GM.isMoving = false;
+            isMoving = false;
 
             if (hit.collider.CompareTag("Wall"))
             {
@@ -50,12 +51,12 @@ public class Forward : CodingBlock
 
     private void PlayerMovement()
     {
-        if (!GM.isMoving) {
+        if (!isMoving) {
             GM.playerAnimator.SetTrigger("Forward");
-            GM.isMoving = true;
+            isMoving = true;
         }
 
-        if (GM.isMoving == true)
+        if (isMoving == true)
         {
             deltaTimeCount += Time.deltaTime;
             Vector3 newPos = Vector3.Lerp(GM.playerStartPos, GM.playerNewPos, 1.5f * deltaTimeCount);
@@ -64,7 +65,7 @@ public class Forward : CodingBlock
             if (deltaTimeCount > 1)
             {
                 deltaTimeCount = 0;
-                GM.isMoving = false;
+                isMoving = false;
                 this.GetComponent<CodingBlock>().enabled = false;
             }
         }
