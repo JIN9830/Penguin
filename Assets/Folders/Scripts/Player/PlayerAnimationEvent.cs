@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
-    private enum FaceAnimations
-    {
-        isCry,
-
-    }
-
     private bool isCry = false;
     private bool isDizzy = false;
     private bool isEmbarrass = false;
