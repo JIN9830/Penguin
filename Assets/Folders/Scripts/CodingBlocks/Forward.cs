@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -11,7 +12,7 @@ public class Forward : CodingBlock
 
     public bool isMoving { get; private set; } = false;
 
-    private void Start()
+    private void OnEnable()
     {
         deltaTimeCount = 0;
     }
@@ -30,6 +31,8 @@ public class Forward : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
+
+        GM.UI.ForwardBlock_PlayAnimation(this.gameObject);
 
         if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE))
         {

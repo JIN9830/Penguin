@@ -7,8 +7,12 @@ public class TurnLeft : CodingBlock
 {
     Quaternion playerStartRot;
     Quaternion playerEndRot;
+
     public override void MoveOrder()
     {
+        this.transform.localScale = Vector3.zero;
+        this.transform.DOScale(1f, 0.3f);
+
         ToggleHighLight(true);
 
         playerStartRot = GM.playerObject.transform.rotation;

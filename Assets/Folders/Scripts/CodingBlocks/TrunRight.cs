@@ -7,6 +7,12 @@ public class TrunRight : CodingBlock
 {
     Quaternion playerStartRot;
     Quaternion playerEndRot;
+    private void OnEnable()
+    {
+        this.transform.localScale = Vector3.zero;
+        this.transform.DOScale(1f, 0.3f);
+    }
+
     public override void MoveOrder()
     {
         ToggleHighLight(true);

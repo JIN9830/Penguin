@@ -22,11 +22,16 @@ public class GameManager : MonoBehaviour
     }
 
     public static GameManager Instance { get; private set; }
+    public UIManager UI { get; private set; } = new UIManager();
 
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> Function = new List<CodingBlock>();
     public List<CodingBlock> Loop = new List<CodingBlock>();
     private Coroutine playBlock;
+
+    public readonly WaitForSeconds waitForSeconds = new(1.0f);
+    public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
+    public WaitUntil waitUntilPlay;
 
     public bool playBlockToggle { get; private set; } = false;
     private bool isPlayBlockRunning = false;
@@ -80,10 +85,6 @@ public class GameManager : MonoBehaviour
     public GameObject functionPrefab;
     public GameObject loopPrefab;
 
-    public readonly WaitForSeconds waitForSeconds = new(1.0f);
-    public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
-
-
     private void Awake()
     {
         #region Singleton Code
@@ -103,53 +104,25 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 144;
 
         playerAnimator = playerObject.GetComponent<Animator>();
+        waitUntilPlay = new WaitUntil(() => playBlockToggle == true);
     }
-    
+
+    private void OnEnable()
+    {
+        MainMethod.Clear(); // OnSceneLoad 델리게이트 체인을 걸어서 사용하기
+        Function.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
+        Loop.Clear();
+    }
+
 
     private void Start()
     {
-        // TODO: 스크립트가 시작될 때가 아니라 추후에 스테이지가 시작될 때 초기화로 추후 변경
-        MainMethod.Clear();
-        Function.Clear();
-        Loop.Clear();
-
-        playerRestPos = playerObject.transform.position;
+        playerRestPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
         playerRestRot = playerObject.transform.rotation;
 
-        // TODO: 나중에 Awake 메서드로 가야할지 정하기
-        #region Codingblocks onClickAddListener
-        // : each buttons link to each Prefab
-        forwardButton.onClick.AddListener(() => InsertBlock(forwardPrefab));
-        turnLeftButton.onClick.AddListener(() => InsertBlock(turnLeftPrefab));
-        turnRightButton.onClick.AddListener(() => InsertBlock(turnRightPrefab));
-        functionButton.onClick.AddListener(() => InsertBlock(functionPrefab));
-        loopButton.onClick.AddListener(() => InsertBlock(loopPrefab));
-        #endregion
+        ButtonOnClickAddListeners();
 
-        #region Layout activate onClickAddListener
-
-        // Coding area
-        mainLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
-        functionLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
-        loopLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
-
-        // Bookmark
-        mainBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
-        functionBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
-        loopBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
-        #endregion
-
-        #region block delete OnClickAddListener
-        mainDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
-        functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
-        loopDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
-        #endregion
-
-        playBlock = StartCoroutine(PlayBlock());
-
-        playButton.onClick.AddListener(() => playBlockToggle = true);
-        stopButton.onClick.AddListener(() => StopBlock());
-        //speedUpButton.onClick.AddListener(() => { });
+        playBlock = StartCoroutine(PlayBlock()); // 메인 게임이 시작될때만 동작 메뉴씬 이라면 코루틴 중지
     }
 
     public void InsertBlock(GameObject prefab)
@@ -160,6 +133,7 @@ public class GameManager : MonoBehaviour
             {
                 MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
                 prefab.GetComponent<CodingBlock>().enabled = false;
+                UI.Block_PopAnimation(MainMethod.Last().gameObject);
             }
         }
         else
@@ -171,6 +145,7 @@ public class GameManager : MonoBehaviour
                     {
                         MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
+                        UI.Block_PopAnimation(MainMethod.Last().gameObject);
                     }
                     break;
 
@@ -179,6 +154,7 @@ public class GameManager : MonoBehaviour
                     {
                         Function.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
+                        UI.Block_PopAnimation(Function.Last().gameObject);
                     }
                     break;
 
@@ -187,6 +163,7 @@ public class GameManager : MonoBehaviour
                     {
                         Loop.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
+                        UI.Block_PopAnimation(Loop.Last().gameObject);
                     }
                     break;
             }
@@ -202,7 +179,7 @@ public class GameManager : MonoBehaviour
                 {
                     CodingBlock lastblock = MainMethod.Last();
                     MainMethod.Remove(lastblock);
-                    Destroy(lastblock.gameObject);
+                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
 
@@ -211,7 +188,7 @@ public class GameManager : MonoBehaviour
                 {
                     CodingBlock lastblock = Function.Last();
                     Function.Remove(lastblock);
-                    Destroy(lastblock.gameObject);
+                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
 
@@ -220,7 +197,7 @@ public class GameManager : MonoBehaviour
                 {
                     CodingBlock lastblock = Loop.Last();
                     Loop.Remove(lastblock);
-                    Destroy(lastblock.gameObject);
+                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
         }
@@ -230,17 +207,17 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            if (!playBlockToggle) yield return new WaitUntil(() => playBlockToggle == true); // new 연산자 Utills 클래스에 캐스팅하기
+            if (!playBlockToggle) yield return waitUntilPlay;
 
             if (!isPlayBlockRunning && MainMethod != null)
             {
-                isPlayBlockRunning =true;
+                isPlayBlockRunning = true;
                 stopButton.gameObject.SetActive(true);
                 UILock(true);
 
                 foreach (CodingBlock block in MainMethod)
-                {    
-                    if (!isPlayBlockRunning) 
+                {
+                    if (!isPlayBlockRunning)
                         break;
 
                     yield return waitForHalfSeconds;
@@ -257,7 +234,7 @@ public class GameManager : MonoBehaviour
                     {
                         block.MoveOrder();
                     }
-                    
+
 
                     if (isPlayBlockRunning) yield return waitForHalfSeconds;
                 }
@@ -277,12 +254,14 @@ public class GameManager : MonoBehaviour
         playBlockToggle = false;
         isPlayBlockRunning = false;
 
-        playerObject.transform.DOMove(playerRestPos,0.3f);
+        playerObject.transform.DOMove(playerRestPos, 0.3f);
         playerObject.transform.DORotateQuaternion(playerRestRot, 1f);
         playerAnimator.SetTrigger("Reset");
 
         BlockHighLightOff();
 
+        ResetBlocksAnimation();
+        // 블럭 애니메이션 초기화 코드 넣기
         stopButton.gameObject.SetActive(false);
     }
 
@@ -359,4 +338,58 @@ public class GameManager : MonoBehaviour
         #endregion
     }
 
+    public void PlaySpeedControl()
+    {
+        if (Time.timeScale == 1f)
+        {
+            Time.timeScale = 1.5f;
+        }
+        else
+            Time.timeScale = 1f;
+    }
+
+    public void ButtonOnClickAddListeners()
+    {
+        #region Codingblocks onClickAddListener
+        // : each buttons link to each Prefab
+        forwardButton.onClick.AddListener(() => InsertBlock(forwardPrefab));
+        turnLeftButton.onClick.AddListener(() => InsertBlock(turnLeftPrefab));
+        turnRightButton.onClick.AddListener(() => InsertBlock(turnRightPrefab));
+        functionButton.onClick.AddListener(() => InsertBlock(functionPrefab));
+        loopButton.onClick.AddListener(() => InsertBlock(loopPrefab));
+        #endregion
+
+        #region Layout activate onClickAddListener
+
+        // Coding area
+        mainLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
+        functionLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
+        loopLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
+
+        // Bookmark
+        mainBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
+        functionBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
+        loopBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
+        #endregion
+
+        #region block delete OnClickAddListener
+        mainDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
+        functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
+        loopDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
+        #endregion
+
+        #region Play, Stop & TimeControl OnClickAddListener
+        playButton.onClick.AddListener(() => playBlockToggle = true);
+        stopButton.onClick.AddListener(() => StopBlock());
+        speedUpButton.onClick.AddListener(() => PlaySpeedControl());
+        #endregion
+    }
+
+    public void ResetBlocksAnimation()
+    {
+        foreach (CodingBlock block in MainMethod)
+        {
+            UI.ResetBlockAnimation(block.gameObject);
+        }
+    }
 }

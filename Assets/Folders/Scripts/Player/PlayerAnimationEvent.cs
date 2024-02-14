@@ -43,7 +43,6 @@ public class PlayerAnimationEvent : MonoBehaviour
         if(!isCry)
         {
             isCry = true;
-            playerAnimator.SetBool("IsCry", isCry);
         }
     }
 
@@ -55,7 +54,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
     }
 
-    public void SpinEyesAnimation() // Event calling location (Spin B 0:04)
+    public void SpinEyesAnimation() // Event calling location (Spin 0:04)
     {
         if (!isDizzy)
         {
