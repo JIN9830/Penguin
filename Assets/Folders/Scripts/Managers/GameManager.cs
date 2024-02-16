@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     public readonly WaitForSeconds waitForSeconds = new(1.0f);
     public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
+    public readonly WaitForSeconds waitForPointEightSeconds = new(0.8f);
     public WaitUntil waitUntilPlay;
 
     public bool playBlockToggle { get; private set; } = false;
@@ -236,7 +237,7 @@ public class GameManager : MonoBehaviour
                     }
 
 
-                    if (isPlayBlockRunning) yield return waitForSeconds;
+                    if (isPlayBlockRunning) yield return waitForPointEightSeconds;
                 }
 
                 if (isPlayBlockRunning) yield return waitForSeconds;
