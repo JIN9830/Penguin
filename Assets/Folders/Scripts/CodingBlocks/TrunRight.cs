@@ -7,20 +7,23 @@ public class TrunRight : CodingBlock
 {
     Quaternion playerStartRot;
     Quaternion playerEndRot;
-    private void OnEnable()
+    private void Update()
     {
-        this.transform.localScale = Vector3.zero;
-        this.transform.DOScale(1f, 0.3f);
-    }
+        if (GameManager.Instance.playBlockToggle == true) return;
 
+        blockTweener.Kill();
+        transform.localScale = Vector3.one;
+        this.GetComponent<CodingBlock>().enabled = false;
+
+    }
     public override void MoveOrder()
     {
         ToggleHighLight(true);
 
-        playerStartRot = GM.playerObject.transform.rotation;
+        playerStartRot = GameManager.Instance.playerObject.transform.rotation;
         playerEndRot = playerStartRot * Quaternion.Euler(0, 90, 0);
 
-        GM.playerAnimator.SetTrigger("Turn");
-        GM.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
+        GameManager.Instance.playerAnimator.SetTrigger("Turn");
+        GameManager.Instance.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
     }
 }

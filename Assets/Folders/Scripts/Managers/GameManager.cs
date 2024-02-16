@@ -259,9 +259,8 @@ public class GameManager : MonoBehaviour
         playerAnimator.SetTrigger("Reset");
 
         BlockHighLightOff();
-
         ResetBlocksAnimation();
-        // 블럭 애니메이션 초기화 코드 넣기
+
         stopButton.gameObject.SetActive(false);
     }
 
@@ -350,7 +349,7 @@ public class GameManager : MonoBehaviour
 
     public void ButtonOnClickAddListeners()
     {
-        #region Codingblocks onClickAddListener
+        #region Coding blocks onClickAddListener
         // : each buttons link to each Prefab
         forwardButton.onClick.AddListener(() => InsertBlock(forwardPrefab));
         turnLeftButton.onClick.AddListener(() => InsertBlock(turnLeftPrefab));
@@ -361,7 +360,7 @@ public class GameManager : MonoBehaviour
 
         #region Layout activate onClickAddListener
 
-        // Coding area
+        // Coding layout
         mainLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
         functionLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
         loopLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
@@ -373,12 +372,14 @@ public class GameManager : MonoBehaviour
         #endregion
 
         #region block delete OnClickAddListener
+
         mainDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
         functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
         loopDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
         #endregion
 
         #region Play, Stop & TimeControl OnClickAddListener
+
         playButton.onClick.AddListener(() => playBlockToggle = true);
         stopButton.onClick.AddListener(() => StopBlock());
         speedUpButton.onClick.AddListener(() => PlaySpeedControl());

@@ -6,34 +6,38 @@ using static GameManager;
 
 public class Loop : CodingBlock
 {
-    private void OnEnable()
-    {
-        this.transform.localScale = Vector3.zero;
-        this.transform.DOScale(1f, 0.3f);
-    }
-
     public override void MoveOrder()
     {
         ToggleHighLight(true);
-        GM.SelectedMethods(CurrentLayout.Loop);
+        GameManager.Instance.SelectedMethods(CurrentLayout.Loop);
     }
+
+    private void Update()
+    {
+        if (GameManager.Instance.playBlockToggle == true) return;
+
+        blockTweener.Kill();
+        transform.localScale = Vector3.one;
+        this.GetComponent<CodingBlock>().enabled = false;
+    }
+
     public override IEnumerator Subroutine()
     {
-        foreach (CodingBlock block in GM.Loop)
+        foreach (CodingBlock block in GameManager.Instance.Loop)
         {
-            if (GM.playBlockToggle == false)
+            if (GameManager.Instance.playBlockToggle == false)
                 break;
 
-            yield return GM.waitForHalfSeconds;
+            yield return GameManager.Instance.waitForHalfSeconds;
 
-            GM.PlayerMoveVectorInit();
+            GameManager.Instance.PlayerMoveVectorInit();
             block.GetComponent<CodingBlock>().enabled = true;
             block.MoveOrder();
 
-            if (GM.playBlockToggle == true) yield return GM.waitForHalfSeconds;
+            if (GameManager.Instance.playBlockToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
         }
-        if (GM.playBlockToggle == true) yield return GM.waitForHalfSeconds;
+        if (GameManager.Instance.playBlockToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
 
-        GM.SelectedMethods(CurrentLayout.Main);
+        GameManager.Instance.SelectedMethods(CurrentLayout.Main);
     }
 }

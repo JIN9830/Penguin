@@ -8,18 +8,27 @@ public class TurnLeft : CodingBlock
     Quaternion playerStartRot;
     Quaternion playerEndRot;
 
+    private void Update()
+    {
+        if (GameManager.Instance.playBlockToggle == true) return;
+
+        blockTweener.Kill();
+        transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        this.GetComponent<CodingBlock>().enabled = false;
+
+    }
+
     public override void MoveOrder()
     {
-        this.transform.localScale = Vector3.zero;
-        this.transform.DOScale(1f, 0.3f);
-
         ToggleHighLight(true);
 
-        playerStartRot = GM.playerObject.transform.rotation;
-        playerEndRot = playerStartRot * Quaternion.Euler(0,-90,0);
+        blockTweener = GameManager.Instance.UI.LeftBlock_PlayAnimation(this.gameObject);
 
-        GM.playerAnimator.SetTrigger("Turn");
-        GM.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
-        
+        playerStartRot = GameManager.Instance.playerObject.transform.rotation;
+        playerEndRot = playerStartRot * Quaternion.Euler(0, -90, 0);
+
+        GameManager.Instance.playerAnimator.SetTrigger("Turn");
+        GameManager.Instance.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
+
     }
 }

@@ -19,10 +19,12 @@ public class Forward : CodingBlock
 
     private void Update()
     {
-        if (GM.playBlockToggle == false) // 정지 버튼을 누르면 실행
+        if (GameManager.Instance.playBlockToggle == false) // 정지 버튼을 누르면 실행
         {
             deltaTimeCount = 0;
             isMoving = false;
+            blockTweener.Kill();
+            transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
         }
         else PlayerMovement();
@@ -32,21 +34,21 @@ public class Forward : CodingBlock
     {
         ToggleHighLight(true);
 
-        GM.UI.ForwardBlock_PlayAnimation(this.gameObject);
+        blockTweener = GameManager.Instance.UI.ForwardBlock_PlayAnimation(this.gameObject);
 
-        if (Physics.Raycast(GM.playerObject.transform.localPosition, GM.playerObject.transform.forward, out hit, DISTANCE))
+        if (Physics.Raycast(GameManager.Instance.playerObject.transform.localPosition, GameManager.Instance.playerObject.transform.forward, out hit, DISTANCE))
         {
             deltaTimeCount = 0;
             isMoving = false;
 
             if (hit.collider.CompareTag("Wall"))
             {
-                GM.playerAnimator.SetTrigger("WallHit");
+                GameManager.Instance.playerAnimator.SetTrigger("WallHit");
                 this.GetComponent<CodingBlock>().enabled = false;
             }
             else if (hit.collider.CompareTag("Edge"))
             {
-                GM.playerAnimator.SetTrigger("Edge");
+                GameManager.Instance.playerAnimator.SetTrigger("Edge");
                 this.GetComponent<CodingBlock>().enabled = false;
             }
         }
@@ -55,15 +57,15 @@ public class Forward : CodingBlock
     private void PlayerMovement()
     {
         if (!isMoving) {
-            GM.playerAnimator.SetTrigger("Forward");
+            GameManager.Instance.playerAnimator.SetTrigger("Forward");
             isMoving = true;
         }
 
         if (isMoving == true)
         {
             deltaTimeCount += Time.deltaTime;
-            Vector3 newPos = Vector3.Lerp(GM.playerStartPos, GM.playerNewPos, 1.5f * deltaTimeCount);
-            GM.playerObject.transform.localPosition = newPos;
+            Vector3 newPos = Vector3.Lerp(GameManager.Instance.playerStartPos, GameManager.Instance.playerNewPos, 1.5f * deltaTimeCount);
+            GameManager.Instance.playerObject.transform.localPosition = newPos;
 
             if (deltaTimeCount > 1)
             {
@@ -73,4 +75,6 @@ public class Forward : CodingBlock
             }
         }
     }
+
+
 }
