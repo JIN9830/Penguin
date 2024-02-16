@@ -1,16 +1,15 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class UIManager
 {
-    public void ResetBlockAnimation(GameObject blockObj)
+    public Tweener BlockShakeAnimation(GameObject blockObj)
     {
         Vector3 blockInit = blockObj.transform.localPosition;
-        blockObj.transform.DOShakePosition(1f, 10, 10, 0).OnComplete(()=> blockObj.transform.localPosition = blockInit);
+        Tweener blockTweener = blockObj.transform.DOShakePosition(1f, 10, 10, 0).OnComplete(()=> blockObj.transform.localPosition = blockInit);
+        return blockTweener;
     }
 
     public Tweener ForwardBlock_PlayAnimation(GameObject blockObj)

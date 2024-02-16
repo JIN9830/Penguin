@@ -391,7 +391,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (CodingBlock block in MainMethod)
         {
-            UI.ResetBlockAnimation(block.gameObject);
+            UI.BlockShakeAnimation(block.gameObject);
         }
     }
 }
