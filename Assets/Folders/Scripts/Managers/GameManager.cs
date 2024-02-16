@@ -236,10 +236,10 @@ public class GameManager : MonoBehaviour
                     }
 
 
-                    if (isPlayBlockRunning) yield return waitForHalfSeconds;
+                    if (isPlayBlockRunning) yield return waitForSeconds;
                 }
 
-                if (isPlayBlockRunning) yield return waitForHalfSeconds;
+                if (isPlayBlockRunning) yield return waitForSeconds;
 
                 playBlockToggle = false;
                 isPlayBlockRunning = false;

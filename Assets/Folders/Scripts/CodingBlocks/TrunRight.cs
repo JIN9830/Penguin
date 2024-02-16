@@ -12,13 +12,15 @@ public class TrunRight : CodingBlock
         if (GameManager.Instance.playBlockToggle == true) return;
 
         blockTweener.Kill();
-        transform.localScale = Vector3.one;
+        transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         this.GetComponent<CodingBlock>().enabled = false;
 
     }
     public override void MoveOrder()
     {
         ToggleHighLight(true);
+
+        blockTweener = GameManager.Instance.UI.RightBlock_PlayAnimation(this.gameObject);
 
         playerStartRot = GameManager.Instance.playerObject.transform.rotation;
         playerEndRot = playerStartRot * Quaternion.Euler(0, 90, 0);
