@@ -7,8 +7,6 @@ public abstract class CodingBlock : MonoBehaviour
 {
     private GameObject highlight;
     public Tweener blockTweener;
-
-    public bool IsMoving { get; protected set; } = false;
     public bool IsRotating { get; protected set; } = false;
 
     private void Awake()

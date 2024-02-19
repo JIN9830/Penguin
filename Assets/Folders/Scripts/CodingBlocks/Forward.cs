@@ -9,6 +9,7 @@ public class Forward : CodingBlock
     private float deltaTimeCount = 0;
     private readonly float DISTANCE = 0.6f;
     private RaycastHit hit;
+    public bool IsMoving { get; private set; } = false;
 
     private void OnEnable()
     {
@@ -22,11 +23,19 @@ public class Forward : CodingBlock
             deltaTimeCount = 0;
             IsMoving = false;
 
+            GameManager.Instance.playerAnimator.SetBool("Forward", false);
+
             blockTweener.Kill();
             transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
         }
         else PlayerMovement();
+
+        if (deltaTimeCount > 0.7f) {
+            GameManager.Instance.playerAnimator.SetBool("Forward", false);
+
+        }else
+            GameManager.Instance.playerAnimator.SetBool("Forward", IsMoving);
     }
 
     public override void MoveOrder()
@@ -57,9 +66,8 @@ public class Forward : CodingBlock
     private void PlayerMovement()
     {
         if (!IsMoving) {
-            GameManager.Instance.playerAnimator.SetTrigger("Forward");
-            blockTweener = GameManager.Instance.UI.ForwardBlock_PlayAnimation(this.gameObject);
             IsMoving = true;
+            blockTweener = GameManager.Instance.UI.ForwardBlock_PlayAnimation(this.gameObject);          
         }
 
         if (IsMoving == true)
@@ -68,10 +76,13 @@ public class Forward : CodingBlock
             Vector3 newPos = Vector3.Lerp(GameManager.Instance.playerStartPos, GameManager.Instance.playerNewPos, 1.5f * deltaTimeCount);
             GameManager.Instance.playerObject.transform.localPosition = newPos;
 
+
+
             if (deltaTimeCount > 1)
             {
                 deltaTimeCount = 0;
                 IsMoving = false;
+                GameManager.Instance.playerAnimator.SetBool("Forward", false);
                 this.GetComponent<CodingBlock>().enabled = false;
             }
         }

@@ -390,7 +390,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (CodingBlock block in MainMethod)
         {
-            UI.Block_PopAnimation(block.gameObject);
+            UI.BlockShakeAnimation(block.gameObject);
         }
     }
 
