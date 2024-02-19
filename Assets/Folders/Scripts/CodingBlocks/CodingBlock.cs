@@ -8,6 +8,9 @@ public abstract class CodingBlock : MonoBehaviour
     private GameObject highlight;
     public Tweener blockTweener;
 
+    public bool IsMoving { get; protected set; } = false;
+    public bool IsRotating { get; protected set; } = false;
+
     private void Awake()
     {
         highlight = this.transform.GetChild(0).gameObject;
@@ -18,6 +21,7 @@ public abstract class CodingBlock : MonoBehaviour
         highlight.SetActive(enable);
     }
 
+    
     public abstract void MoveOrder();
 
     public virtual IEnumerator Subroutine()

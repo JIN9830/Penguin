@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> Function = new List<CodingBlock>();
     public List<CodingBlock> Loop = new List<CodingBlock>();
     private Coroutine playBlock;
-    private Tweener buttonTweener;
 
     public readonly WaitForSeconds waitForSeconds = new(1.0f);
     public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
@@ -71,6 +70,8 @@ public class GameManager : MonoBehaviour
     public GameObject playButton;
     public GameObject stopButton;
     public GameObject speedUpButton;
+    public GameObject speedDownButton;
+
 
     [Header("코딩블럭 버튼 오브젝트")]
     public GameObject forwardButton;
@@ -249,7 +250,7 @@ public class GameManager : MonoBehaviour
 
                 foreach (CodingBlock block in MainMethod)
                 {
-                    if (!isPlayBlockRunning) 
+                    if (!isPlayBlockRunning)
                         break;
 
                     yield return waitForHalfSeconds;
@@ -293,6 +294,7 @@ public class GameManager : MonoBehaviour
         BlockHighLightOff();
         ResetBlocksAnimation();
 
+        UI.Block_PopAnimation(playButton);
         stopButton.gameObject.SetActive(false);
     }
 
@@ -373,13 +375,13 @@ public class GameManager : MonoBehaviour
     {
         if (Time.timeScale == 1f)
         {
-            buttonTweener = UI.SpeedBtn_Animation(speedUpButton);
+            speedDownButton.SetActive(true);
             Time.timeScale = 1.5f;
         }
         else
         {
-            buttonTweener.Kill();
-            speedUpButton.transform.localScale = Vector3.one;
+            speedDownButton.SetActive(false);
+            UI.Block_PopAnimation(speedUpButton);
             Time.timeScale = 1f;
         }
     }
@@ -388,7 +390,27 @@ public class GameManager : MonoBehaviour
     {
         foreach (CodingBlock block in MainMethod)
         {
-            UI.BlockShakeAnimation(block.gameObject);
+            UI.Block_PopAnimation(block.gameObject);
         }
+    }
+
+    public void ShakeUI()
+    {
+        UI.UIShakeAnimation(mainLayout);
+        UI.UIShakeAnimation(mainDelete);
+        UI.UIShakeAnimation(mainBookmark);
+
+        UI.UIShakeAnimation(functionLayout);
+        UI.UIShakeAnimation(functionDelete);
+        UI.UIShakeAnimation(functionBookmark);
+
+        UI.UIShakeAnimation(loopLayout);
+        UI.UIShakeAnimation(loopDelete);
+        UI.UIShakeAnimation(loopBookmark);
+
+        UI.UIShakeAnimation(forwardButton);
+        UI.UIShakeAnimation(turnLeftButton);
+        UI.UIShakeAnimation(turnRightButton);
+        UI.UIShakeAnimation(functionButton);
     }
 }

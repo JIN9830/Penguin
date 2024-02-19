@@ -6,13 +6,6 @@ using static GameManager;
 
 public class Function : CodingBlock
 {
-    public override void MoveOrder()
-    {
-        ToggleHighLight(true);
-        blockTweener = GameManager.Instance.UI.ForwardBlock_PlayAnimation(this.gameObject);
-        GameManager.Instance.SelectedMethods(CurrentLayout.Function);
-    }
-
     private void Update()
     {
         if (GameManager.Instance.playBlockToggle == true) return;
@@ -21,6 +14,12 @@ public class Function : CodingBlock
         transform.localScale = Vector3.one;
         this.GetComponent<CodingBlock>().enabled = false;
 
+    }
+    public override void MoveOrder()
+    {
+        ToggleHighLight(true);
+        blockTweener = GameManager.Instance.UI.ForwardBlock_PlayAnimation(this.gameObject);
+        GameManager.Instance.SelectedMethods(CurrentLayout.Function);
     }
 
     public override IEnumerator Subroutine()

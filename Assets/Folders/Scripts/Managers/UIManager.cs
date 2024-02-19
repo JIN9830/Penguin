@@ -43,11 +43,10 @@ public class UIManager
         blockObj.gameObject.transform.DOScale(1f, 0.5f).SetEase(Ease.OutExpo);
     }
 
-    public Tweener SpeedBtn_Animation(GameObject btnObj)
+    public void UIShakeAnimation(GameObject blockObj)
     {
-        btnObj.transform.localScale = Vector3.one;
-        Tweener btnTweener = btnObj.transform.DOScale(1.1f, 0.5f).SetEase(Ease.OutExpo).SetLoops(int.MaxValue,LoopType.Yoyo);
-        return btnTweener;
+        Vector3 blockInit = blockObj.transform.localPosition;
+        blockObj.transform.DOShakePosition(1f, 10, 10, 10)
+            .OnComplete(() => blockObj.transform.localPosition = blockInit);
     }
-
 }
