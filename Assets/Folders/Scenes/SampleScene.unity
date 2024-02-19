@@ -1184,7 +1184,7 @@ PrefabInstance:
     - target: {fileID: 20825676955050050, guid: 35427bf7548e5a240b1e7ab1c463b940,
         type: 3}
       propertyPath: m_Name
-      value: Penguin_LOD0
+      value: Penguin
       objectReference: {fileID: 0}
     - target: {fileID: 20825676955050050, guid: 35427bf7548e5a240b1e7ab1c463b940,
         type: 3}
@@ -8908,7 +8908,7 @@ GameObject:
   - component: {fileID: 1912127489}
   - component: {fileID: 1912127490}
   m_Layer: 0
-  m_Name: Blocks
+  m_Name: Block Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9615,9 +9615,9 @@ SceneRoots:
   - {fileID: 2008061639}
   - {fileID: 330585546}
   - {fileID: 410087041}
+  - {fileID: 1742261787}
   - {fileID: 832575519}
   - {fileID: 65103590}
   - {fileID: 1242008428}
   - {fileID: 331110021}
   - {fileID: 764931419}
-  - {fileID: 1742261787}

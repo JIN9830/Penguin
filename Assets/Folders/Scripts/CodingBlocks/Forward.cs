@@ -31,7 +31,7 @@ public class Forward : CodingBlock
         }
         else PlayerMovement();
 
-        if (deltaTimeCount > 0.7f) {
+        if (deltaTimeCount > 0.65f) {
             GameManager.Instance.playerAnimator.SetBool("Forward", false);
 
         }else
@@ -48,11 +48,10 @@ public class Forward : CodingBlock
             IsMoving = false;
             blockTweener = GameManager.Instance.UI.BlockShakeAnimation(this.gameObject);
 
-            GameManager.Instance.ShakeUI();
-
             if (hit.collider.CompareTag("Wall"))
             {
                 GameManager.Instance.playerAnimator.SetTrigger("WallHit");
+                GameManager.Instance.ShakeUI();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
             else if (hit.collider.CompareTag("Edge"))
