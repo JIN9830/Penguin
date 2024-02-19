@@ -9,6 +9,7 @@ public class Function : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
+        blockTweener = GameManager.Instance.UI.ForwardBlock_PlayAnimation(this.gameObject);
         GameManager.Instance.SelectedMethods(CurrentLayout.Function);
     }
 

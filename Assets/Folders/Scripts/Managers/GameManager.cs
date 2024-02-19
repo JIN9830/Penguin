@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> Function = new List<CodingBlock>();
     public List<CodingBlock> Loop = new List<CodingBlock>();
     private Coroutine playBlock;
+    private Tweener buttonTweener;
 
     public readonly WaitForSeconds waitForSeconds = new(1.0f);
     public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
@@ -52,31 +53,31 @@ public class GameManager : MonoBehaviour
     public GameObject Canvas;
 
     [Header("그리드 레이아웃 오브젝트")]
-    public Button mainLayout;
-    public Button functionLayout;
-    public Button loopLayout;
+    public GameObject mainLayout;
+    public GameObject functionLayout;
+    public GameObject loopLayout;
 
     [Header("북마크 오브젝트")]
-    public Button mainBookmark;
-    public Button functionBookmark;
-    public Button loopBookmark;
+    public GameObject mainBookmark;
+    public GameObject functionBookmark;
+    public GameObject loopBookmark;
 
     [Header("블럭 삭제 버튼")]
-    public Button mainDelete;
-    public Button functionDelete;
-    public Button loopDelete;
+    public GameObject mainDelete;
+    public GameObject functionDelete;
+    public GameObject loopDelete;
 
     [Header("플레이 & 정지, 스피드업 버튼")]
-    public Button playButton;
-    public Button stopButton;
-    public Button speedUpButton;
+    public GameObject playButton;
+    public GameObject stopButton;
+    public GameObject speedUpButton;
 
     [Header("코딩블럭 버튼 오브젝트")]
-    public Button forwardButton;
-    public Button turnLeftButton;
-    public Button turnRightButton;
-    public Button functionButton;
-    public Button loopButton;
+    public GameObject forwardButton;
+    public GameObject turnLeftButton;
+    public GameObject turnRightButton;
+    public GameObject functionButton;
+    public GameObject loopButton;
 
 
     [Header("코딩블럭 프리팹")]
@@ -108,22 +109,52 @@ public class GameManager : MonoBehaviour
         waitUntilPlay = new WaitUntil(() => playBlockToggle == true);
     }
 
-    private void OnEnable()
-    {
-        MainMethod.Clear(); // OnSceneLoad 델리게이트 체인을 걸어서 사용하기
-        Function.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
-        Loop.Clear();
-    }
-
-
     private void Start()
     {
         playerRestPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
         playerRestRot = playerObject.transform.rotation;
 
-        ButtonOnClickAddListeners();
+        MainMethod.Clear(); // OnSceneLoad 델리게이트 체인을 걸어서 사용하기, 새로운 스테이지 마다 블록 초기화
+        Function.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
+        Loop.Clear();
 
         playBlock = StartCoroutine(PlayBlock()); // 메인 게임이 시작될때만 동작 메뉴씬 이라면 코루틴 중지
+
+        #region Coding blocks onClickAddListener
+        // : each buttons link to each Prefab
+        forwardButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(forwardPrefab));
+        turnLeftButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(turnLeftPrefab));
+        turnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(turnRightPrefab));
+        functionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(functionPrefab));
+        loopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(loopPrefab));
+        #endregion
+
+        #region Layout activate onClickAddListener
+
+        // Coding layout
+        mainLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
+        functionLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
+        loopLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
+
+        // Bookmark
+        mainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
+        functionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
+        loopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
+        #endregion
+
+        #region block delete OnClickAddListener
+
+        mainDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
+        functionDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
+        loopDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
+        #endregion
+
+        #region Play, Stop & TimeControl OnClickAddListener
+
+        playButton.GetComponent<Button>().onClick.AddListener(() => playBlockToggle = true);
+        stopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
+        speedUpButton.GetComponent<Button>().onClick.AddListener(() => PlaySpeedControl());
+        #endregion
     }
 
     public void InsertBlock(GameObject prefab)
@@ -218,7 +249,7 @@ public class GameManager : MonoBehaviour
 
                 foreach (CodingBlock block in MainMethod)
                 {
-                    if (!isPlayBlockRunning)
+                    if (!isPlayBlockRunning) 
                         break;
 
                     yield return waitForHalfSeconds;
@@ -342,49 +373,15 @@ public class GameManager : MonoBehaviour
     {
         if (Time.timeScale == 1f)
         {
+            buttonTweener = UI.SpeedBtn_Animation(speedUpButton);
             Time.timeScale = 1.5f;
         }
         else
+        {
+            buttonTweener.Kill();
+            speedUpButton.transform.localScale = Vector3.one;
             Time.timeScale = 1f;
-    }
-
-    public void ButtonOnClickAddListeners()
-    {
-        #region Coding blocks onClickAddListener
-        // : each buttons link to each Prefab
-        forwardButton.onClick.AddListener(() => InsertBlock(forwardPrefab));
-        turnLeftButton.onClick.AddListener(() => InsertBlock(turnLeftPrefab));
-        turnRightButton.onClick.AddListener(() => InsertBlock(turnRightPrefab));
-        functionButton.onClick.AddListener(() => InsertBlock(functionPrefab));
-        loopButton.onClick.AddListener(() => InsertBlock(loopPrefab));
-        #endregion
-
-        #region Layout activate onClickAddListener
-
-        // Coding layout
-        mainLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
-        functionLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
-        loopLayout.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
-
-        // Bookmark
-        mainBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
-        functionBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
-        loopBookmark.onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
-        #endregion
-
-        #region block delete OnClickAddListener
-
-        mainDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
-        functionDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
-        loopDelete.onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
-        #endregion
-
-        #region Play, Stop & TimeControl OnClickAddListener
-
-        playButton.onClick.AddListener(() => playBlockToggle = true);
-        stopButton.onClick.AddListener(() => StopBlock());
-        speedUpButton.onClick.AddListener(() => PlaySpeedControl());
-        #endregion
+        }
     }
 
     public void ResetBlocksAnimation()

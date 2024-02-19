@@ -262,23 +262,23 @@ MonoBehaviour:
   playerAnimator: {fileID: 331110029}
   currentLayout: 0
   Canvas: {fileID: 764931415}
-  mainLayout: {fileID: 748663927}
-  functionLayout: {fileID: 964708512}
-  loopLayout: {fileID: 861683052}
-  mainBookmark: {fileID: 1095497850}
-  functionBookmark: {fileID: 1865761786}
-  loopBookmark: {fileID: 1670725981}
-  mainDelete: {fileID: 650362332}
-  functionDelete: {fileID: 734600842}
-  loopDelete: {fileID: 138196009}
-  playButton: {fileID: 260274524}
-  stopButton: {fileID: 1722274136}
-  speedUpButton: {fileID: 1450895665}
-  forwardButton: {fileID: 506102944}
-  turnLeftButton: {fileID: 983865492}
-  turnRightButton: {fileID: 1748107124}
-  functionButton: {fileID: 1892579170}
-  loopButton: {fileID: 1674876141}
+  mainLayout: {fileID: 748663920}
+  functionLayout: {fileID: 964708505}
+  loopLayout: {fileID: 861683050}
+  mainBookmark: {fileID: 1095497848}
+  functionBookmark: {fileID: 1865761784}
+  loopBookmark: {fileID: 1670725979}
+  mainDelete: {fileID: 650362330}
+  functionDelete: {fileID: 734600839}
+  loopDelete: {fileID: 138196007}
+  playButton: {fileID: 260274522}
+  stopButton: {fileID: 1722274133}
+  speedUpButton: {fileID: 1450895662}
+  forwardButton: {fileID: 506102942}
+  turnLeftButton: {fileID: 983865490}
+  turnRightButton: {fileID: 1748107122}
+  functionButton: {fileID: 1892579168}
+  loopButton: {fileID: 1674876139}
   forwardPrefab: {fileID: 4114433310597077788, guid: c4a2bf30ffbaed64f9d7691f2011a3bc,
     type: 3}
   turnLeftPrefab: {fileID: 3712590164119441793, guid: b5d72ed42ff5a214f875120ed6bfda20,

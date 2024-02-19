@@ -2,13 +2,15 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UIManager
 {
     public Tweener BlockShakeAnimation(GameObject blockObj)
     {
         Vector3 blockInit = blockObj.transform.localPosition;
-        Tweener blockTweener = blockObj.transform.DOShakePosition(1f, 10, 10, 0).OnComplete(()=> blockObj.transform.localPosition = blockInit);
+        Tweener blockTweener = blockObj.transform.DOShakePosition(1f, 10, 10, 0)
+            .OnComplete(()=> blockObj.transform.localPosition = blockInit);
         return blockTweener;
     }
 
@@ -40,4 +42,12 @@ public class UIManager
         blockObj.gameObject.transform.localScale = Vector3.zero;
         blockObj.gameObject.transform.DOScale(1f, 0.5f).SetEase(Ease.OutExpo);
     }
+
+    public Tweener SpeedBtn_Animation(GameObject btnObj)
+    {
+        btnObj.transform.localScale = Vector3.one;
+        Tweener btnTweener = btnObj.transform.DOScale(1.1f, 0.5f).SetEase(Ease.OutExpo).SetLoops(int.MaxValue,LoopType.Yoyo);
+        return btnTweener;
+    }
+
 }

@@ -23,6 +23,7 @@ public class Forward : CodingBlock
         {
             deltaTimeCount = 0;
             isMoving = false;
+
             blockTweener.Kill();
             transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
