@@ -22,9 +22,7 @@ public class Forward : CodingBlock
         {
             deltaTimeCount = 0;
             IsMoving = false;
-
             GameManager.Instance.playerAnimator.SetBool("Forward", false);
-
             blockTweener.Kill();
             transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
@@ -33,8 +31,7 @@ public class Forward : CodingBlock
 
         if (deltaTimeCount > 0.65f) {
             GameManager.Instance.playerAnimator.SetBool("Forward", false);
-
-        }else
+        } else 
             GameManager.Instance.playerAnimator.SetBool("Forward", IsMoving);
     }
 
