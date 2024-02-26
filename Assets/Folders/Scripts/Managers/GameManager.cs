@@ -108,18 +108,6 @@ public class GameManager : MonoBehaviour
 
         playerAnimator = playerObject.GetComponent<Animator>();
         waitUntilPlay = new WaitUntil(() => playBlockToggle == true);
-    }
-
-    private void Start()
-    {
-        playerRestPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
-        playerRestRot = playerObject.transform.rotation;
-
-        MainMethod.Clear(); // OnSceneLoad 델리게이트 체인을 걸어서 사용하기, 새로운 스테이지 마다 블록 초기화
-        Function.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
-        Loop.Clear();
-
-        playBlock = StartCoroutine(PlayBlock()); // 메인 게임이 시작될때만 동작 메뉴씬 이라면 코루틴 중지
 
         #region Coding blocks onClickAddListener
         // : each buttons link to each Prefab
@@ -156,6 +144,18 @@ public class GameManager : MonoBehaviour
         stopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
         speedUpButton.GetComponent<Button>().onClick.AddListener(() => PlaySpeedControl());
         #endregion
+    }
+
+    private void Start()
+    {
+        playerRestPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
+        playerRestRot = playerObject.transform.rotation;
+
+        MainMethod.Clear(); // OnSceneLoad 델리게이트 체인을 걸어서 사용하기, 새로운 스테이지 마다 블록 초기화
+        Function.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
+        Loop.Clear();
+
+        playBlock = StartCoroutine(PlayBlock()); // 메인 게임이 시작될때만 동작 메뉴씬 이라면 코루틴 중지
     }
 
     public void InsertBlock(GameObject prefab)
@@ -242,7 +242,7 @@ public class GameManager : MonoBehaviour
         {
             if (!playBlockToggle) yield return waitUntilPlay;
 
-            if (!isPlayBlockRunning && MainMethod != null)
+            if (!isPlayBlockRunning)
             {
                 isPlayBlockRunning = true;
                 stopButton.gameObject.SetActive(true);
@@ -413,4 +413,5 @@ public class GameManager : MonoBehaviour
         UI.UIShakeAnimation(turnRightButton);
         UI.UIShakeAnimation(functionButton);
     }
+
 }

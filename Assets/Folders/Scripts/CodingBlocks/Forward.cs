@@ -20,7 +20,6 @@ public class Forward : CodingBlock
     {
         if (GameManager.Instance.playBlockToggle == false) // 정지 버튼을 누르면 실행
         {
-            deltaTimeCount = 0;
             IsMoving = false;
             GameManager.Instance.playerAnimator.SetBool("Forward", false);
             blockTweener.Kill();
@@ -31,7 +30,8 @@ public class Forward : CodingBlock
 
         if (deltaTimeCount > 0.65f) {
             GameManager.Instance.playerAnimator.SetBool("Forward", false);
-        } else 
+        }
+        else 
             GameManager.Instance.playerAnimator.SetBool("Forward", IsMoving);
     }
 
@@ -41,7 +41,6 @@ public class Forward : CodingBlock
 
         if (Physics.Raycast(GameManager.Instance.playerObject.transform.localPosition, GameManager.Instance.playerObject.transform.forward, out hit, DISTANCE))
         {
-            deltaTimeCount = 0;
             IsMoving = false;
             blockTweener = GameManager.Instance.UI.BlockShakeAnimation(this.gameObject);
 
@@ -72,11 +71,8 @@ public class Forward : CodingBlock
             Vector3 newPos = Vector3.Lerp(GameManager.Instance.playerStartPos, GameManager.Instance.playerNewPos, 1.5f * deltaTimeCount);
             GameManager.Instance.playerObject.transform.localPosition = newPos;
 
-
-
             if (deltaTimeCount > 1)
             {
-                deltaTimeCount = 0;
                 IsMoving = false;
                 GameManager.Instance.playerAnimator.SetBool("Forward", false);
                 this.GetComponent<CodingBlock>().enabled = false;
