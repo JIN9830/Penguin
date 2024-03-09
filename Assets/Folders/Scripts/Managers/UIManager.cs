@@ -49,8 +49,6 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.UI = this.gameObject.GetComponent<UIManager>();
-
         #region Coding blocks onClickAddListener
         forwardButton.GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.InsertBlock(GameManager.Instance.forwardPrefab));
         turnLeftButton.GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.InsertBlock(GameManager.Instance.turnLeftPrefab));
@@ -81,5 +79,12 @@ public class UIManager : MonoBehaviour
         speedUpButton.GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.ToggleTimeScale());
         speedDownButton.GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.ToggleTimeScale());
         #endregion
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.Initialize_UIManager(this.gameObject);
+
+        GameManager.Instance.Initialize_CodingMethod();
     }
 }

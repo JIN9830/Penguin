@@ -5,8 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class GameSceneManager : MonoBehaviour
 {
-    public void LoadScene()
+    public void GoToStartScene()
     {
+        SceneManager.LoadScene("Start");
+    }
+
+    public void GoToCityScene()
+    {
+        SceneManager.LoadScene("City");
 
     }
 }

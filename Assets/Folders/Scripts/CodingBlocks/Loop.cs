@@ -7,7 +7,7 @@ public class Loop : CodingBlock
 {
     private void Update()
     {
-        if (GameManager.Instance.playBlockToggle == true) return;
+        if (GameManager.Instance.PlayBlockToggle == true) return;
 
         blockTweener.Kill();
         transform.localScale = Vector3.one;
@@ -24,18 +24,18 @@ public class Loop : CodingBlock
     {
         foreach (CodingBlock block in GameManager.Instance.Loop)
         {
-            if (GameManager.Instance.playBlockToggle == false)
+            if (GameManager.Instance.PlayBlockToggle == false)
                 break;
 
             yield return GameManager.Instance.waitForHalfSeconds;
 
-            GameManager.Instance.playerManager.InitializePlayerMoveVector();
+            GameManager.Instance.PlayerManager.InitializePlayerMoveVector();
             block.GetComponent<CodingBlock>().enabled = true;
             block.MoveOrder();
 
-            if (GameManager.Instance.playBlockToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
+            if (GameManager.Instance.PlayBlockToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
         }
-        if (GameManager.Instance.playBlockToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
+        if (GameManager.Instance.PlayBlockToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
 
         GameManager.Instance.SelectedMethods(UIManager.CurrentLayout.Main);
     }

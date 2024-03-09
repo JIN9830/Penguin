@@ -10,7 +10,7 @@ public class TurnLeft : CodingBlock
 
     private void Update()
     {
-        if (GameManager.Instance.playBlockToggle == true) return;
+        if (GameManager.Instance.PlayBlockToggle == true) return;
 
         blockTweener.Kill();
         transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -24,11 +24,11 @@ public class TurnLeft : CodingBlock
 
         blockTweener = GameManager.Instance.UIAnimation.Animation_LeftBlockPlay(this.gameObject);
 
-        playerStartRot = GameManager.Instance.playerManager.playerObject.transform.rotation;
+        playerStartRot = GameManager.Instance.PlayerManager.playerObject.transform.rotation;
         playerEndRot = playerStartRot * Quaternion.Euler(0, -90, 0);
 
-        GameManager.Instance.playerManager.PlayerAnimator.SetTrigger("Turn");
-        GameManager.Instance.playerManager.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
+        GameManager.Instance.PlayerManager.PlayerAnimator.SetTrigger("Turn");
+        GameManager.Instance.PlayerManager.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
 
     }
 }

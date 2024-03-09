@@ -1,30 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public PlayerManager playerManager;
-    public UIManager UI;
+    public PlayerManager PlayerManager { get; private set; }
+    public UIManager UI { get; private set; }
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
-    public List<CodingBlock> Function = new List<CodingBlock>();
-    public List<CodingBlock> Loop = new List<CodingBlock>();
+    public List<CodingBlock> Function { get; private set; } = new List<CodingBlock>();
+    public List<CodingBlock> Loop { get; private set; } = new List<CodingBlock>();
 
-    public bool playBlockToggle { get; private set; } = false;
-    private bool isPlayBlockRunning = false;
+    public bool PlayBlockToggle { get; private set; } = false;
+    public bool PlayBlockInProgress { get; private set; } = false;
+
     private Coroutine playBlock;
+
     public readonly WaitForSeconds waitForSeconds = new(1.0f);
     public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
     public readonly WaitForSeconds waitForPointEightSeconds = new(0.8f);
-    public WaitUntil waitUntilPlay;
+    public WaitUntil waitUntilPlayToggle;
 
     [Header("코딩블럭 프리팹")]
     public GameObject forwardPrefab;
@@ -49,16 +49,9 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        waitUntilPlay = new WaitUntil(() => playBlockToggle == true);
-    }
+        waitUntilPlayToggle = new WaitUntil(() => PlayBlockToggle == true);
 
-    private void Start()
-    {
-        MainMethod.Clear(); // OnSceneLoad 델리게이트 체인을 걸어서 사용하기, 새로운 스테이지 마다 블록 초기화
-        Function.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
-        Loop.Clear();
-
-        playBlock = StartCoroutine(PlayBlock_Coroutine()); // 메인 게임이 시작될때만 동작 메뉴씬 이라면 코루틴 중지
+        playBlock = StartCoroutine(PlayBlock_Coroutine());
     }
 
     public void SelectedMethods(UIManager.CurrentLayout selectMethod)
@@ -166,28 +159,28 @@ public class GameManager : MonoBehaviour
 
     public void PlayBlock()
     {
-        playBlockToggle = true;
+        PlayBlockToggle = true;
+        UI.stopButton.gameObject.SetActive(true);
     }
     public IEnumerator PlayBlock_Coroutine()
     {
         while (true)
         {
-            if (!playBlockToggle) yield return waitUntilPlay;
+            if (!PlayBlockToggle) yield return waitUntilPlayToggle;
 
-            if (!isPlayBlockRunning)
+            if (!PlayBlockInProgress)
             {
-                isPlayBlockRunning = true;
-                UI.stopButton.gameObject.SetActive(true);
+                PlayBlockInProgress = true;
                 Lock_UIElements(true);
 
                 foreach (CodingBlock block in MainMethod)
                 {
-                    if (!isPlayBlockRunning)
+                    if (!PlayBlockInProgress)
                         break;
 
                     yield return waitForHalfSeconds;
 
-                    playerManager.InitializePlayerMoveVector();
+                    PlayerManager.InitializePlayerMoveVector();
                     block.GetComponent<CodingBlock>().enabled = true;
 
                     if (block.gameObject.tag == "Method")
@@ -201,13 +194,13 @@ public class GameManager : MonoBehaviour
                     }
 
 
-                    if (isPlayBlockRunning) yield return waitForPointEightSeconds;
+                    if (PlayBlockInProgress) yield return waitForPointEightSeconds;
                 }
 
-                if (isPlayBlockRunning) yield return waitForSeconds;
+                if (PlayBlockInProgress) yield return waitForSeconds;
 
-                playBlockToggle = false;
-                isPlayBlockRunning = false;
+                PlayBlockToggle = false;
+                PlayBlockInProgress = false;
 
                 DisableBlockHighlights();
                 Lock_UIElements(false);
@@ -216,10 +209,10 @@ public class GameManager : MonoBehaviour
     }
     public void StopBlock()
     {
-        playBlockToggle = false;
-        isPlayBlockRunning = false;
+        PlayBlockToggle = false;
+        PlayBlockInProgress = false;
 
-        playerManager.ResetPlayerPosition();
+        PlayerManager.ResetPlayerPosition();
 
         DisableBlockHighlights();
         ResetBlockAnimation();
@@ -308,5 +301,33 @@ public class GameManager : MonoBehaviour
         UIAnimation.Animation_UIShake(UI.turnLeftButton);
         UIAnimation.Animation_UIShake(UI.turnRightButton);
         UIAnimation.Animation_UIShake(UI.functionButton);
+    }
+
+    public void Initialize_CodingMethod()
+    {
+        MainMethod.Clear(); // OnSceneLoad 델리게이트 체인을 걸어서 사용하기, 새로운 스테이지 마다 블록 초기화
+        Function.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
+        Loop.Clear();
+
+        foreach (CodingBlock blockObj in MainMethod)
+        {
+            Destroy(blockObj.gameObject);
+        }
+        foreach (CodingBlock blockObj in Function)
+        {
+            Destroy(blockObj.gameObject);
+        }
+        foreach (CodingBlock blockObj in Loop)
+        {
+            Destroy(blockObj.gameObject);
+        }
+    }
+    public void Initialize_UIManager(GameObject obj)
+    {
+        UI = obj.GetComponent<UIManager>();
+    }
+    public void Initialize_PlayerManager(GameObject obj)
+    {
+        PlayerManager = obj.GetComponent<PlayerManager>();
     }
 }

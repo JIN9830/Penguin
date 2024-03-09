@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using DG.Tweening;
 
@@ -18,13 +15,13 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.playerManager = this.gameObject.GetComponent<PlayerManager>();
-
         PlayerAnimator = playerObject.GetComponent<Animator>();
     }
 
     private void Start()
     {
+        GameManager.Instance.Initialize_PlayerManager(this.gameObject);
+
         PlayerRestPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
         PlayerRestRot = playerObject.transform.rotation;
     }
