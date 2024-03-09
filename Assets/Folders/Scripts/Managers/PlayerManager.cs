@@ -18,6 +18,8 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.Instance.playerManager = this.gameObject.GetComponent<PlayerManager>();
+
         PlayerAnimator = playerObject.GetComponent<Animator>();
     }
 

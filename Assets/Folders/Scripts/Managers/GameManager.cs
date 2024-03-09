@@ -232,12 +232,12 @@ public class GameManager : MonoBehaviour
         if (Time.timeScale == 1f)
         {
             UI.speedDownButton.SetActive(true);
-            Time.timeScale = 1.5f;
+            Time.timeScale = 1.3f;
         }
         else
         {
             UI.speedDownButton.SetActive(false);
-            UIAnimation.Animation_BlockPop(UI.speedUpButton);
+            UIAnimation.Animation_BlockShake(UI.speedUpButton);
             Time.timeScale = 1f;
         }
     }

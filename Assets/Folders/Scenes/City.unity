@@ -398,8 +398,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01ece739c9283645b99a720cbdf47ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerManager: {fileID: 706205743}
-  UI: {fileID: 2111270830}
+  playerManager: {fileID: 0}
+  UI: {fileID: 0}
   Function: []
   Loop: []
   forwardPrefab: {fileID: 4114433310597077788, guid: c4a2bf30ffbaed64f9d7691f2011a3bc,
