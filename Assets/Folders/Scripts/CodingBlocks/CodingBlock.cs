@@ -19,7 +19,6 @@ public abstract class CodingBlock : MonoBehaviour
         highlight.SetActive(enable);
     }
 
-    
     public abstract void MoveOrder();
 
     public virtual IEnumerator Subroutine()

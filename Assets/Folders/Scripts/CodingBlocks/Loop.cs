@@ -2,7 +2,6 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameManager;
 
 public class Loop : CodingBlock
 {
@@ -18,7 +17,7 @@ public class Loop : CodingBlock
     {
         ToggleHighLight(true);
         blockTweener = GameManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-        GameManager.Instance.SelectedMethods(CurrentLayout.Loop);
+        GameManager.Instance.SelectedMethods(UIManager.CurrentLayout.Loop);
     }
 
     public override IEnumerator Subroutine()
@@ -30,7 +29,7 @@ public class Loop : CodingBlock
 
             yield return GameManager.Instance.waitForHalfSeconds;
 
-            GameManager.Instance.PlayerMoveVectorInit();
+            GameManager.Instance.playerManager.InitializePlayerMoveVector();
             block.GetComponent<CodingBlock>().enabled = true;
             block.MoveOrder();
 
@@ -38,6 +37,6 @@ public class Loop : CodingBlock
         }
         if (GameManager.Instance.playBlockToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
 
-        GameManager.Instance.SelectedMethods(CurrentLayout.Main);
+        GameManager.Instance.SelectedMethods(UIManager.CurrentLayout.Main);
     }
 }

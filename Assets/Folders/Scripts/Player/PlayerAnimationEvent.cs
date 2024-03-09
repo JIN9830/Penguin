@@ -29,7 +29,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         //else if(isDizzy)
         //{
         //    isDizzy = AnimationTimer(2.3f);
-        //    playerAnimator.SetBool("IsDizzy", isDizzy);
+        //    PlayerAnimator.SetBool("IsDizzy", isDizzy);
         //}
         else if(isEmbarrass)
         {

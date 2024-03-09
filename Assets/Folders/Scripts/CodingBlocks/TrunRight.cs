@@ -22,10 +22,10 @@ public class TrunRight : CodingBlock
 
         blockTweener = GameManager.Instance.UIAnimation.Animation_RightBlockPlay(this.gameObject);
 
-        playerStartRot = GameManager.Instance.playerObject.transform.rotation;
+        playerStartRot = GameManager.Instance.playerManager.playerObject.transform.rotation;
         playerEndRot = playerStartRot * Quaternion.Euler(0, 90, 0);
 
-        GameManager.Instance.playerAnimator.SetTrigger("Turn");
-        GameManager.Instance.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
+        GameManager.Instance.playerManager.PlayerAnimator.SetTrigger("Turn");
+        GameManager.Instance.playerManager.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
     }
 }

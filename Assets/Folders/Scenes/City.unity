@@ -398,30 +398,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01ece739c9283645b99a720cbdf47ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 706205743}
+  UI: {fileID: 2111270830}
   Function: []
   Loop: []
-  playerObject: {fileID: 114938884}
-  playerAnimator: {fileID: 331110029}
-  currentLayout: 0
-  Canvas: {fileID: 764931415}
-  mainLayout: {fileID: 748663920}
-  functionLayout: {fileID: 964708505}
-  loopLayout: {fileID: 861683050}
-  mainBookmark: {fileID: 1095497848}
-  functionBookmark: {fileID: 1865761784}
-  loopBookmark: {fileID: 1670725979}
-  mainDelete: {fileID: 650362330}
-  functionDelete: {fileID: 734600839}
-  loopDelete: {fileID: 138196007}
-  playButton: {fileID: 260274522}
-  stopButton: {fileID: 1722274133}
-  speedUpButton: {fileID: 482359638}
-  speedDownButton: {fileID: 32509846}
-  forwardButton: {fileID: 506102942}
-  turnLeftButton: {fileID: 983865490}
-  turnRightButton: {fileID: 1748107122}
-  functionButton: {fileID: 1892579168}
-  loopButton: {fileID: 1674876139}
   forwardPrefab: {fileID: 4114433310597077788, guid: c4a2bf30ffbaed64f9d7691f2011a3bc,
     type: 3}
   turnLeftPrefab: {fileID: 3712590164119441793, guid: b5d72ed42ff5a214f875120ed6bfda20,
@@ -1305,7 +1285,7 @@ PrefabInstance:
     - target: {fileID: 20825676955050050, guid: 35427bf7548e5a240b1e7ab1c463b940,
         type: 3}
       propertyPath: m_Name
-      value: Penguin
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 20825676955050050, guid: 35427bf7548e5a240b1e7ab1c463b940,
         type: 3}
@@ -1439,12 +1419,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!95 &331110029 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8311661690867684508, guid: 35427bf7548e5a240b1e7ab1c463b940,
-    type: 3}
-  m_PrefabInstance: {fileID: 331110021}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &336920094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3502,6 +3476,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 699697718}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &706205741
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 706205742}
+  - component: {fileID: 706205743}
+  m_Layer: 0
+  m_Name: Player Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &706205742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706205741}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1325.8901, y: 1680.1788, z: 29.045002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &706205743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706205741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6efee7a8d495ce841baf25a275c6a9c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 114938884}
 --- !u!1 &734600839
 GameObject:
   m_ObjectHideFlags: 0
@@ -9775,6 +9794,70 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2108446519}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2111270828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2111270829}
+  - component: {fileID: 2111270830}
+  m_Layer: 0
+  m_Name: UI Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2111270829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111270828}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1325.8901, y: 1680.1788, z: 29.045002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2111270830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111270828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b828f64aef53f34ebd1d6a0ecb071d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLayout: 0
+  Canvas: {fileID: 764931415}
+  mainLayout: {fileID: 748663920}
+  functionLayout: {fileID: 964708505}
+  loopLayout: {fileID: 861683050}
+  mainDelete: {fileID: 650362330}
+  functionDelete: {fileID: 734600839}
+  loopDelete: {fileID: 138196007}
+  mainBookmark: {fileID: 1095497848}
+  functionBookmark: {fileID: 1865761784}
+  loopBookmark: {fileID: 1670725979}
+  playButton: {fileID: 260274522}
+  stopButton: {fileID: 1722274133}
+  speedUpButton: {fileID: 482359638}
+  speedDownButton: {fileID: 32509846}
+  forwardButton: {fileID: 506102942}
+  turnLeftButton: {fileID: 983865490}
+  turnRightButton: {fileID: 1748107122}
+  functionButton: {fileID: 1892579168}
+  loopButton: {fileID: 1674876139}
 --- !u!1001 &2111576513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9873,6 +9956,8 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 1742261787}
   - {fileID: 832575519}
+  - {fileID: 2111270829}
+  - {fileID: 706205742}
   - {fileID: 65103590}
   - {fileID: 1242008428}
   - {fileID: 331110021}
