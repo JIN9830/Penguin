@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
-            Debug.Log("[Instance] GameManager is Created!");
+            Debug.Log("GameManager is Created!");
         }
         else
         {
@@ -60,7 +60,6 @@ public class GameManager : MonoBehaviour
 
         playBlock = StartCoroutine(PlayBlock_Coroutine()); // 메인 게임이 시작될때만 동작 메뉴씬 이라면 코루틴 중지
     }
-
 
     public void SelectedMethods(UIManager.CurrentLayout selectMethod)
     {
