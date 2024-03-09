@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     }
 
     public static GameManager Instance { get; private set; }
-    public UIManager UI { get; private set; } = new UIManager();
+    public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> Function = new List<CodingBlock>();
@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
             {
                 MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
                 prefab.GetComponent<CodingBlock>().enabled = false;
-                UI.Block_PopAnimation(MainMethod.Last().gameObject);
+                UIAnimation.Animation_BlockPop(MainMethod.Last().gameObject);
             }
         }
         else
@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
                     {
                         MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
-                        UI.Block_PopAnimation(MainMethod.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(MainMethod.Last().gameObject);
                     }
                     break;
 
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
                     {
                         Function.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
-                        UI.Block_PopAnimation(Function.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(Function.Last().gameObject);
                     }
                     break;
 
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
                     {
                         Loop.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
-                        UI.Block_PopAnimation(Loop.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(Loop.Last().gameObject);
                     }
                     break;
             }
@@ -294,7 +294,7 @@ public class GameManager : MonoBehaviour
         BlockHighLightOff();
         ResetBlocksAnimation();
 
-        UI.Block_PopAnimation(playButton);
+        UIAnimation.Animation_BlockPop(playButton);
         stopButton.gameObject.SetActive(false);
     }
 
@@ -381,7 +381,7 @@ public class GameManager : MonoBehaviour
         else
         {
             speedDownButton.SetActive(false);
-            UI.Block_PopAnimation(speedUpButton);
+            UIAnimation.Animation_BlockPop(speedUpButton);
             Time.timeScale = 1f;
         }
     }
@@ -390,28 +390,28 @@ public class GameManager : MonoBehaviour
     {
         foreach (CodingBlock block in MainMethod)
         {
-            UI.BlockShakeAnimation(block.gameObject);
+            UIAnimation.Animation_BlockShake(block.gameObject);
         }
     }
 
     public void ShakeUI()
     {
-        UI.UIShakeAnimation(mainLayout);
-        UI.UIShakeAnimation(mainDelete);
-        UI.UIShakeAnimation(mainBookmark);
+        UIAnimation.Animation_UIShake(mainLayout);
+        UIAnimation.Animation_UIShake(mainDelete);
+        UIAnimation.Animation_UIShake(mainBookmark);
 
-        UI.UIShakeAnimation(functionLayout);
-        UI.UIShakeAnimation(functionDelete);
-        UI.UIShakeAnimation(functionBookmark);
+        UIAnimation.Animation_UIShake(functionLayout);
+        UIAnimation.Animation_UIShake(functionDelete);
+        UIAnimation.Animation_UIShake(functionBookmark);
 
-        UI.UIShakeAnimation(loopLayout);
-        UI.UIShakeAnimation(loopDelete);
-        UI.UIShakeAnimation(loopBookmark);
+        UIAnimation.Animation_UIShake(loopLayout);
+        UIAnimation.Animation_UIShake(loopDelete);
+        UIAnimation.Animation_UIShake(loopBookmark);
 
-        UI.UIShakeAnimation(forwardButton);
-        UI.UIShakeAnimation(turnLeftButton);
-        UI.UIShakeAnimation(turnRightButton);
-        UI.UIShakeAnimation(functionButton);
+        UIAnimation.Animation_UIShake(forwardButton);
+        UIAnimation.Animation_UIShake(turnLeftButton);
+        UIAnimation.Animation_UIShake(turnRightButton);
+        UIAnimation.Animation_UIShake(functionButton);
     }
 
 }

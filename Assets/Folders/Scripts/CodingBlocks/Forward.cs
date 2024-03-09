@@ -42,7 +42,7 @@ public class Forward : CodingBlock
         if (Physics.Raycast(GameManager.Instance.playerObject.transform.localPosition, GameManager.Instance.playerObject.transform.forward, out hit, DISTANCE))
         {
             IsMoving = false;
-            blockTweener = GameManager.Instance.UI.BlockShakeAnimation(this.gameObject);
+            blockTweener = GameManager.Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (hit.collider.CompareTag("Wall"))
             {
@@ -62,7 +62,7 @@ public class Forward : CodingBlock
     {
         if (!IsMoving) {
             IsMoving = true;
-            blockTweener = GameManager.Instance.UI.ForwardBlock_PlayAnimation(this.gameObject);          
+            blockTweener = GameManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);          
         }
 
         if (IsMoving == true)
