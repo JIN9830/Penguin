@@ -6,19 +6,22 @@ using UnityEngine;
 
 public class Forward : CodingBlock
 {
-    private float deltaTimeCount = 0;
+    public bool IsMoving { get; private set; } = false;
+    public bool ToggleForward { get; private set; } = false;
+
+    private float fixedDeltaTimeCount = 0;
+
     private readonly float DISTANCE = 0.6f;
     private RaycastHit hit;
-    public bool IsMoving { get; private set; } = false;
 
     private void OnEnable()
     {
-        deltaTimeCount = 0;
+        fixedDeltaTimeCount = 0;
     }
 
     private void Update()
     {
-        if (GameManager.Instance.PlayBlockToggle == false) // 정지 버튼을 누르면 실행
+        if (GameManager.Instance.PlayToggle == false) // 정지 버튼을 누르면 실행
         {
             IsMoving = false;
             GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", false);
@@ -26,13 +29,14 @@ public class Forward : CodingBlock
             transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
         }
-        else PlayerMovement();
+    }
 
-        if (deltaTimeCount > 0.65f) {
-            GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", false);
+    private void FixedUpdate()
+    {
+        if(IsMoving == true)
+        {
+            PlayerMove();
         }
-        else
-            GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", IsMoving);
     }
 
     public override void MoveOrder()
@@ -42,12 +46,12 @@ public class Forward : CodingBlock
         if (Physics.Raycast(GameManager.Instance.PlayerManager.playerObject.transform.localPosition, GameManager.Instance.PlayerManager.playerObject.transform.forward, out hit, DISTANCE))
         {
             IsMoving = false;
-            blockTweener = GameManager.Instance.UIAnimation.Animation_BlockShake(this.gameObject);
+            blockTweener = GameManager.Instance.UIManager.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (hit.collider.CompareTag("Wall"))
             {
                 GameManager.Instance.PlayerManager.PlayerAnimator.SetTrigger("WallHit");
-                GameManager.Instance.Shake_UIElements();
+                GameManager.Instance.UIManager.Shake_UIElements();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
             else if (hit.collider.CompareTag("Edge"))
@@ -56,22 +60,29 @@ public class Forward : CodingBlock
                 this.GetComponent<CodingBlock>().enabled = false;
             }
         }
+        else
+        {
+            blockTweener = GameManager.Instance.UIManager.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+            IsMoving = true;
+        }
     }
 
-    private void PlayerMovement()
+    private void PlayerMove()
     {
-        if (!IsMoving) {
-            IsMoving = true;
-            blockTweener = GameManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);          
-        }
-
         if (IsMoving == true)
         {
-            deltaTimeCount += Time.deltaTime;
-            Vector3 newPos = Vector3.Lerp(GameManager.Instance.PlayerManager.PlayerStartPos, GameManager.Instance.PlayerManager.PlayerNewPos, 1.5f * deltaTimeCount);
+            fixedDeltaTimeCount += Time.fixedDeltaTime;
+            Vector3 newPos = Vector3.Lerp(GameManager.Instance.PlayerManager.PlayerStartPos, GameManager.Instance.PlayerManager.PlayerNewPos, 1.5f * fixedDeltaTimeCount);
             GameManager.Instance.PlayerManager.playerObject.transform.localPosition = newPos;
 
-            if (deltaTimeCount > 1)
+            if (fixedDeltaTimeCount > 0.65f)
+            {
+                GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", false);
+            }
+            else
+                GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", IsMoving);
+
+            if (fixedDeltaTimeCount > 1)
             {
                 IsMoving = false;
                 GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", false);

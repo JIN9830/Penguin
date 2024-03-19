@@ -1391,6 +1391,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01ece739c9283645b99a720cbdf47ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayToggle: 0
+  IsBlocksRunning: 0
   forwardPrefab: {fileID: 4114433310597077788, guid: c4a2bf30ffbaed64f9d7691f2011a3bc,
     type: 3}
   turnLeftPrefab: {fileID: 3712590164119441793, guid: b5d72ed42ff5a214f875120ed6bfda20,
@@ -3529,6 +3531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6efee7a8d495ce841baf25a275c6a9c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: 0
   playerObject: {fileID: 114938884}
 --- !u!1 &734600839
 GameObject:

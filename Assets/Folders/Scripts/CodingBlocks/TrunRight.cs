@@ -9,7 +9,7 @@ public class TrunRight : CodingBlock
     Quaternion playerEndRot;
     private void Update()
     {
-        if (GameManager.Instance.PlayBlockToggle == true) return;
+        if (GameManager.Instance.PlayToggle == true) return;
 
         blockTweener.Kill();
         transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -20,7 +20,7 @@ public class TrunRight : CodingBlock
     {
         ToggleHighLight(true);
 
-        blockTweener = GameManager.Instance.UIAnimation.Animation_RightBlockPlay(this.gameObject);
+        blockTweener = GameManager.Instance.UIManager.UIAnimation.Animation_RightBlockPlay(this.gameObject);
 
         playerStartRot = GameManager.Instance.PlayerManager.playerObject.transform.rotation;
         playerEndRot = playerStartRot * Quaternion.Euler(0, 90, 0);
