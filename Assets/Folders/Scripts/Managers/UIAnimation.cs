@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIAnimation
 {
@@ -38,6 +39,13 @@ public class UIAnimation
     {
         blockObj.gameObject.transform.localScale = Vector3.zero;
         blockObj.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo);
+    }
+
+    public void Animation_PlayBlockDelay(GameObject blockObj)
+    {
+        blockObj.gameObject.transform.localScale = Vector3.zero;
+        blockObj.gameObject.GetComponent<Button>().interactable = false;
+        blockObj.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo).OnComplete(() => blockObj.gameObject.GetComponent<Button>().interactable = true);
     }
 
     public void Animation_UIShake(GameObject blockObj)

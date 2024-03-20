@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using static GameManager;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.Get_PlayerManager(this.gameObject);
+        GameManager_Instance.Get_PlayerManager(this.gameObject);
     }
 
     private void Start()

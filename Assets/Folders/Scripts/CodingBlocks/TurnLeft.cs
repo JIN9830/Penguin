@@ -1,7 +1,7 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static GameManager;
+
 
 public class TurnLeft : CodingBlock
 {
@@ -10,7 +10,7 @@ public class TurnLeft : CodingBlock
 
     private void Update()
     {
-        if (GameManager.Instance.PlayToggle == true) return;
+        if (GameManager.GameManager_Instance.PlayToggle == true) return;
 
         blockTweener.Kill();
         transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
@@ -22,13 +22,13 @@ public class TurnLeft : CodingBlock
     {
         ToggleHighLight(true);
 
-        blockTweener = GameManager.Instance.UIManager.UIAnimation.Animation_LeftBlockPlay(this.gameObject);
+        blockTweener = UIManager_Instance.UIAnimation.Animation_LeftBlockPlay(this.gameObject);
 
-        playerStartRot = GameManager.Instance.PlayerManager.playerObject.transform.rotation;
+        playerStartRot = PlayerManager_Instance.playerObject.transform.rotation;
         playerEndRot = playerStartRot * Quaternion.Euler(0, -90, 0);
 
-        GameManager.Instance.PlayerManager.PlayerAnimator.SetTrigger("Turn");
-        GameManager.Instance.PlayerManager.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
+        PlayerManager_Instance.PlayerAnimator.SetTrigger("Turn");
+        PlayerManager_Instance.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
 
     }
 }

@@ -2,6 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using static GameManager;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,12 +12,16 @@ public class UIManager : MonoBehaviour
         Function,
         Loop,
     }
-    public enum SelectMethod
+    public enum ButtonOder
     {
-        Function,
-        Loop,
+        None,
+        Play,
+        Stop,
+        TimeScale,
     }
     public CurrentLayout currentLayout = CurrentLayout.Main;
+
+    public ButtonOder buttonOder = ButtonOder.None;
 
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
@@ -53,14 +58,14 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.Get_UIManager(this.gameObject);
+        GameManager_Instance.Get_UIManager(this.gameObject);
 
         #region Coding blocks onClickAddListener
-        forwardButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.Instance.forwardPrefab));
-        turnLeftButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.Instance.turnLeftPrefab));
-        turnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.Instance.turnRightPrefab));
-        functionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.Instance.functionPrefab));
-        loopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.Instance.loopPrefab));
+        forwardButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.forwardPrefab));
+        turnLeftButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.turnLeftPrefab));
+        turnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.turnRightPrefab));
+        functionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.functionPrefab));
+        loopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.loopPrefab));
         #endregion
 
         #region Layout activate onClickAddListener
@@ -89,12 +94,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.Initialize_CodingMethod();
-    }
-
-    private void Update()
-    {
-        
+        GameManager_Instance.Initialize_CodingMethod();
     }
 
     public void SelectedMethods(CurrentLayout selectMethod)
@@ -124,13 +124,13 @@ public class UIManager : MonoBehaviour
     }
     public void InsertBlock(GameObject prefab)
     {
-        if (prefab == GameManager.Instance.functionPrefab || prefab == GameManager.Instance.loopPrefab)
+        if (prefab == GameManager_Instance.functionPrefab || prefab == GameManager_Instance.loopPrefab)
         {
-            if (GameManager.Instance.MainMethod.Count < 10)
+            if (GameManager_Instance.MainMethod.Count < 10)
             {
-                GameManager.Instance.MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                GameManager_Instance.MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
                 prefab.GetComponent<CodingBlock>().enabled = false;
-                UIAnimation.Animation_BlockPop(GameManager.Instance.MainMethod.Last().gameObject);
+                UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
             }
         }
         else
@@ -138,29 +138,29 @@ public class UIManager : MonoBehaviour
             switch (currentLayout)
             {
                 case CurrentLayout.Main:
-                    if (GameManager.Instance.MainMethod.Count < 10)
+                    if (GameManager_Instance.MainMethod.Count < 10)
                     {
-                        GameManager.Instance.MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                        GameManager_Instance.MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
-                        UIAnimation.Animation_BlockPop(GameManager.Instance.MainMethod.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
                     }
                     break;
 
                 case CurrentLayout.Function:
-                    if (GameManager.Instance.Function.Count < 10)
+                    if (GameManager_Instance.FunctionMethod.Count < 10)
                     {
-                        GameManager.Instance.Function.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
+                        GameManager_Instance.FunctionMethod.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
-                        UIAnimation.Animation_BlockPop(GameManager.Instance.Function.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(GameManager_Instance.FunctionMethod.Last().gameObject);
                     }
                     break;
 
                 case CurrentLayout.Loop:
-                    if (GameManager.Instance.Loop.Count < 10)
+                    if (GameManager_Instance.LoopMethod.Count < 10)
                     {
-                        GameManager.Instance.Loop.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
+                        GameManager_Instance.LoopMethod.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
-                        UIAnimation.Animation_BlockPop(GameManager.Instance.Loop.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(GameManager_Instance.LoopMethod.Last().gameObject);
                     }
                     break;
             }
@@ -171,28 +171,28 @@ public class UIManager : MonoBehaviour
         switch (currentLayout)
         {
             case CurrentLayout.Main:
-                if (GameManager.Instance.MainMethod.Count > 0)
+                if (GameManager_Instance.MainMethod.Count > 0)
                 {
-                    CodingBlock lastblock = GameManager.Instance.MainMethod.Last();
-                    GameManager.Instance.MainMethod.Remove(lastblock);
+                    CodingBlock lastblock = GameManager_Instance.MainMethod.Last();
+                    GameManager_Instance.MainMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
 
             case CurrentLayout.Function:
-                if (GameManager.Instance.Function.Count > 0)
+                if (GameManager_Instance.FunctionMethod.Count > 0)
                 {
-                    CodingBlock lastblock = GameManager.Instance.Function.Last();
-                    GameManager.Instance.Function.Remove(lastblock);
+                    CodingBlock lastblock = GameManager_Instance.FunctionMethod.Last();
+                    GameManager_Instance.FunctionMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
 
             case CurrentLayout.Loop:
-                if (GameManager.Instance.Loop.Count > 0)
+                if (GameManager_Instance.LoopMethod.Count > 0)
                 {
-                    CodingBlock lastblock = GameManager.Instance.Loop.Last();
-                    GameManager.Instance.Loop.Remove(lastblock);
+                    CodingBlock lastblock = GameManager_Instance.LoopMethod.Last();
+                    GameManager_Instance.LoopMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
@@ -202,19 +202,20 @@ public class UIManager : MonoBehaviour
 
     public void PlayBlock_Button()
     {
-        GameManager.Instance.PlayToggle = true;
+        GameManager_Instance.Set_PlayToggle(true);
     }
     public void StopBlock_Button()
     {
-        GameManager.Instance.PlayToggle = false;
-        GameManager.Instance.IsBlocksRunning = false;
+        GameManager_Instance.Set_PlayToggle(false);
+        GameManager_Instance.Set_IsBlocksRunning(false);
 
-        GameManager.Instance.PlayerManager.ResetPlayerPosition();
+        PlayerManager_Instance.ResetPlayerPosition();
 
         DisableBlockHighlights();
         ResetBlockAnimation();
-        UIAnimation.Animation_BlockPop(playButton);
+        UIAnimation.Animation_PlayBlockDelay(playButton);
         stopButton.gameObject.SetActive(false);
+        playButton.gameObject.SetActive(true);
     }
     public void ToggleTimeScale_Button()
     {
@@ -277,22 +278,22 @@ public class UIManager : MonoBehaviour
 
     public void DisableBlockHighlights()
     {
-        foreach (CodingBlock block in GameManager.Instance.MainMethod)
+        foreach (CodingBlock block in GameManager_Instance.MainMethod)
         {
             block.ToggleHighLight(false);
         }
-        foreach (CodingBlock block in GameManager.Instance.Function)
+        foreach (CodingBlock block in GameManager_Instance.FunctionMethod)
         {
             block.ToggleHighLight(false);
         }
-        foreach (CodingBlock block in GameManager.Instance.Loop)
+        foreach (CodingBlock block in GameManager_Instance.LoopMethod)
         {
             block.ToggleHighLight(false);
         }
     }
     public void ResetBlockAnimation()
     {
-        foreach (CodingBlock block in GameManager.Instance.MainMethod)
+        foreach (CodingBlock block in GameManager_Instance.MainMethod)
         {
             UIAnimation.Animation_BlockShake(block.gameObject);
         }

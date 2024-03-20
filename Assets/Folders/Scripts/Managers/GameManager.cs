@@ -8,16 +8,16 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-    public PlayerManager PlayerManager { get; private set; } = null;
-    public UIManager UIManager { get; private set; } = null;
+    public static GameManager GameManager_Instance { get; private set; }
+    public static PlayerManager PlayerManager_Instance { get; private set; }
+    public static UIManager UIManager_Instance { get; private set; }
 
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
-    public List<CodingBlock> Function { get; private set; } = new List<CodingBlock>();
-    public List<CodingBlock> Loop { get; private set; } = new List<CodingBlock>();
+    public List<CodingBlock> FunctionMethod { get; private set; } = new List<CodingBlock>();
+    public List<CodingBlock> LoopMethod { get; private set; } = new List<CodingBlock>();
 
-    public bool PlayToggle = false;
-    public bool IsBlocksRunning = false;
+    public bool PlayToggle { get; private set; } = false;
+    public bool IsBlocksRunning { get; private set; } = false;
 
     private Coroutine blockCompiler;
 
@@ -36,9 +36,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         #region Singleton Code
-        if (Instance == null)
+        if (GameManager_Instance == null)
         {
-            Instance = this;
+            GameManager_Instance = this;
             DontDestroyOnLoad(this.gameObject);
             Debug.Log("GameManager is Created!");
         }
@@ -66,8 +66,9 @@ public class GameManager : MonoBehaviour
             if (!IsBlocksRunning)
             {
                 IsBlocksRunning = true;
-                UIManager.stopButton.gameObject.SetActive(true);
-                UIManager.Lock_UIElements(true);
+                UIManager_Instance.playButton.gameObject.SetActive(false);
+                UIManager_Instance.stopButton.gameObject.SetActive(true);
+                UIManager_Instance.Lock_UIElements(true);
 
                 foreach (CodingBlock block in MainMethod)
                 {
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour
 
                     yield return waitForHalfSeconds;
 
-                    PlayerManager.InitializePlayerMoveVector();
+                    PlayerManager_Instance.InitializePlayerMoveVector();
                     block.GetComponent<CodingBlock>().enabled = true;
 
                     if (block.gameObject.tag == "Method")
@@ -98,8 +99,8 @@ public class GameManager : MonoBehaviour
                 PlayToggle = false;
                 IsBlocksRunning = false;
 
-                UIManager.DisableBlockHighlights();
-                UIManager.Lock_UIElements(false);
+                UIManager_Instance.DisableBlockHighlights();
+                UIManager_Instance.Lock_UIElements(false);
             }
         }
     }
@@ -107,28 +108,37 @@ public class GameManager : MonoBehaviour
     public void Initialize_CodingMethod()
     {
         MainMethod.Clear(); // OnSceneLoad 델리게이트 체인을 걸어서 사용하기, 새로운 스테이지 마다 블록 초기화
-        Function.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
-        Loop.Clear();
+        FunctionMethod.Clear();   // 레이아웃 내부에 블록 프리팹도 Destroy 하기
+        LoopMethod.Clear();
 
         foreach (CodingBlock blockObj in MainMethod)
         {
             Destroy(blockObj.gameObject);
         }
-        foreach (CodingBlock blockObj in Function)
+        foreach (CodingBlock blockObj in FunctionMethod)
         {
             Destroy(blockObj.gameObject);
         }
-        foreach (CodingBlock blockObj in Loop)
+        foreach (CodingBlock blockObj in LoopMethod)
         {
             Destroy(blockObj.gameObject);
         }
     }
     public void Get_UIManager(GameObject obj)
     {
-        UIManager = obj.GetComponent<UIManager>();
+        UIManager_Instance = obj.GetComponent<UIManager>();
     }
     public void Get_PlayerManager(GameObject obj)
     {
-        PlayerManager = obj.GetComponent<PlayerManager>();
+        PlayerManager_Instance = obj.GetComponent<PlayerManager>();
+    }
+
+    public void Set_PlayToggle(bool enable)
+    {
+        PlayToggle = enable;
+    }
+    public void Set_IsBlocksRunning(bool enable)
+    {
+        IsBlocksRunning = enable;
     }
 }

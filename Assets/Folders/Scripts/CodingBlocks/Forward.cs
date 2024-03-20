@@ -1,18 +1,15 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+using static GameManager;
 
 public class Forward : CodingBlock
 {
-    public bool IsMoving { get; private set; } = false;
-    public bool ToggleForward { get; private set; } = false;
-
+    public bool IsForwarding { get; private set; } = false;
     private float fixedDeltaTimeCount = 0;
+    private readonly float PLAYER_MOVESPEED = 1.5f;
 
-    private readonly float DISTANCE = 0.6f;
     private RaycastHit hit;
+    private readonly float DISTANCE = 0.6f;
 
     private void OnEnable()
     {
@@ -21,21 +18,29 @@ public class Forward : CodingBlock
 
     private void Update()
     {
-        if (GameManager.Instance.PlayToggle == false) // 정지 버튼을 누르면 실행
+        if (GameManager_Instance.PlayToggle == false) // 정지 버튼을 누르면 실행
         {
-            IsMoving = false;
-            GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", false);
+            IsForwarding = false;
+            PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);
             blockTweener.Kill();
             transform.localScale = Vector3.one;
+            fixedDeltaTimeCount = 0;
             this.GetComponent<CodingBlock>().enabled = false;
         }
     }
 
     private void FixedUpdate()
     {
-        if(IsMoving == true)
+        if(IsForwarding == true)
         {
             PlayerMove();
+
+            if (fixedDeltaTimeCount > 0.65f)
+            {
+                PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);
+            }
+            else
+                PlayerManager_Instance.PlayerAnimator.SetBool("Forward", IsForwarding);
         }
     }
 
@@ -43,49 +48,42 @@ public class Forward : CodingBlock
     {
         ToggleHighLight(true);
 
-        if (Physics.Raycast(GameManager.Instance.PlayerManager.playerObject.transform.localPosition, GameManager.Instance.PlayerManager.playerObject.transform.forward, out hit, DISTANCE))
+        if (Physics.Raycast(PlayerManager_Instance.playerObject.transform.localPosition, PlayerManager_Instance.playerObject.transform.forward, out hit, DISTANCE))
         {
-            IsMoving = false;
-            blockTweener = GameManager.Instance.UIManager.UIAnimation.Animation_BlockShake(this.gameObject);
+            IsForwarding = false;
+            blockTweener = UIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (hit.collider.CompareTag("Wall"))
             {
-                GameManager.Instance.PlayerManager.PlayerAnimator.SetTrigger("WallHit");
-                GameManager.Instance.UIManager.Shake_UIElements();
+                PlayerManager_Instance.PlayerAnimator.SetTrigger("WallHit");
+                UIManager_Instance.Shake_UIElements();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
             else if (hit.collider.CompareTag("Edge"))
             {
-                GameManager.Instance.PlayerManager.PlayerAnimator.SetTrigger("Edge");
+                PlayerManager_Instance.PlayerAnimator.SetTrigger("Edge");
                 this.GetComponent<CodingBlock>().enabled = false;
             }
         }
         else
         {
-            blockTweener = GameManager.Instance.UIManager.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-            IsMoving = true;
+            blockTweener = UIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+            IsForwarding = true;
         }
     }
 
     private void PlayerMove()
     {
-        if (IsMoving == true)
+        if (IsForwarding == true)
         {
             fixedDeltaTimeCount += Time.fixedDeltaTime;
-            Vector3 newPos = Vector3.Lerp(GameManager.Instance.PlayerManager.PlayerStartPos, GameManager.Instance.PlayerManager.PlayerNewPos, 1.5f * fixedDeltaTimeCount);
-            GameManager.Instance.PlayerManager.playerObject.transform.localPosition = newPos;
-
-            if (fixedDeltaTimeCount > 0.65f)
-            {
-                GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", false);
-            }
-            else
-                GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", IsMoving);
+            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, PLAYER_MOVESPEED * fixedDeltaTimeCount);
+            PlayerManager_Instance.playerObject.transform.localPosition = newPos;
 
             if (fixedDeltaTimeCount > 1)
             {
-                IsMoving = false;
-                GameManager.Instance.PlayerManager.PlayerAnimator.SetBool("Forward", false);
+                IsForwarding = false;
+                PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);
                 this.GetComponent<CodingBlock>().enabled = false;
             }
         }

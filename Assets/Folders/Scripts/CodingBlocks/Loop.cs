@@ -1,13 +1,13 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using static GameManager;
 
 public class Loop : CodingBlock
 {
     private void Update()
     {
-        if (GameManager.Instance.PlayToggle == true) return;
+        if (GameManager_Instance.PlayToggle == true) return;
 
         blockTweener.Kill();
         transform.localScale = Vector3.one;
@@ -16,27 +16,27 @@ public class Loop : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
-        blockTweener = GameManager.Instance.UIManager.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-        GameManager.Instance.UIManager.SelectedMethods(UIManager.CurrentLayout.Loop);
+        blockTweener = UIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+        UIManager_Instance.SelectedMethods(UIManager.CurrentLayout.Loop);
     }
 
     public override IEnumerator Subroutine()
     {
-        foreach (CodingBlock block in GameManager.Instance.Loop)
+        foreach (CodingBlock block in GameManager_Instance.LoopMethod)
         {
-            if (GameManager.Instance.PlayToggle == false)
+            if (GameManager_Instance.PlayToggle == false)
                 break;
 
-            yield return GameManager.Instance.waitForHalfSeconds;
+            yield return GameManager_Instance.waitForSeconds;
 
-            GameManager.Instance.PlayerManager.InitializePlayerMoveVector();
+            PlayerManager_Instance.InitializePlayerMoveVector();
             block.GetComponent<CodingBlock>().enabled = true;
             block.MoveOrder();
 
-            if (GameManager.Instance.PlayToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
+            if (GameManager_Instance.PlayToggle == true) yield return GameManager_Instance.waitForPointEightSeconds;
         }
-        if (GameManager.Instance.PlayToggle == true) yield return GameManager.Instance.waitForHalfSeconds;
+        //if (GameManager_Instance.PlayToggle == true) yield return GameManager_Instance.waitForHalfSeconds;
 
-        GameManager.Instance.UIManager.SelectedMethods(UIManager.CurrentLayout.Main);
+        UIManager_Instance.SelectedMethods(UIManager.CurrentLayout.Main);
     }
 }
