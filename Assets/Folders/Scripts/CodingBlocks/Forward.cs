@@ -5,7 +5,7 @@ using static GameManager;
 public class Forward : CodingBlock
 {
     public bool IsForwarding { get; private set; } = false;
-    private float fixedDeltaTimeCount = 0;
+    private float deltaTimeCount = 0;
     private readonly float PLAYER_MOVESPEED = 1.5f;
 
     private RaycastHit hit;
@@ -13,7 +13,7 @@ public class Forward : CodingBlock
 
     private void OnEnable()
     {
-        fixedDeltaTimeCount = 0;
+        deltaTimeCount = 0;
     }
 
     private void Update()
@@ -24,18 +24,14 @@ public class Forward : CodingBlock
             PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);
             blockTweener.Kill();
             transform.localScale = Vector3.one;
-            fixedDeltaTimeCount = 0;
+            deltaTimeCount = 0;
             this.GetComponent<CodingBlock>().enabled = false;
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if(IsForwarding == true)
+        else
         {
             PlayerMove();
 
-            if (fixedDeltaTimeCount > 0.65f)
+            if (deltaTimeCount > 0.65f)
             {
                 PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);
             }
@@ -43,6 +39,7 @@ public class Forward : CodingBlock
                 PlayerManager_Instance.PlayerAnimator.SetBool("Forward", IsForwarding);
         }
     }
+
 
     public override void MoveOrder()
     {
@@ -76,11 +73,11 @@ public class Forward : CodingBlock
     {
         if (IsForwarding == true)
         {
-            fixedDeltaTimeCount += Time.fixedDeltaTime;
-            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, PLAYER_MOVESPEED * fixedDeltaTimeCount);
+            deltaTimeCount += Time.deltaTime;
+            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, PLAYER_MOVESPEED * deltaTimeCount);
             PlayerManager_Instance.playerObject.transform.localPosition = newPos;
 
-            if (fixedDeltaTimeCount > 1)
+            if (deltaTimeCount > 1)
             {
                 IsForwarding = false;
                 PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);

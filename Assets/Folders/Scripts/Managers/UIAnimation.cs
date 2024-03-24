@@ -41,11 +41,11 @@ public class UIAnimation
         blockObj.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo);
     }
 
-    public void Animation_PlayBlockDelay(GameObject blockObj)
+    public void Animation_PlayBlockDelay(GameObject blockObj, float delayTime)
     {
         blockObj.gameObject.transform.localScale = Vector3.zero;
         blockObj.gameObject.GetComponent<Button>().interactable = false;
-        blockObj.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo).OnComplete(() => blockObj.gameObject.GetComponent<Button>().interactable = true);
+        blockObj.gameObject.transform.DOScale(1, delayTime).SetEase(Ease.OutExpo).OnComplete(() => blockObj.gameObject.GetComponent<Button>().interactable = true);
     }
 
     public void Animation_UIShake(GameObject blockObj)

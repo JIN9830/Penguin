@@ -8,6 +8,14 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
+    public enum CurrentMethod
+    {
+        Main,
+        Function,
+        Loop,
+    }
+
+    public CurrentMethod currentMethod = CurrentMethod.Main;
     public static GameManager GameManager_Instance { get; private set; }
     public static PlayerManager PlayerManager_Instance { get; private set; }
     public static UIManager UIManager_Instance { get; private set; }
@@ -15,16 +23,21 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> FunctionMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> LoopMethod { get; private set; } = new List<CodingBlock>();
+    [SerializeField] private int loopReaptCount = 1;
 
     public bool PlayToggle { get; private set; } = false;
     public bool IsBlocksRunning { get; private set; } = false;
 
     private Coroutine blockCompiler;
+    private Coroutine subBlockCompiler;
 
     public readonly WaitForSeconds waitForSeconds = new(1.0f);
     public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
     public readonly WaitForSeconds waitForPointEightSeconds = new(0.8f);
-    public WaitUntil waitUntilPlayToggle;
+
+    public WaitUntil waitUntil_PlayTrigger;
+    public WaitUntil waitUntil_SubMethodTrigger;
+    public WaitUntil waitUntil_EndOfSubMethod;
 
     [Header("코딩블럭 프리팹")]
     public GameObject forwardPrefab;
@@ -49,19 +62,24 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        waitUntilPlayToggle = new WaitUntil(() => PlayToggle == true);
+        waitUntil_PlayTrigger = new WaitUntil(() => PlayToggle == true);
+        waitUntil_SubMethodTrigger = new WaitUntil(() => currentMethod != CurrentMethod.Main);
+        waitUntil_EndOfSubMethod = new WaitUntil(() => currentMethod == CurrentMethod.Main);
+
+        Application.targetFrameRate = 144;
     }
 
     private void Start()
     {
         blockCompiler = StartCoroutine(BlockCompiler_Co());
+        subBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
     }
 
     public IEnumerator BlockCompiler_Co()
     {
         while (true)
         {
-            if (!PlayToggle) yield return waitUntilPlayToggle;
+            if (!PlayToggle) yield return waitUntil_PlayTrigger;
 
             if (!IsBlocksRunning)
             {
@@ -79,17 +97,9 @@ public class GameManager : MonoBehaviour
 
                     PlayerManager_Instance.InitializePlayerMoveVector();
                     block.GetComponent<CodingBlock>().enabled = true;
+                    block.MoveOrder();
 
-                    if (block.gameObject.tag == "Method")
-                    {
-                        block.MoveOrder();
-                        yield return block.StartCoroutine(block.Subroutine());
-                    }
-                    else
-                    {
-                        block.MoveOrder();
-                    }
-
+                    yield return waitUntil_EndOfSubMethod;
 
                     if (IsBlocksRunning) yield return waitForPointEightSeconds;
                 }
@@ -101,6 +111,82 @@ public class GameManager : MonoBehaviour
 
                 UIManager_Instance.DisableBlockHighlights();
                 UIManager_Instance.Lock_UIElements(false);
+            }
+        }
+    }
+
+    public IEnumerator SubBlockCompiler_Co()
+    {
+        while (true)
+        {
+            yield return waitUntil_SubMethodTrigger;
+
+            switch (currentMethod)
+            {
+                case CurrentMethod.Function:
+
+                    foreach (CodingBlock block in FunctionMethod)
+                    {
+                        if (PlayToggle == false)
+                            break;
+
+                        yield return waitForPointEightSeconds;
+
+                        PlayerManager_Instance.InitializePlayerMoveVector();
+                        block.GetComponent<CodingBlock>().enabled = true;
+                        block.MoveOrder();
+
+                        if (PlayToggle == true) yield return waitForPointEightSeconds;
+                    }
+
+                    if (PlayToggle == true) yield return waitForPointEightSeconds;
+
+                    foreach (CodingBlock block in FunctionMethod)
+                    {
+                        block.ToggleHighLight(false);
+                    }
+
+                    UIManager_Instance.SelectedMethods(UIManager.CurrentLayout.Main);
+                    currentMethod = CurrentMethod.Main;
+                    break;
+
+
+                case CurrentMethod.Loop:
+
+                    for (int i = 0; i < loopReaptCount; i++)
+                    {
+                        if (PlayToggle == false)
+                            break;
+
+                        foreach (CodingBlock block in LoopMethod)
+                        {
+                            if (PlayToggle == false)
+                                break;
+
+                            yield return waitForPointEightSeconds;
+
+                            PlayerManager_Instance.InitializePlayerMoveVector();
+                            block.GetComponent<CodingBlock>().enabled = true;
+                            block.MoveOrder();
+
+                            if (PlayToggle == true) yield return waitForHalfSeconds;
+                        }
+
+                        if (PlayToggle == true) 
+                        {
+                            yield return waitForPointEightSeconds;
+
+                            foreach (CodingBlock block in LoopMethod)
+                            {
+                                block.ToggleHighLight(false);
+                            }
+                        }
+                        
+                    }
+
+                    UIManager_Instance.SelectedMethods(UIManager.CurrentLayout.Main);
+                    currentMethod = CurrentMethod.Main;
+                    break;
             }
         }
     }

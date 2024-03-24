@@ -8,12 +8,12 @@ public class TrunRight : CodingBlock
     Quaternion playerEndRot;
     private void Update()
     {
-        if (GameManager.GameManager_Instance.PlayToggle == true) return;
-
-        blockTweener.Kill();
-        transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        this.GetComponent<CodingBlock>().enabled = false;
-
+        if (GameManager.GameManager_Instance.PlayToggle == false)
+        {
+            blockTweener.Kill();
+            transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            this.GetComponent<CodingBlock>().enabled = false;
+        }
     }
     public override void MoveOrder()
     {

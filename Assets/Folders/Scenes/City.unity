@@ -1391,6 +1391,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01ece739c9283645b99a720cbdf47ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMethod: 0
+  loopReaptCount: 3
   forwardPrefab: {fileID: 4114433310597077788, guid: c4a2bf30ffbaed64f9d7691f2011a3bc,
     type: 3}
   turnLeftPrefab: {fileID: 3712590164119441793, guid: b5d72ed42ff5a214f875120ed6bfda20,

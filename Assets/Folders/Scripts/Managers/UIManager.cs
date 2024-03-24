@@ -213,7 +213,7 @@ public class UIManager : MonoBehaviour
 
         DisableBlockHighlights();
         ResetBlockAnimation();
-        UIAnimation.Animation_PlayBlockDelay(playButton);
+        UIAnimation.Animation_PlayBlockDelay(playButton, 1);
         stopButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(true);
     }
