@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static GameManager;
 
 public class Forward : CodingBlock
@@ -16,28 +17,23 @@ public class Forward : CodingBlock
         deltaTimeCount = 0;
     }
 
+    private void OnDisable()
+    {
+        deltaTimeCount = 0.65f;
+        PlayerManager_Instance.PlayerAnimator.SetFloat("ForwardF", deltaTimeCount);
+    }
+
     private void Update()
     {
         if (GameManager_Instance.PlayToggle == false) // 정지 버튼을 누르면 실행
         {
             IsForwarding = false;
-            PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);
             blockTweener.Kill();
             transform.localScale = Vector3.one;
-            deltaTimeCount = 0;
             this.GetComponent<CodingBlock>().enabled = false;
         }
         else
-        {
             PlayerMove();
-
-            if (deltaTimeCount > 0.65f)
-            {
-                PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);
-            }
-            else
-                PlayerManager_Instance.PlayerAnimator.SetBool("Forward", IsForwarding);
-        }
     }
 
 
@@ -53,7 +49,7 @@ public class Forward : CodingBlock
             if (hit.collider.CompareTag("Wall"))
             {
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("WallHit");
-                UIManager_Instance.Shake_UIElements();
+                UIManager_Instance.ShakeUIElements();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
             else if (hit.collider.CompareTag("Edge"))
@@ -71,6 +67,8 @@ public class Forward : CodingBlock
 
     private void PlayerMove()
     {
+        PlayerManager_Instance.PlayerAnimator.SetFloat("ForwardF", deltaTimeCount);
+
         if (IsForwarding == true)
         {
             deltaTimeCount += Time.deltaTime;
@@ -80,7 +78,6 @@ public class Forward : CodingBlock
             if (deltaTimeCount > 1)
             {
                 IsForwarding = false;
-                PlayerManager_Instance.PlayerAnimator.SetBool("Forward", false);
                 this.GetComponent<CodingBlock>().enabled = false;
             }
         }

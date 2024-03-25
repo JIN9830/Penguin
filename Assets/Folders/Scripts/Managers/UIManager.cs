@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
     }
 
     public ECurrentLayout currentLayout = ECurrentLayout.Main;
-
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
     [Header("캔버스 오브젝트")]
@@ -79,8 +78,8 @@ public class UIManager : MonoBehaviour
         #region Play, Stop & TimeControl OnClickAddListener
         playButton.GetComponent<Button>().onClick.AddListener(() => PlayBlock_Button());
         stopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock_Button());
-        speedUpButton.GetComponent<Button>().onClick.AddListener(() => ToggleTimeScale_Button());
-        speedDownButton.GetComponent<Button>().onClick.AddListener(() => ToggleTimeScale_Button());
+        speedUpButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
+        speedDownButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
         #endregion
     }
 
@@ -209,7 +208,7 @@ public class UIManager : MonoBehaviour
         stopButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(true);
     }
-    public void ToggleTimeScale_Button()
+    public void TimeScaleButton()
     {
         if (Time.timeScale == 1f)
         {
@@ -224,7 +223,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Lock_UIElements(bool enable)
+    public void LockUIElements(bool enable)
     {
         #region Blocks Lock
         forwardButton.GetComponent<Button>().enabled = !enable;
@@ -248,7 +247,7 @@ public class UIManager : MonoBehaviour
         loopDelete.GetComponent<Button>().interactable = !enable;
         #endregion
     }
-    public void Shake_UIElements()
+    public void ShakeUIElements()
     {
         UIAnimation.Animation_UIShake(mainLayout);
         UIAnimation.Animation_UIShake(mainDelete);

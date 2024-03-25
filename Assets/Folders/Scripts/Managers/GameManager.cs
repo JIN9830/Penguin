@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
                 IsMainMethodRunning = true;
                 UIManager_Instance.playButton.gameObject.SetActive(false);
                 UIManager_Instance.stopButton.gameObject.SetActive(true);
-                UIManager_Instance.Lock_UIElements(true);
+                UIManager_Instance.LockUIElements(true);
 
                 foreach (CodingBlock block in MainMethod)
                 {
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
                 IsMainMethodRunning = false;
 
                 UIManager_Instance.DisableBlockHighlights();
-                UIManager_Instance.Lock_UIElements(false);
+                UIManager_Instance.LockUIElements(false);
         }
     }
 

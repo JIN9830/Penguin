@@ -9851,7 +9851,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLayout: 0
-  buttonOder: 0
   Canvas: {fileID: 764931415}
   mainLayout: {fileID: 748663920}
   functionLayout: {fileID: 964708505}
