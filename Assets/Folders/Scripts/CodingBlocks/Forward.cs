@@ -19,7 +19,7 @@ public class Forward : CodingBlock
 
     private void OnDisable()
     {
-        deltaTimeCount = 0.65f;
+        deltaTimeCount = 0.67f;
         PlayerManager_Instance.PlayerAnimator.SetFloat("ForwardF", deltaTimeCount);
     }
 
