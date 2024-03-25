@@ -19,7 +19,7 @@ public class Function : CodingBlock
     {
         ToggleHighLight(true);
         blockTweener = UIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-        UIManager_Instance.SelectedMethods(UIManager.CurrentLayout.Function);
-        GameManager_Instance.currentMethod = CurrentMethod.Function;
+        UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Function);
+        GameManager_Instance.currentMethod = ECurrentMethod.Function;
     }
 }

@@ -8,14 +8,14 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-    public enum CurrentMethod
+    public enum ECurrentMethod
     {
         Main,
         Function,
         Loop,
     }
 
-    public CurrentMethod currentMethod = CurrentMethod.Main;
+    public ECurrentMethod currentMethod = ECurrentMethod.Main;
     public static GameManager GameManager_Instance { get; private set; }
     public static PlayerManager PlayerManager_Instance { get; private set; }
     public static UIManager UIManager_Instance { get; private set; }
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int loopReaptCount = 1;
 
     public bool PlayToggle { get; private set; } = false;
-    public bool IsBlocksRunning { get; private set; } = false;
+    public bool IsMainMethodRunning { get; private set; } = false;
 
     private Coroutine blockCompiler;
     private Coroutine subBlockCompiler;
@@ -63,8 +63,8 @@ public class GameManager : MonoBehaviour
         #endregion
 
         waitUntil_PlayTrigger = new WaitUntil(() => PlayToggle == true);
-        waitUntil_SubMethodTrigger = new WaitUntil(() => currentMethod != CurrentMethod.Main);
-        waitUntil_EndOfSubMethod = new WaitUntil(() => currentMethod == CurrentMethod.Main);
+        waitUntil_SubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
+        waitUntil_EndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
 
         Application.targetFrameRate = 144;
     }
@@ -81,16 +81,14 @@ public class GameManager : MonoBehaviour
         {
             if (!PlayToggle) yield return waitUntil_PlayTrigger;
 
-            if (!IsBlocksRunning)
-            {
-                IsBlocksRunning = true;
+                IsMainMethodRunning = true;
                 UIManager_Instance.playButton.gameObject.SetActive(false);
                 UIManager_Instance.stopButton.gameObject.SetActive(true);
                 UIManager_Instance.Lock_UIElements(true);
 
                 foreach (CodingBlock block in MainMethod)
                 {
-                    if (!IsBlocksRunning)
+                    if (!IsMainMethodRunning)
                         break;
 
                     yield return waitForHalfSeconds;
@@ -101,17 +99,16 @@ public class GameManager : MonoBehaviour
 
                     yield return waitUntil_EndOfSubMethod;
 
-                    if (IsBlocksRunning) yield return waitForPointEightSeconds;
+                    if (IsMainMethodRunning) yield return waitForPointEightSeconds;
                 }
 
-                if (IsBlocksRunning) yield return waitForSeconds;
+                if (IsMainMethodRunning) yield return waitForSeconds;
 
                 PlayToggle = false;
-                IsBlocksRunning = false;
+                IsMainMethodRunning = false;
 
                 UIManager_Instance.DisableBlockHighlights();
                 UIManager_Instance.Lock_UIElements(false);
-            }
         }
     }
 
@@ -123,7 +120,8 @@ public class GameManager : MonoBehaviour
 
             switch (currentMethod)
             {
-                case CurrentMethod.Function:
+                #region Function Compiler Code
+                case ECurrentMethod.Function:
 
                     foreach (CodingBlock block in FunctionMethod)
                     {
@@ -146,12 +144,13 @@ public class GameManager : MonoBehaviour
                         block.ToggleHighLight(false);
                     }
 
-                    UIManager_Instance.SelectedMethods(UIManager.CurrentLayout.Main);
-                    currentMethod = CurrentMethod.Main;
+                    UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Main);
+                    currentMethod = ECurrentMethod.Main;
                     break;
+                #endregion
 
-
-                case CurrentMethod.Loop:
+                #region Loop Compiler Code
+                case ECurrentMethod.Loop:
 
                     for (int i = 0; i < loopReaptCount; i++)
                     {
@@ -184,10 +183,15 @@ public class GameManager : MonoBehaviour
                         
                     }
 
-                    UIManager_Instance.SelectedMethods(UIManager.CurrentLayout.Main);
-                    currentMethod = CurrentMethod.Main;
+                    UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Main);
+                    currentMethod = ECurrentMethod.Main;
                     break;
+                    #endregion
             }
+
+
+            UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Main);
+            currentMethod = ECurrentMethod.Main;
         }
     }
 
@@ -212,11 +216,13 @@ public class GameManager : MonoBehaviour
     }
     public void Get_UIManager(GameObject obj)
     {
-        UIManager_Instance = obj.GetComponent<UIManager>();
+        obj.TryGetComponent(out UIManager instance);
+        UIManager_Instance = instance;
     }
     public void Get_PlayerManager(GameObject obj)
     {
-        PlayerManager_Instance = obj.GetComponent<PlayerManager>();
+        obj.TryGetComponent(out PlayerManager instance);
+        PlayerManager_Instance = instance;
     }
 
     public void Set_PlayToggle(bool enable)
@@ -225,6 +231,6 @@ public class GameManager : MonoBehaviour
     }
     public void Set_IsBlocksRunning(bool enable)
     {
-        IsBlocksRunning = enable;
+        IsMainMethodRunning = enable;
     }
 }

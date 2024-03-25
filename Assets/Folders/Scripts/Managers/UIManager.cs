@@ -6,22 +6,14 @@ using static GameManager;
 
 public class UIManager : MonoBehaviour
 {
-    public enum CurrentLayout
+    public enum ECurrentLayout
     {
         Main,
         Function,
         Loop,
     }
-    public enum ButtonOder
-    {
-        None,
-        Play,
-        Stop,
-        TimeScale,
-    }
-    public CurrentLayout currentLayout = CurrentLayout.Main;
 
-    public ButtonOder buttonOder = ButtonOder.None;
+    public ECurrentLayout currentLayout = ECurrentLayout.Main;
 
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
@@ -69,19 +61,19 @@ public class UIManager : MonoBehaviour
         #endregion
 
         #region Layout activate onClickAddListener
-        mainLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
-        functionLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
-        loopLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
+        mainLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Main));
+        functionLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Function));
+        loopLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Loop));
 
-        mainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Main));
-        functionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Loop));
-        loopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(CurrentLayout.Function));
+        mainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Main));
+        functionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Loop));
+        loopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Function));
         #endregion
 
         #region block delete OnClickAddListener
-        mainDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = CurrentLayout.Main; DeleteBlock(currentLayout); });
-        functionDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = CurrentLayout.Function; DeleteBlock(currentLayout); });
-        loopDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = CurrentLayout.Loop; DeleteBlock(currentLayout); });
+        mainDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Main; DeleteBlock(currentLayout); });
+        functionDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Function; DeleteBlock(currentLayout); });
+        loopDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Loop; DeleteBlock(currentLayout); });
         #endregion
 
         #region Play, Stop & TimeControl OnClickAddListener
@@ -97,24 +89,24 @@ public class UIManager : MonoBehaviour
         GameManager_Instance.Initialize_CodingMethod();
     }
 
-    public void SelectedMethods(CurrentLayout selectMethod)
+    public void SelectedMethods(ECurrentLayout selectMethod)
     {
         switch (selectMethod)
         {
-            case CurrentLayout.Main:
-                currentLayout = CurrentLayout.Main;
+            case ECurrentLayout.Main:
+                currentLayout = ECurrentLayout.Main;
                 break;
 
-            case CurrentLayout.Function:
-                currentLayout = CurrentLayout.Function;
+            case ECurrentLayout.Function:
+                currentLayout = ECurrentLayout.Function;
                 functionButton.gameObject.SetActive(true);
                 loopButton.gameObject.SetActive(false);
                 functionLayout.transform.parent.gameObject.SetActive(true);
                 loopLayout.transform.parent.gameObject.SetActive(false);
                 break;
 
-            case CurrentLayout.Loop:
-                currentLayout = CurrentLayout.Loop;
+            case ECurrentLayout.Loop:
+                currentLayout = ECurrentLayout.Loop;
                 loopButton.gameObject.SetActive(true);
                 functionButton.gameObject.SetActive(false);
                 loopLayout.transform.parent.gameObject.SetActive(true);
@@ -137,7 +129,7 @@ public class UIManager : MonoBehaviour
         {
             switch (currentLayout)
             {
-                case CurrentLayout.Main:
+                case ECurrentLayout.Main:
                     if (GameManager_Instance.MainMethod.Count < 10)
                     {
                         GameManager_Instance.MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
@@ -146,7 +138,7 @@ public class UIManager : MonoBehaviour
                     }
                     break;
 
-                case CurrentLayout.Function:
+                case ECurrentLayout.Function:
                     if (GameManager_Instance.FunctionMethod.Count < 10)
                     {
                         GameManager_Instance.FunctionMethod.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
@@ -155,7 +147,7 @@ public class UIManager : MonoBehaviour
                     }
                     break;
 
-                case CurrentLayout.Loop:
+                case ECurrentLayout.Loop:
                     if (GameManager_Instance.LoopMethod.Count < 10)
                     {
                         GameManager_Instance.LoopMethod.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
@@ -166,11 +158,11 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    public void DeleteBlock(CurrentLayout currentLayout)
+    public void DeleteBlock(ECurrentLayout currentLayout)
     {
         switch (currentLayout)
         {
-            case CurrentLayout.Main:
+            case ECurrentLayout.Main:
                 if (GameManager_Instance.MainMethod.Count > 0)
                 {
                     CodingBlock lastblock = GameManager_Instance.MainMethod.Last();
@@ -179,7 +171,7 @@ public class UIManager : MonoBehaviour
                 }
                 break;
 
-            case CurrentLayout.Function:
+            case ECurrentLayout.Function:
                 if (GameManager_Instance.FunctionMethod.Count > 0)
                 {
                     CodingBlock lastblock = GameManager_Instance.FunctionMethod.Last();
@@ -188,7 +180,7 @@ public class UIManager : MonoBehaviour
                 }
                 break;
 
-            case CurrentLayout.Loop:
+            case ECurrentLayout.Loop:
                 if (GameManager_Instance.LoopMethod.Count > 0)
                 {
                     CodingBlock lastblock = GameManager_Instance.LoopMethod.Last();
