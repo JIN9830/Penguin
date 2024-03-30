@@ -19,15 +19,15 @@ public class Forward : CodingBlock
 
     private void OnDisable()
     {
+        IsForwarding = false;
         deltaTimeCount = 0.67f;
-        PlayerManager_Instance.PlayerAnimator.SetFloat("ForwardF", deltaTimeCount);
+        PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", deltaTimeCount);
     }
 
     private void Update()
     {
         if (GameManager_Instance.PlayToggle == false) // 정지 버튼을 누르면 실행
         {
-            IsForwarding = false;
             blockTweener.Kill();
             transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
@@ -35,7 +35,22 @@ public class Forward : CodingBlock
         else
             PlayerMove();
     }
+    private void PlayerMove()
+    {
+        PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", deltaTimeCount);
 
+        if (IsForwarding == true)
+        {
+            deltaTimeCount += Time.deltaTime;
+            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, PLAYER_MOVESPEED * deltaTimeCount);
+            PlayerManager_Instance.playerObject.transform.localPosition = newPos;
+
+            if (deltaTimeCount > 1)
+            {
+                this.GetComponent<CodingBlock>().enabled = false;
+            }
+        }
+    }
 
     public override void MoveOrder()
     {
@@ -43,7 +58,6 @@ public class Forward : CodingBlock
 
         if (Physics.Raycast(PlayerManager_Instance.playerObject.transform.localPosition, PlayerManager_Instance.playerObject.transform.forward, out hit, DISTANCE))
         {
-            IsForwarding = false;
             blockTweener = UIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (hit.collider.CompareTag("Wall"))
@@ -65,23 +79,7 @@ public class Forward : CodingBlock
         }
     }
 
-    private void PlayerMove()
-    {
-        PlayerManager_Instance.PlayerAnimator.SetFloat("ForwardF", deltaTimeCount);
 
-        if (IsForwarding == true)
-        {
-            deltaTimeCount += Time.deltaTime;
-            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, PLAYER_MOVESPEED * deltaTimeCount);
-            PlayerManager_Instance.playerObject.transform.localPosition = newPos;
-
-            if (deltaTimeCount > 1)
-            {
-                IsForwarding = false;
-                this.GetComponent<CodingBlock>().enabled = false;
-            }
-        }
-    }
 
 
 }

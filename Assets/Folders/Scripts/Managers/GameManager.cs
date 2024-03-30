@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-using System;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +21,7 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> FunctionMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> LoopMethod { get; private set; } = new List<CodingBlock>();
+
     [SerializeField] private int loopReaptCount = 1;
 
     public bool PlayToggle { get; private set; } = false;
@@ -35,9 +34,9 @@ public class GameManager : MonoBehaviour
     public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
     public readonly WaitForSeconds waitForPointEightSeconds = new(0.8f);
 
-    public WaitUntil waitUntil_PlayTrigger;
-    public WaitUntil waitUntil_SubMethodTrigger;
-    public WaitUntil waitUntil_EndOfSubMethod;
+    public WaitUntil waitUntilPlayTrigger;
+    public WaitUntil waitUntilSubMethodTrigger;
+    public WaitUntil waitUntilEndOfSubMethod;
 
     [Header("코딩블럭 프리팹")]
     public GameObject forwardPrefab;
@@ -62,9 +61,9 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        waitUntil_PlayTrigger = new WaitUntil(() => PlayToggle == true);
-        waitUntil_SubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
-        waitUntil_EndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
+        waitUntilPlayTrigger = new WaitUntil(() => PlayToggle == true);
+        waitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
+        waitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
 
         Application.targetFrameRate = 144;
     }
@@ -79,36 +78,35 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            if (!PlayToggle) yield return waitUntil_PlayTrigger;
+            if (!PlayToggle) yield return waitUntilPlayTrigger;
 
-                IsMainMethodRunning = true;
-                UIManager_Instance.playButton.gameObject.SetActive(false);
-                UIManager_Instance.stopButton.gameObject.SetActive(true);
-                UIManager_Instance.LockUIElements(true);
+            IsMainMethodRunning = true;
+            UIManager_Instance.playButton.gameObject.SetActive(false);
+            UIManager_Instance.stopButton.gameObject.SetActive(true);
+            UIManager_Instance.LockUIElements(true);
 
-                foreach (CodingBlock block in MainMethod)
-                {
-                    if (!IsMainMethodRunning)
-                        break;
+            foreach (CodingBlock block in MainMethod)
+            {
+                if (!IsMainMethodRunning)
+                    break;
 
-                    yield return waitForHalfSeconds;
+                yield return waitForHalfSeconds;
 
-                    PlayerManager_Instance.InitializePlayerMoveVector();
-                    block.GetComponent<CodingBlock>().enabled = true;
-                    block.MoveOrder();
+                PlayerManager_Instance.InitializePlayerMoveVector();
+                block.GetComponent<CodingBlock>().enabled = true;
+                block.MoveOrder();
 
-                    yield return waitUntil_EndOfSubMethod;
+                yield return waitUntilEndOfSubMethod;
 
-                    if (IsMainMethodRunning) yield return waitForPointEightSeconds;
-                }
+                if (IsMainMethodRunning) yield return waitForPointEightSeconds;
+            }
 
-                if (IsMainMethodRunning) yield return waitForSeconds;
+            if (IsMainMethodRunning) yield return waitForSeconds;
 
-                PlayToggle = false;
-                IsMainMethodRunning = false;
-
-                UIManager_Instance.DisableBlockHighlights();
-                UIManager_Instance.LockUIElements(false);
+            PlayToggle = false;
+            IsMainMethodRunning = false;
+            UIManager_Instance.DisableBlockHighlights();
+            UIManager_Instance.LockUIElements(false);
         }
     }
 
@@ -116,7 +114,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            yield return waitUntil_SubMethodTrigger;
+            yield return waitUntilSubMethodTrigger;
 
             switch (currentMethod)
             {
@@ -171,7 +169,7 @@ public class GameManager : MonoBehaviour
                             if (PlayToggle == true) yield return waitForHalfSeconds;
                         }
 
-                        if (PlayToggle == true) 
+                        if (PlayToggle == true)
                         {
                             yield return waitForPointEightSeconds;
 
@@ -180,7 +178,7 @@ public class GameManager : MonoBehaviour
                                 block.ToggleHighLight(false);
                             }
                         }
-                        
+
                     }
 
                     UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Main);
@@ -229,7 +227,7 @@ public class GameManager : MonoBehaviour
     {
         PlayToggle = enable;
     }
-    public void Set_IsBlocksRunning(bool enable)
+    public void Set_IsMainMethodRunning(bool enable)
     {
         IsMainMethodRunning = enable;
     }

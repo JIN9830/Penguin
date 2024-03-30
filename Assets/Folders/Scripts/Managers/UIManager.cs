@@ -37,8 +37,7 @@ public class UIManager : MonoBehaviour
     [Header("플레이 & 정지, 스피드업 버튼")]
     public GameObject playButton;
     public GameObject stopButton;
-    public GameObject speedUpButton;
-    public GameObject speedDownButton;
+    public GameObject timeControlButton;
 
     [Header("코딩블럭 버튼 오브젝트")]
     public GameObject forwardButton;
@@ -47,7 +46,7 @@ public class UIManager : MonoBehaviour
     public GameObject functionButton;
     public GameObject loopButton;
 
-    private void Awake()
+    private void Start()
     {
         GameManager_Instance.Get_UIManager(this.gameObject);
 
@@ -76,15 +75,11 @@ public class UIManager : MonoBehaviour
         #endregion
 
         #region Play, Stop & TimeControl OnClickAddListener
-        playButton.GetComponent<Button>().onClick.AddListener(() => PlayBlock_Button());
-        stopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock_Button());
-        speedUpButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
-        speedDownButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
+        playButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_PlayToggle(true));
+        stopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
+        timeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
         #endregion
-    }
 
-    private void Start()
-    {
         GameManager_Instance.Initialize_CodingMethod();
     }
 
@@ -190,21 +185,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void StopBlock()
+    {
+        ResetBlockAnimation();
 
-    public void PlayBlock_Button()
-    {
-        GameManager_Instance.Set_PlayToggle(true);
-    }
-    public void StopBlock_Button()
-    {
         GameManager_Instance.Set_PlayToggle(false);
-        GameManager_Instance.Set_IsBlocksRunning(false);
+        GameManager_Instance.Set_IsMainMethodRunning(false);
 
         PlayerManager_Instance.ResetPlayerPosition();
 
-        DisableBlockHighlights();
-        ResetBlockAnimation();
         UIAnimation.Animation_PlayBlockDelay(playButton, 1);
+
         stopButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(true);
     }
@@ -212,13 +203,11 @@ public class UIManager : MonoBehaviour
     {
         if (Time.timeScale == 1f)
         {
-            speedDownButton.SetActive(true);
-            Time.timeScale = 1.3f;
+            Time.timeScale = 1.4f;
         }
         else
         {
-            speedDownButton.SetActive(false);
-            UIAnimation.Animation_BlockShake(speedUpButton);
+            UIAnimation.Animation_BlockShake(timeControlButton);
             Time.timeScale = 1f;
         }
     }

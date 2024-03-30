@@ -23,14 +23,10 @@ public class PlayerManager : MonoBehaviour
     public Vector3 PlayerRestPos { get; private set; }
     public Quaternion PlayerRestRot { get; private set; }
 
-
-    private void Awake()
-    {
-        GameManager_Instance.Get_PlayerManager(this.gameObject);
-    }
-
     private void Start()
     {
+        GameManager_Instance.Get_PlayerManager(this.gameObject);
+
         PlayerAnimator = playerObject.GetComponent<Animator>();
 
         PlayerRestPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
