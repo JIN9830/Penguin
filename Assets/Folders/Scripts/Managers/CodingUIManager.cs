@@ -159,6 +159,8 @@ public class CodingUIManager : MonoBehaviour
             }
         }
     }
+
+    
     public void DeleteBlock(ECurrentLayout currentLayout)
     {
         switch (currentLayout)
