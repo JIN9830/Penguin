@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public ECurrentMethod currentMethod = ECurrentMethod.Main;
     public static GameManager GameManager_Instance { get; private set; }
     public static PlayerManager PlayerManager_Instance { get; private set; }
-    public static UIManager UIManager_Instance { get; private set; }
+    public static CodingUIManager UIManager_Instance { get; private set; }
 
     public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> FunctionMethod { get; private set; } = new List<CodingBlock>();
@@ -37,13 +37,6 @@ public class GameManager : MonoBehaviour
     public WaitUntil waitUntilPlayTrigger;
     public WaitUntil waitUntilSubMethodTrigger;
     public WaitUntil waitUntilEndOfSubMethod;
-
-    [Header("코딩블럭 프리팹")]
-    public GameObject forwardPrefab;
-    public GameObject turnLeftPrefab;
-    public GameObject turnRightPrefab;
-    public GameObject functionPrefab;
-    public GameObject loopPrefab;
 
     private void Awake()
     {
@@ -142,7 +135,7 @@ public class GameManager : MonoBehaviour
                         block.ToggleHighLight(false);
                     }
 
-                    UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Main);
+                    UIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
                     break;
                 #endregion
@@ -181,14 +174,14 @@ public class GameManager : MonoBehaviour
 
                     }
 
-                    UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Main);
+                    UIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
                     break;
                     #endregion
             }
 
 
-            UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Main);
+            UIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
             currentMethod = ECurrentMethod.Main;
         }
     }
@@ -214,7 +207,7 @@ public class GameManager : MonoBehaviour
     }
     public void Get_UIManager(GameObject obj)
     {
-        obj.TryGetComponent(out UIManager instance);
+        obj.TryGetComponent(out CodingUIManager instance);
         UIManager_Instance = instance;
     }
     public void Get_PlayerManager(GameObject obj)

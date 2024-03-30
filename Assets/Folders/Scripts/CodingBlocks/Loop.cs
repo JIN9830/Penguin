@@ -18,7 +18,7 @@ public class Loop : CodingBlock
     {
         ToggleHighLight(true);
         blockTweener = UIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-        UIManager_Instance.SelectedMethods(UIManager.ECurrentLayout.Loop);
+        UIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Loop);
         GameManager_Instance.currentMethod = ECurrentMethod.Loop;
     }
 }

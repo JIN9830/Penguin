@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Linq;
 using static GameManager;
 
-public class UIManager : MonoBehaviour
+public class CodingUIManager : MonoBehaviour
 {
     public enum ECurrentLayout
     {
@@ -46,16 +46,23 @@ public class UIManager : MonoBehaviour
     public GameObject functionButton;
     public GameObject loopButton;
 
+    [Header("코딩블럭 프리팹")]
+    public GameObject forwardPrefab;
+    public GameObject turnLeftPrefab;
+    public GameObject turnRightPrefab;
+    public GameObject functionPrefab;
+    public GameObject loopPrefab;
+
     private void Start()
     {
         GameManager_Instance.Get_UIManager(this.gameObject);
 
         #region Coding blocks onClickAddListener
-        forwardButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.forwardPrefab));
-        turnLeftButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.turnLeftPrefab));
-        turnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.turnRightPrefab));
-        functionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.functionPrefab));
-        loopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(GameManager.GameManager_Instance.loopPrefab));
+        forwardButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(forwardPrefab));
+        turnLeftButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(turnLeftPrefab));
+        turnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(turnRightPrefab));
+        functionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(functionPrefab));
+        loopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(loopPrefab));
         #endregion
 
         #region Layout activate onClickAddListener
@@ -110,7 +117,7 @@ public class UIManager : MonoBehaviour
     }
     public void InsertBlock(GameObject prefab)
     {
-        if (prefab == GameManager_Instance.functionPrefab || prefab == GameManager_Instance.loopPrefab)
+        if (prefab == functionPrefab || prefab == loopPrefab)
         {
             if (GameManager_Instance.MainMethod.Count < 10)
             {
