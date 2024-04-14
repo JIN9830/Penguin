@@ -17,8 +17,10 @@ public class Loop : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
-        blockTweener = UIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-        UIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Loop);
+        blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+
         GameManager_Instance.currentMethod = ECurrentMethod.Loop;
+        CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Loop);
+        
     }
 }

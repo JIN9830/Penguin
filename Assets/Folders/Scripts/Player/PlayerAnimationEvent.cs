@@ -23,7 +23,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         if(isCry)
         {
-            isCry = AnimationTimer(2.6f);
+            isCry = AnimationTimer(1.0f);
             playerAnimator.SetBool("IsCry", isCry);
         }
         //else if(isDizzy)

@@ -260,7 +260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4591183713464641694}
   m_Layer: 5
-  m_Name: Function
+  m_Name: Function UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -764,7 +764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 336310595729172571}
   m_Layer: 5
-  m_Name: Loop
+  m_Name: Loop UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3259,7 +3259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7120934665453725836}
   m_Layer: 5
-  m_Name: Play Actions
+  m_Name: Play Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3297,7 +3297,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8725849315109830858}
   m_Layer: 5
-  m_Name: Main
+  m_Name: Main UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4050,7 +4050,7 @@ GameObject:
   - component: {fileID: 2787305398351744554}
   - component: {fileID: 3500549001082180625}
   m_Layer: 0
-  m_Name: Blocks
+  m_Name: Coding Block Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

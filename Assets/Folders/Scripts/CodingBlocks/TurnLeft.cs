@@ -22,7 +22,7 @@ public class TurnLeft : CodingBlock
     {
         ToggleHighLight(true);
 
-        blockTweener = UIManager_Instance.UIAnimation.Animation_LeftBlockPlay(this.gameObject);
+        blockTweener = CodingUIManager_Instance.UIAnimation.Animation_LeftBlockPlay(this.gameObject);
 
         playerStartRot = PlayerManager_Instance.playerObject.transform.rotation;
         playerEndRot = playerStartRot * Quaternion.Euler(0, -90, 0);

@@ -19,7 +19,7 @@ public class TrunRight : CodingBlock
     {
         ToggleHighLight(true);
 
-        blockTweener = UIManager_Instance.UIAnimation.Animation_RightBlockPlay(this.gameObject);
+        blockTweener = CodingUIManager_Instance.UIAnimation.Animation_RightBlockPlay(this.gameObject);
 
         playerStartRot = PlayerManager_Instance.playerObject.transform.rotation;
         playerEndRot = playerStartRot * Quaternion.Euler(0, 90, 0);

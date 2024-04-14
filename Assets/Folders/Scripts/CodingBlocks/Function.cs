@@ -18,8 +18,9 @@ public class Function : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
-        blockTweener = UIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-        UIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Function);
+        blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+
         GameManager_Instance.currentMethod = ECurrentMethod.Function;
+        CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Function);
     }
 }

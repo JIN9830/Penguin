@@ -58,12 +58,12 @@ public class Forward : CodingBlock
 
         if (Physics.Raycast(PlayerManager_Instance.playerObject.transform.localPosition, PlayerManager_Instance.playerObject.transform.forward, out hit, DISTANCE))
         {
-            blockTweener = UIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
+            blockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (hit.collider.CompareTag("Wall"))
             {
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("WallHit");
-                UIManager_Instance.ShakeUIElements();
+                CodingUIManager_Instance.ShakeUIElements();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
             else if (hit.collider.CompareTag("Edge"))
@@ -74,7 +74,7 @@ public class Forward : CodingBlock
         }
         else
         {
-            blockTweener = UIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+            blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
             IsForwarding = true;
         }
     }
