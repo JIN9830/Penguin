@@ -8,7 +8,7 @@ public class Function : CodingBlock
 {
     private void Update()
     {
-        if (GameManager_Instance.PlayToggle == false)
+        if (GameManager_Instance.ExecutionToggle == false)
         {
             blockTweener.Kill();
             transform.localScale = Vector3.one;

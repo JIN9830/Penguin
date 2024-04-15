@@ -39,7 +39,7 @@ public class CodingUIManager : MonoBehaviour
     public GameObject loopBookmark;
 
     [Header("플레이 & 정지, 스피드업 버튼")]
-    public GameObject playButton;
+    public GameObject executionButton;
     public GameObject stopButton;
     public GameObject timeControlButton;
 
@@ -86,7 +86,7 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         #region Play, Stop & TimeControl OnClickAddListener
-        playButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_PlayToggle(true));
+        executionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_ExecutionToggle(true));
         stopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
         timeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
         #endregion
@@ -202,15 +202,15 @@ public class CodingUIManager : MonoBehaviour
     {
         ResetBlockAnimation();
 
-        GameManager_Instance.Set_PlayToggle(false);
+        GameManager_Instance.Set_ExecutionToggle(false);
         GameManager_Instance.Set_IsMainMethodRunning(false);
 
         PlayerManager_Instance.ResetPlayerPosition();
 
-        UIAnimation.Animation_PlayBlockDelay(playButton, 1);
+        UIAnimation.Animation_PlayBlockDelay(executionButton, 1);
 
         stopButton.gameObject.SetActive(false);
-        playButton.gameObject.SetActive(true);
+        executionButton.gameObject.SetActive(true);
     }
     public void TimeScaleButton()
     {

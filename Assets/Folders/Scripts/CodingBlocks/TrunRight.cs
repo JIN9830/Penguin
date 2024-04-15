@@ -8,7 +8,7 @@ public class TrunRight : CodingBlock
     Quaternion playerEndRot;
     private void Update()
     {
-        if (GameManager.GameManager_Instance.PlayToggle == false)
+        if (GameManager.GameManager_Instance.ExecutionToggle == false)
         {
             blockTweener.Kill();
             transform.localRotation = Quaternion.Euler(0f, 0f, 0f);

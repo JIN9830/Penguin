@@ -26,7 +26,7 @@ public class Forward : CodingBlock
 
     private void Update()
     {
-        if (GameManager_Instance.PlayToggle == false) // 정지 버튼을 누르면 실행
+        if (GameManager_Instance.ExecutionToggle == false) // 정지 버튼을 누르면 실행
         {
             blockTweener.Kill();
             transform.localScale = Vector3.one;

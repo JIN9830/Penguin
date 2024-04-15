@@ -24,7 +24,7 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    public void InitializePlayerMoveVector()
+    public void InitPlayerMoveVector()
     {
         PlayerStartPos = playerObject.transform.localPosition;
         PlayerNewPos = PlayerStartPos + playerObject.transform.forward;
