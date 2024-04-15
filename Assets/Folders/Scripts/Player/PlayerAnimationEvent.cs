@@ -8,38 +8,29 @@ public class PlayerAnimationEvent : MonoBehaviour
     private float timer = 0;
 
     private bool isCry = false;
-    private bool isEmbarrass = false;
-
-
-    //private bool isDizzy = false;
-    //private int spinCount = 0;
+    private bool isSad = false;
 
     private void Awake()
     {
         playerAnimator = this.GetComponent<Animator>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(isCry)
         {
-            isCry = AnimationTimer(1.0f);
+            isCry = AnimationTimer(1.6f);
             playerAnimator.SetBool("IsCry", isCry);
         }
-        //else if(isDizzy)
-        //{
-        //    isDizzy = AnimationTimer(2.3f);
-        //    PlayerAnimator.SetBool("IsDizzy", isDizzy);
-        //}
-        else if(isEmbarrass)
+        else if(isSad)
         {
-            isEmbarrass = AnimationTimer(1.6f);
-            playerAnimator.SetBool("IsEmbarrass", isEmbarrass);
+            isSad = AnimationTimer(1.2f);
+            playerAnimator.SetBool("IsSad", isSad);
         }
     }
 
 
-    public void WallHitAnimation() // Event calling location (Death 0:04)
+    public void HitTheWall() // Event calling location (Death 0:04)
     {
         if(!isCry)
         {
@@ -49,28 +40,15 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     public void EdgeHitAniamtion() // Event calling location (Idle B 0:01)
     {
-        if(!isEmbarrass)
+        if(!isSad)
         {
-            isEmbarrass = true;
+            isSad = true;
         }
     }
 
-    //public void SpinEyesAnimation() // Event calling location (Spin 0:04)
-    //{
-    //    if (!isDizzy)
-    //    {
-    //        spinCount++;
-
-    //        if (spinCount == 8)
-    //        {
-    //            isDizzy = true;
-    //            spinCount = 0;
-    //        }
-    //    }
-    //}
     private bool AnimationTimer(float limitTime)
     {
-        timer += Time.deltaTime;
+        timer += Time.fixedDeltaTime;
 
         if (timer > limitTime)
         {

@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
             // .. 플레이어가 실행 버튼을 누르기 전까지 해당 부분에서 코드 제어권이 유니티에게 돌아갑니다. 실행 버튼이 눌리면 아래의 블록 컴파일 코드가 진행됩니다.
             yield return waitUntilExecutionTrigger;
 
-            // .. 블록 컴파일이 진행중이라면 참(true), 아니라면 거짓(false)으로 블록 컴파일의 상태를 담고 있는 변수입니다.
+            // .. 블록 컴파일의 현재 상태를 나타내는 변수입니다.
             IsMainMethodRunning = true;
 
             CodingUIManager_Instance.executionButton.gameObject.SetActive(false); 
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
 
             foreach (CodingBlock block in MainMethod)
             {
-                if (!IsMainMethodRunning)
+                if (!IsMainMethodRunning) // 플레이어가 중지 버튼을 누르면 해당 변수는 false가 되어 블록 컴파일을 중단합니다.
                     break;
 
                 yield return waitForHalfSeconds;
@@ -100,7 +100,6 @@ public class GameManager : MonoBehaviour
                 PlayerManager_Instance.InitPlayerMoveVector();
                 block.GetComponent<CodingBlock>().enabled = true;
                 block.MoveOrder();
-
                 yield return waitUntilEndOfSubMethod;
 
                 if (IsMainMethodRunning) yield return waitForPointSevenSeconds;
@@ -116,13 +115,14 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 무한 루프를 돌고 있다가 함수, 루프 블록이 메인 레이아웃에서 실행됐을 때 함수, 루프 레이아웃에 있는 블록들을 읽고 실행합니다.
+    /// 무한 루프를 돌고 있다가 (함수, 루프) 블록이 메인 레이아웃에서 실행됐을 때 함수, 루프 레이아웃에 있는 블록들을 읽고 실행합니다.
     /// </summary>
     public IEnumerator SubBlockCompiler_Co()
     {
         while (true)
         {
-            // .. 메인 레이아웃에서 함수, 루프 블록이 실행되기 전까지 해당 부분에서 코드 제어권이 유니티에게 돌아갑니다.
+            // .. 메인 레이아웃에서 (함수, 루프) 블록이 실행되기 전까지 해당 부분에서 코드 제어권이 유니티에게 돌아갑니다.
+            // .. (함수, 루프) 블록이 실행되면 아래의 서브 블록 컴파일 코드가 진행됩니다.
             yield return waitUntilSubMethodTrigger;
 
             switch (currentMethod)
