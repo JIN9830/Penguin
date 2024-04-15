@@ -1,15 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine.Pool;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
 
 
 public class GameManager : MonoBehaviour
 {
-    public ObjectPool<CodingBlock> BlockPool { get; private set; }
-
     public enum ECurrentMethod
     {
         Main,
@@ -76,33 +71,10 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-       BlockPool = new ObjectPool<CodingBlock>(CreateBlock, OnGetBlock, OnReleaseBlock, OnDestroyBlock, maxSize:30);
-
         blockCompiler = StartCoroutine(BlockCompiler_Co());
         subBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
     }
 
-    private CodingBlock CreateBlock()
-    {
-        CodingBlock block = Instantiate(CodingUIManager_Instance.blockPool, CodingUIManager_Instance.blockTransform).GetComponent<CodingBlock>();
-        block.SetManagedPool(BlockPool);
-        return block;
-    }
-
-    private void OnGetBlock(CodingBlock block)
-    {
-        block.gameObject.SetActive(true);
-    }
-
-    private void OnReleaseBlock(CodingBlock block)
-    {
-        block.gameObject.SetActive(false);
-    }
-
-    private void OnDestroyBlock(CodingBlock block)
-    {
-        Destroy(block.gameObject);
-    }
     public IEnumerator BlockCompiler_Co()
     {
         while (true)

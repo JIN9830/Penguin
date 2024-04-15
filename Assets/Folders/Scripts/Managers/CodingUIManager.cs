@@ -57,9 +57,6 @@ public class CodingUIManager : MonoBehaviour
     public GameObject functionPrefab;
     public GameObject loopPrefab;
 
-    public GameObject blockPool;
-    public Transform blockTransform;
-
     private void Start()
     {
         GameManager_Instance.Get_UIManager(this.gameObject);
@@ -124,15 +121,12 @@ public class CodingUIManager : MonoBehaviour
     }
     public void InsertBlock(GameObject prefab)
     {
-        blockPool = prefab;
-
-        if (blockPool == functionPrefab || blockPool == loopPrefab)
+        if (prefab == functionPrefab || prefab == loopPrefab)
         {
             if (GameManager_Instance.MainMethod.Count < 10)
             {
-                blockTransform = mainLayout.transform;
-                GameManager_Instance.MainMethod.Add(GameManager_Instance.BlockPool.Get());
-                blockPool.GetComponent<CodingBlock>().enabled = false;
+                GameManager_Instance.MainMethod.Add(Instantiate(prefab,mainLayout.transform).GetComponent<CodingBlock>());
+                prefab.GetComponent<CodingBlock>().enabled = false;
                 UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
             }
         }
@@ -143,9 +137,8 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Main:
                     if (GameManager_Instance.MainMethod.Count < 10)
                     {
-                        blockTransform = mainLayout.transform;
-                        GameManager_Instance.MainMethod.Add(GameManager_Instance.BlockPool.Get());
-                        blockPool.GetComponent<CodingBlock>().enabled = false;
+                        GameManager_Instance.MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                        prefab.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
                     }
                     break;
@@ -153,9 +146,8 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Function:
                     if (GameManager_Instance.FunctionMethod.Count < 10)
                     {
-                        blockTransform = functionLayout.transform;
-                        GameManager_Instance.FunctionMethod.Add(GameManager_Instance.BlockPool.Get());
-                        blockPool.GetComponent<CodingBlock>().enabled = false;
+                        GameManager_Instance.FunctionMethod.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
+                        prefab.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.FunctionMethod.Last().gameObject);
                     }
                     break;
@@ -163,9 +155,8 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Loop:
                     if (GameManager_Instance.LoopMethod.Count < 10)
                     {
-                        blockTransform = loopLayout.transform;
-                        GameManager_Instance.LoopMethod.Add(GameManager_Instance.BlockPool.Get());
-                        blockPool.GetComponent<CodingBlock>().enabled = false;
+                        GameManager_Instance.LoopMethod.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
+                        prefab.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.LoopMethod.Last().gameObject);
                     }
                     break;
@@ -183,7 +174,7 @@ public class CodingUIManager : MonoBehaviour
                 {
                     CodingBlock lastblock = GameManager_Instance.MainMethod.Last();
                     GameManager_Instance.MainMethod.Remove(lastblock);
-                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.DestroyBlock());
+                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
 
@@ -192,7 +183,7 @@ public class CodingUIManager : MonoBehaviour
                 {
                     CodingBlock lastblock = GameManager_Instance.FunctionMethod.Last();
                     GameManager_Instance.FunctionMethod.Remove(lastblock);
-                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.DestroyBlock());
+                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
 
@@ -201,7 +192,7 @@ public class CodingUIManager : MonoBehaviour
                 {
                     CodingBlock lastblock = GameManager_Instance.LoopMethod.Last();
                     GameManager_Instance.LoopMethod.Remove(lastblock);
-                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.DestroyBlock());
+                    lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => Destroy(lastblock.gameObject));
                 }
                 break;
         }

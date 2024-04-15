@@ -4,16 +4,6 @@ using static GameManager;
 
 public class PlayerManager : MonoBehaviour
 {
-    public enum PlayerState
-    {
-        Idle,
-        Forwarding,
-        TrunLeft,
-        TrunRight,
-    }
-
-    public PlayerState playerState = PlayerState.Idle;
-
     [Header("플레이어 정보")]
     [SerializeField]
     public GameObject playerObject;
