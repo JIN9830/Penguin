@@ -17,13 +17,13 @@ public class CodingUIManager : MonoBehaviour
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
     [field: Header("캔버스 오브젝트")]
-    [field: SerializeField] public GameObject canvas { get; private set; }
+    [field: SerializeField] public GameObject Canvas { get; private set; }
 
 
     [field: Header("그리드 레이아웃 오브젝트")]
-    [field: SerializeField] public GameObject mainLayout { get; private set; }
-    [field: SerializeField] public GameObject functionLayout { get; private set; }
-    [field: SerializeField] public GameObject loopLayout { get; private set; }
+    [field: SerializeField] public GameObject MainLayout { get; private set; }
+    [field: SerializeField] public GameObject FunctionLayout { get; private set; }
+    [field: SerializeField] public GameObject LoopLayout { get; private set; }
 
     private Image _mainLayoutImage;
     private Image _functionLayoutImage;
@@ -34,34 +34,36 @@ public class CodingUIManager : MonoBehaviour
     private Image _loopselectedImage;
 
     [field: Header("블럭 삭제 버튼")]
-    [field: SerializeField] public GameObject mainDelete { get; private set; }
-    [field: SerializeField] public GameObject functionDelete { get; private set; }
-    [field: SerializeField] public GameObject loopDelete { get; private set; }
+    [field: SerializeField] public GameObject MainDelete { get; private set; }
+    [field: SerializeField] public GameObject FunctionDelete { get; private set; }
+    [field: SerializeField] public GameObject LoopDelete { get; private set; }
 
     [field: Header("북마크 오브젝트")]
-    [field: SerializeField] public GameObject mainBookmark { get; private set; }
-    [field: SerializeField] public GameObject functionBookmark { get; private set; }
-    [field: SerializeField] public GameObject loopBookmark { get; private set; }
+    [field: SerializeField] public GameObject MainBookmark { get; private set; }
+    [field: SerializeField] public GameObject FunctionBookmark { get; private set; }
+    [field: SerializeField] public GameObject LoopBookmark { get; private set; }
 
     [field: Header("플레이 & 정지, 스피드업 버튼")]
-    [field: SerializeField] public GameObject executionButton { get; private set; }
-    [field: SerializeField] public GameObject stopButton { get; private set; }
-    [field: SerializeField] public GameObject timeControlButton { get; private set; }
+    [field: SerializeField] public GameObject ExecutionButton { get; private set; }
+    [field: SerializeField] public GameObject StopButton { get; private set; }
+    [field: SerializeField] public GameObject TimeControlButton { get; private set; }
 
     [field: Header("코딩블럭 버튼 오브젝트")]
-    [field: SerializeField] public GameObject forwardButton { get; private set; }
-    [field: SerializeField] public GameObject turnLeftButton { get; private set; }
-    [field: SerializeField] public GameObject turnRightButton { get; private set; }
-    [field: SerializeField] public GameObject functionButton { get; private set; }
-    [field: SerializeField] public GameObject loopButton { get; private set; }
+    [field: SerializeField] public GameObject ForwardButton { get; private set; }
+    [field: SerializeField] public GameObject TurnLeftButton { get; private set; }
+    [field: SerializeField] public GameObject TurnRightButton { get; private set; }
+    [field: SerializeField] public GameObject FunctionButton { get; private set; }
+    [field: SerializeField] public GameObject LoopButton { get; private set; }
 
     [field: Header("코딩블럭 프리팹")]
-    [field: SerializeField] public GameObject forwardPrefab { get; private set; }
-    [field: SerializeField] public GameObject turnLeftPrefab { get; private set; }
-    [field: SerializeField] public GameObject turnRightPrefab { get; private set; }
-    [field: SerializeField] public GameObject functionPrefab { get; private set; }
-    [field: SerializeField] public GameObject loopPrefab { get; private set; }
+    [field: SerializeField] public GameObject ForwardPrefab { get; private set; }
+    [field: SerializeField] public GameObject TurnLeftPrefab { get; private set; }
+    [field: SerializeField] public GameObject TurnRightPrefab { get; private set; }
+    [field: SerializeField] public GameObject FunctionPrefab { get; private set; }
+    [field: SerializeField] public GameObject LoopPrefab { get; private set; }
 
+
+    // 테스트용 코드 (레이아웃 UI(Main, Fucn, Loop) 터치 할 때 팝업 애니메이션 벡터 값)
     private Vector3 initScale = new Vector3(0.9f, 0.9f, 0.9f);
     private Vector3 targetScale = new Vector3(1f, 1f, 1f);
 
@@ -75,33 +77,33 @@ public class CodingUIManager : MonoBehaviour
         GameManager_Instance.Get_UIManager(this.gameObject);
 
         #region Coding blocks onClickAddListener
-        forwardButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(forwardPrefab));
-        turnLeftButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(turnLeftPrefab));
-        turnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(turnRightPrefab));
-        functionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(functionPrefab));
-        loopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(loopPrefab));
+        ForwardButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(ForwardPrefab));
+        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(TurnLeftPrefab));
+        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(TurnRightPrefab));
+        FunctionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(FunctionPrefab));
+        LoopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(LoopPrefab));
         #endregion
 
         #region Layout activate onClickAddListener
-        mainLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Main));
-        functionLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Function));
-        loopLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Loop));
+        MainLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Main));
+        FunctionLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Function));
+        LoopLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Loop));
 
-        mainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Main));
-        functionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Loop));
-        loopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Function));
+        MainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Main));
+        FunctionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Loop));
+        LoopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Function));
         #endregion
 
         #region block delete OnClickAddListener
-        mainDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Main; DeleteBlock(currentLayout); });
-        functionDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Function; DeleteBlock(currentLayout); });
-        loopDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Loop; DeleteBlock(currentLayout); });
+        MainDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Main; DeleteBlock(currentLayout); });
+        FunctionDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Function; DeleteBlock(currentLayout); });
+        LoopDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Loop; DeleteBlock(currentLayout); });
         #endregion
 
         #region Play, Stop & TimeControl OnClickAddListener
-        executionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_ExecutionToggle(true));
-        stopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
-        timeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
+        ExecutionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_ExecutionToggle(true));
+        StopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
+        TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
         #endregion
 
         GameManager_Instance.Initialize_CodingMethod();
@@ -114,46 +116,46 @@ public class CodingUIManager : MonoBehaviour
             case ECurrentLayout.Main:
                 currentLayout = ECurrentLayout.Main;
 
-                mainLayout.transform.parent.transform.localScale = initScale;
-                mainLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
+                MainLayout.transform.parent.transform.localScale = initScale;
+                MainLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
 
             case ECurrentLayout.Function:
                 currentLayout = ECurrentLayout.Function;
 
-                functionButton.gameObject.SetActive(true);
-                loopButton.gameObject.SetActive(false);
-                functionButton.transform.localScale = funcinitScale;
-                functionButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
+                FunctionButton.gameObject.SetActive(true);
+                LoopButton.gameObject.SetActive(false);
+                FunctionButton.transform.localScale = funcinitScale;
+                FunctionButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
 
-                functionLayout.transform.parent.gameObject.SetActive(true);
-                loopLayout.transform.parent.gameObject.SetActive(false);
-                functionLayout.transform.parent.transform.localScale = initScale;
-                functionLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
+                FunctionLayout.transform.parent.gameObject.SetActive(true);
+                LoopLayout.transform.parent.gameObject.SetActive(false);
+                FunctionLayout.transform.parent.transform.localScale = initScale;
+                FunctionLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
 
             case ECurrentLayout.Loop:
                 currentLayout = ECurrentLayout.Loop;
 
-                loopButton.gameObject.SetActive(true);
-                functionButton.gameObject.SetActive(false);
-                loopButton.transform.localScale = funcinitScale;
-                loopButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
+                LoopButton.gameObject.SetActive(true);
+                FunctionButton.gameObject.SetActive(false);
+                LoopButton.transform.localScale = funcinitScale;
+                LoopButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
 
-                loopLayout.transform.parent.gameObject.SetActive(true);
-                functionLayout.transform.parent.gameObject.SetActive(false);
-                loopLayout.transform.parent.transform.localScale = initScale;
-                loopLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
+                LoopLayout.transform.parent.gameObject.SetActive(true);
+                FunctionLayout.transform.parent.gameObject.SetActive(false);
+                LoopLayout.transform.parent.transform.localScale = initScale;
+                LoopLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
         }
     }
     public void InsertBlock(GameObject prefab)
     {
-        if (prefab == functionPrefab || prefab == loopPrefab)
+        if (prefab == FunctionPrefab || prefab == LoopPrefab)
         {
             if (GameManager_Instance.MainMethod.Count < 10)
             {
-                GameManager_Instance.MainMethod.Add(Instantiate(prefab,mainLayout.transform).GetComponent<CodingBlock>());
+                GameManager_Instance.MainMethod.Add(Instantiate(prefab,MainLayout.transform).GetComponent<CodingBlock>());
                 prefab.GetComponent<CodingBlock>().enabled = false;
                 UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
             }
@@ -165,7 +167,7 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Main:
                     if (GameManager_Instance.MainMethod.Count < 10)
                     {
-                        GameManager_Instance.MainMethod.Add(Instantiate(prefab, mainLayout.transform).GetComponent<CodingBlock>());
+                        GameManager_Instance.MainMethod.Add(Instantiate(prefab, MainLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
                     }
@@ -174,7 +176,7 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Function:
                     if (GameManager_Instance.FunctionMethod.Count < 10)
                     {
-                        GameManager_Instance.FunctionMethod.Add(Instantiate(prefab, functionLayout.transform).GetComponent<CodingBlock>());
+                        GameManager_Instance.FunctionMethod.Add(Instantiate(prefab, FunctionLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.FunctionMethod.Last().gameObject);
                     }
@@ -183,7 +185,7 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Loop:
                     if (GameManager_Instance.LoopMethod.Count < 10)
                     {
-                        GameManager_Instance.LoopMethod.Add(Instantiate(prefab, loopLayout.transform).GetComponent<CodingBlock>());
+                        GameManager_Instance.LoopMethod.Add(Instantiate(prefab, LoopLayout.transform).GetComponent<CodingBlock>());
                         prefab.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.LoopMethod.Last().gameObject);
                     }
@@ -235,10 +237,10 @@ public class CodingUIManager : MonoBehaviour
 
         PlayerManager_Instance.ResetPlayerPosition();
 
-        UIAnimation.Animation_PlayBlockDelay(executionButton, 1);
+        UIAnimation.Animation_PlayBlockDelay(ExecutionButton, 1);
 
-        stopButton.gameObject.SetActive(false);
-        executionButton.gameObject.SetActive(true);
+        StopButton.gameObject.SetActive(false);
+        ExecutionButton.gameObject.SetActive(true);
     }
     public void TimeScaleButton()
     {
@@ -248,7 +250,7 @@ public class CodingUIManager : MonoBehaviour
         }
         else
         {
-            UIAnimation.Animation_BlockShake(timeControlButton);
+            UIAnimation.Animation_BlockShake(TimeControlButton);
             Time.timeScale = 1f;
         }
     }
@@ -256,45 +258,45 @@ public class CodingUIManager : MonoBehaviour
     public void LockUIElements(bool enable)
     {
         #region Blocks Lock
-        forwardButton.GetComponent<Button>().enabled = !enable;
-        turnLeftButton.GetComponent<Button>().enabled = !enable;
-        turnRightButton.GetComponent<Button>().enabled = !enable;
-        functionButton.GetComponent<Button>().enabled = !enable;
-        loopButton.GetComponent<Button>().enabled = !enable;
+        ForwardButton.GetComponent<Button>().enabled = !enable;
+        TurnLeftButton.GetComponent<Button>().enabled = !enable;
+        TurnRightButton.GetComponent<Button>().enabled = !enable;
+        FunctionButton.GetComponent<Button>().enabled = !enable;
+        LoopButton.GetComponent<Button>().enabled = !enable;
         #endregion
 
         #region Layout & Bookmark & Delete Lock
-        mainLayout.GetComponent<Button>().interactable = !enable;
-        functionLayout.GetComponent<Button>().interactable = !enable;
-        loopLayout.GetComponent<Button>().interactable = !enable;
+        MainLayout.GetComponent<Button>().interactable = !enable;
+        FunctionLayout.GetComponent<Button>().interactable = !enable;
+        LoopLayout.GetComponent<Button>().interactable = !enable;
 
-        mainBookmark.GetComponent<Button>().interactable = !enable;
-        functionBookmark.GetComponent<Button>().interactable = !enable;
-        loopBookmark.GetComponent<Button>().interactable = !enable;
+        MainBookmark.GetComponent<Button>().interactable = !enable;
+        FunctionBookmark.GetComponent<Button>().interactable = !enable;
+        LoopBookmark.GetComponent<Button>().interactable = !enable;
 
-        mainDelete.GetComponent<Button>().interactable = !enable;
-        functionDelete.GetComponent<Button>().interactable = !enable;
-        loopDelete.GetComponent<Button>().interactable = !enable;
+        MainDelete.GetComponent<Button>().interactable = !enable;
+        FunctionDelete.GetComponent<Button>().interactable = !enable;
+        LoopDelete.GetComponent<Button>().interactable = !enable;
         #endregion
     }
     public void ShakeUIElements()
     {
-        UIAnimation.Animation_UIShake(mainLayout);
-        UIAnimation.Animation_UIShake(mainDelete);
-        UIAnimation.Animation_UIShake(mainBookmark);
+        UIAnimation.Animation_UIShake(MainLayout);
+        UIAnimation.Animation_UIShake(MainDelete);
+        UIAnimation.Animation_UIShake(MainBookmark);
 
-        UIAnimation.Animation_UIShake(functionLayout);
-        UIAnimation.Animation_UIShake(functionDelete);
-        UIAnimation.Animation_UIShake(functionBookmark);
+        UIAnimation.Animation_UIShake(FunctionLayout);
+        UIAnimation.Animation_UIShake(FunctionDelete);
+        UIAnimation.Animation_UIShake(FunctionBookmark);
 
-        UIAnimation.Animation_UIShake(loopLayout);
-        UIAnimation.Animation_UIShake(loopDelete);
-        UIAnimation.Animation_UIShake(loopBookmark);
+        UIAnimation.Animation_UIShake(LoopLayout);
+        UIAnimation.Animation_UIShake(LoopDelete);
+        UIAnimation.Animation_UIShake(LoopBookmark);
 
-        UIAnimation.Animation_UIShake(forwardButton);
-        UIAnimation.Animation_UIShake(turnLeftButton);
-        UIAnimation.Animation_UIShake(turnRightButton);
-        UIAnimation.Animation_UIShake(functionButton);
+        UIAnimation.Animation_UIShake(ForwardButton);
+        UIAnimation.Animation_UIShake(TurnLeftButton);
+        UIAnimation.Animation_UIShake(TurnRightButton);
+        UIAnimation.Animation_UIShake(FunctionButton);
     }
 
     public void DisableBlockHighlights()

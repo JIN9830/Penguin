@@ -4,49 +4,49 @@ using UnityEngine;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
-    private Animator playerAnimator;
-    private float timer = 0;
+    private Animator _playerAnimator;
+    private float _timer = 0;
 
-    private bool isCry = false;
-    private bool isSad = false;
+    private bool _isCry = false;
+    private bool _isSad = false;
 
     private void Awake()
     {
-        playerAnimator = this.GetComponent<Animator>();
+        _playerAnimator = this.GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        if(isCry)
+        if(_isCry)
         {
-            isCry = AnimationTimer(1.6f);
-            playerAnimator.SetBool("IsCry", isCry);
+            _isCry = AnimationTimer(1.6f);
+            _playerAnimator.SetBool("IsCry", _isCry);
         }
-        else if(isSad)
+        else if(_isSad)
         {
-            isSad = AnimationTimer(1.0f);
-            playerAnimator.SetBool("IsSad", isSad);
+            _isSad = AnimationTimer(1.0f);
+            _playerAnimator.SetBool("IsSad", _isSad);
         }
     }
 
 
     public void HitTheWallEvent() // Event called (Death 0:04)
     {
-        isCry = true;
+        _isCry = true;
     }
 
     public void ReachTheEdgeEvent() // Event called (Idle B 0:01)
     {
-        isSad = true;
+        _isSad = true;
     }
 
     private bool AnimationTimer(float limitTime)
     {
-        timer += Time.fixedDeltaTime;
+        _timer += Time.fixedDeltaTime;
 
-        if (timer > limitTime)
+        if (_timer > limitTime)
         {
-            timer = 0;
+            _timer = 0;
             return false;
         }
 

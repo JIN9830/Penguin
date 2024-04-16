@@ -10,14 +10,13 @@ public class GameManager : MonoBehaviour
         Main,
         Function,
         Loop,
-    }
-    public enum ECodingBlockState
+    } public ECurrentMethod currentMethod = ECurrentMethod.Main;
+
+    public enum ECodingBlockState // TODO: 사용중 아님 (yield return 1초 딜레이 간격문 조정 코드로 사용 예정)
     {
         Playing,
         Finished,
-    }
-    public ECurrentMethod currentMethod = ECurrentMethod.Main;
-    public ECodingBlockState codingBlockState = ECodingBlockState.Finished;
+    } public ECodingBlockState codingBlockState = ECodingBlockState.Finished;
 
     public static GameManager GameManager_Instance { get; private set; }
     public static PlayerManager PlayerManager_Instance { get; private set; }
@@ -27,22 +26,22 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> FunctionMethod { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> LoopMethod { get; private set; } = new List<CodingBlock>();
 
-    [SerializeField] private int loopReaptCount = 1;
+    [SerializeField] private int _loopReaptCount = 1;
 
     public bool ExecutionToggle { get; private set; } = false;
     public bool IsMainMethodRunning { get; private set; } = false;
 
-    private Coroutine blockCompiler;
-    private Coroutine subBlockCompiler;
+    private Coroutine _blockCompiler;
+    private Coroutine _subBlockCompiler;
 
-    public readonly WaitForSeconds waitForSeconds = new(1.0f);
-    public readonly WaitForSeconds waitForHalfSeconds = new(0.5f);
-    public readonly WaitForSeconds waitForPointSevenSeconds = new(0.7f);
+    public readonly WaitForSeconds WAIT_FOR_SECONDS = new(1.0f);
+    public readonly WaitForSeconds WAIT_FOR_HALF_SECONDS = new(0.5f);
+    public readonly WaitForSeconds WAIT_FOR_POINT_SEVEN_SECONDS = new(0.7f);
 
-    public WaitUntil waitUntilExecutionTrigger;
-    public WaitUntil waitUntilBlockFinished;
-    public WaitUntil waitUntilSubMethodTrigger;
-    public WaitUntil waitUntilEndOfSubMethod;
+    public WaitUntil WaitUntilExecutionTrigger { get; private set; }
+    public WaitUntil WaitUntilBlockFinished { get; private set; } //TODO: 아직 사용중이 아님 (yield return 1초 딜레이 간격문 조정 코드로 사용 예정)
+    public WaitUntil WaitUntilSubMethodTrigger { get; private set; }
+    public WaitUntil WaitUntilEndOfSubMethod { get; private set; }
 
     private void Awake()
     {
@@ -58,18 +57,18 @@ public class GameManager : MonoBehaviour
         }
         #endregion
 
-        waitUntilExecutionTrigger = new WaitUntil(() => ExecutionToggle == true);
-        waitUntilBlockFinished = new WaitUntil(() => codingBlockState == ECodingBlockState.Finished);
-        waitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
-        waitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
+        WaitUntilExecutionTrigger = new WaitUntil(() => ExecutionToggle == true);
+        WaitUntilBlockFinished = new WaitUntil(() => codingBlockState == ECodingBlockState.Finished);
+        WaitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
+        WaitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
 
         Application.targetFrameRate = 144;
     }
 
     private void Start()
     {
-        blockCompiler = StartCoroutine(BlockCompiler_Co());
-        subBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
+        _blockCompiler = StartCoroutine(BlockCompiler_Co());
+        _subBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
     }
 
 
@@ -81,13 +80,13 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             // .. 플레이어가 실행 버튼을 누르기 전까지 해당 부분에서 코드 제어권이 유니티에게 돌아갑니다. 실행 버튼이 눌리면 아래의 블록 컴파일 코드가 진행됩니다.
-            yield return waitUntilExecutionTrigger;
+            yield return WaitUntilExecutionTrigger;
 
             // .. 블록 컴파일의 현재 상태를 나타내는 변수입니다.
             IsMainMethodRunning = true;
 
-            CodingUIManager_Instance.executionButton.gameObject.SetActive(false); 
-            CodingUIManager_Instance.stopButton.gameObject.SetActive(true);
+            CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false); 
+            CodingUIManager_Instance.StopButton.gameObject.SetActive(true);
             CodingUIManager_Instance.LockUIElements(true);
 
             foreach (CodingBlock block in MainMethod)
@@ -95,17 +94,17 @@ public class GameManager : MonoBehaviour
                 if (!IsMainMethodRunning) // 플레이어가 중지 버튼을 누르면 해당 변수는 false가 되어 블록 컴파일을 중단합니다.
                     break;
 
-                yield return waitForHalfSeconds;
+                yield return WAIT_FOR_HALF_SECONDS;
 
                 PlayerManager_Instance.InitPlayerMoveVector();
                 block.GetComponent<CodingBlock>().enabled = true;
                 block.MoveOrder();
-                yield return waitUntilEndOfSubMethod;
+                yield return WaitUntilEndOfSubMethod;
 
-                if (IsMainMethodRunning) yield return waitForPointSevenSeconds;
+                if (IsMainMethodRunning) yield return WAIT_FOR_POINT_SEVEN_SECONDS;
             }
 
-            if (IsMainMethodRunning) yield return waitForSeconds;
+            if (IsMainMethodRunning) yield return WAIT_FOR_SECONDS;
 
             ExecutionToggle = false;
             IsMainMethodRunning = false;
@@ -123,7 +122,7 @@ public class GameManager : MonoBehaviour
         {
             // .. 메인 레이아웃에서 (함수, 루프) 블록이 실행되기 전까지 해당 부분에서 코드 제어권이 유니티에게 돌아갑니다.
             // .. (함수, 루프) 블록이 실행되면 아래의 서브 블록 컴파일 코드가 진행됩니다.
-            yield return waitUntilSubMethodTrigger;
+            yield return WaitUntilSubMethodTrigger;
 
             switch (currentMethod)
             {
@@ -135,16 +134,16 @@ public class GameManager : MonoBehaviour
                         if (ExecutionToggle == false)
                             break;
 
-                        yield return waitForPointSevenSeconds;
+                        yield return WAIT_FOR_POINT_SEVEN_SECONDS;
 
                         PlayerManager_Instance.InitPlayerMoveVector();
                         block.GetComponent<CodingBlock>().enabled = true;
                         block.MoveOrder();
 
-                        if (ExecutionToggle == true) yield return waitForPointSevenSeconds;
+                        if (ExecutionToggle == true) yield return WAIT_FOR_POINT_SEVEN_SECONDS;
                     }
 
-                    if (ExecutionToggle == true) yield return waitForPointSevenSeconds;
+                    if (ExecutionToggle == true) yield return WAIT_FOR_POINT_SEVEN_SECONDS;
 
                     foreach (CodingBlock block in FunctionMethod)
                     {
@@ -159,7 +158,7 @@ public class GameManager : MonoBehaviour
                 #region Loop Compiler Code
                 case ECurrentMethod.Loop:
 
-                    for (int i = 0; i < loopReaptCount; i++)
+                    for (int i = 0; i < _loopReaptCount; i++)
                     {
                         if (ExecutionToggle == false)
                             break;
@@ -169,18 +168,18 @@ public class GameManager : MonoBehaviour
                             if (ExecutionToggle == false)
                                 break;
 
-                            yield return waitForPointSevenSeconds;
+                            yield return WAIT_FOR_POINT_SEVEN_SECONDS;
 
                             PlayerManager_Instance.InitPlayerMoveVector();
                             block.GetComponent<CodingBlock>().enabled = true;
                             block.MoveOrder();
 
-                            if (ExecutionToggle == true) yield return waitForHalfSeconds;
+                            if (ExecutionToggle == true) yield return WAIT_FOR_HALF_SECONDS;
                         }
 
                         if (ExecutionToggle == true)
                         {
-                            yield return waitForPointSevenSeconds;
+                            yield return WAIT_FOR_POINT_SEVEN_SECONDS;
 
                             foreach (CodingBlock block in LoopMethod)
                             {

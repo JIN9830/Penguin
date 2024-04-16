@@ -827,7 +827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMethod: 0
   codingBlockState: 1
-  loopReaptCount: 3
+  _loopReaptCount: 1
 --- !u!114 &333428446
 MonoBehaviour:
   m_ObjectHideFlags: 0

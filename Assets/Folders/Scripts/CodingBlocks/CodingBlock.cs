@@ -4,23 +4,20 @@ using UnityEngine;
 
 public abstract class CodingBlock : MonoBehaviour
 {
-    private GameObject highlight;
-    protected Tweener blockTweener;
+    private GameObject _highlight;
+    protected Tweener _blockTweener;
     public bool IsRotating { get; protected set; } = false;
 
     private void Awake()
     {
-        highlight = this.transform.GetChild(0).gameObject;
-        highlight.SetActive(false);
+        _highlight = this.transform.GetChild(0).gameObject;
+        _highlight.SetActive(false);
     }
 
     public void ToggleHighLight(bool enable)
     {
-        highlight.SetActive(enable);
+        _highlight.SetActive(enable);
     }
 
-    public virtual void MoveOrder()
-    {
-        GameManager.GameManager_Instance.codingBlockState = GameManager.ECodingBlockState.Playing;
-    }
+    public abstract void MoveOrder();
 }

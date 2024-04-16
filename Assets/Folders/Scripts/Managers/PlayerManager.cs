@@ -4,7 +4,7 @@ using static GameManager;
 
 public class PlayerManager : MonoBehaviour
 {
-    public enum PlayerState
+    public enum PlayerActionState
     {
         None,
         Forward,
@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
         Right,
     }
 
-    public PlayerState playerState { get; private set; } = PlayerState.None;
+    public PlayerActionState playerActionState { get; private set; } = PlayerActionState.None;
 
     [Header("플레이어 정보")]
     [SerializeField]

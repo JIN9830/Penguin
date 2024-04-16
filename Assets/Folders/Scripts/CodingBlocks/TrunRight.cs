@@ -4,13 +4,14 @@ using static GameManager;
 
 public class TrunRight : CodingBlock
 {
-    Quaternion playerStartRot;
-    Quaternion playerEndRot;
+    private Quaternion _playerStartRot;
+    private Quaternion _playerEndRot;
+
     private void Update()
     {
         if (GameManager.GameManager_Instance.ExecutionToggle == false)
         {
-            blockTweener.Kill();
+            _blockTweener.Kill();
             transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             this.GetComponent<CodingBlock>().enabled = false;
         }
@@ -19,12 +20,12 @@ public class TrunRight : CodingBlock
     {
         ToggleHighLight(true);
 
-        blockTweener = CodingUIManager_Instance.UIAnimation.Animation_RightBlockPlay(this.gameObject);
+        _blockTweener = CodingUIManager_Instance.UIAnimation.Animation_RightBlockPlay(this.gameObject);
 
-        playerStartRot = PlayerManager_Instance.playerObject.transform.rotation;
-        playerEndRot = playerStartRot * Quaternion.Euler(0, 90, 0);
+        _playerStartRot = PlayerManager_Instance.playerObject.transform.rotation;
+        _playerEndRot = _playerStartRot * Quaternion.Euler(0, 90, 0);
 
         PlayerManager_Instance.PlayerAnimator.SetTrigger("Turn");
-        PlayerManager_Instance.playerObject.transform.DORotateQuaternion(playerEndRot, 0.3f);
+        PlayerManager_Instance.playerObject.transform.DORotateQuaternion(_playerEndRot, 0.3f);
     }
 }

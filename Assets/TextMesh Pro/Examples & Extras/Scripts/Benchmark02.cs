@@ -68,7 +68,7 @@ namespace TMPro.Examples
                 }
                 else if (SpawnType == 2)
                 {
-                    // canvas WorldSpace Camera
+                    // Canvas WorldSpace Camera
                     GameObject go = new GameObject();
                     Canvas canvas = go.AddComponent<Canvas>();
                     canvas.worldCamera = Camera.main;

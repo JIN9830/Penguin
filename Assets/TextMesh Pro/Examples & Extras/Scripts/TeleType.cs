@@ -29,11 +29,11 @@ namespace TMPro.Examples
 
 
 
-            //if (GetComponentInParent(typeof(canvas)) as canvas == null)
+            //if (GetComponentInParent(typeof(Canvas)) as Canvas == null)
             //{
-            //    GameObject canvas = new GameObject("canvas", typeof(canvas));
-            //    gameObject.transform.SetParent(canvas.transform);
-            //    canvas.GetComponent<canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            //    GameObject Canvas = new GameObject("Canvas", typeof(Canvas));
+            //    gameObject.transform.SetParent(Canvas.transform);
+            //    Canvas.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
 
             //    // Set RectTransform Size
             //    gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(500, 300);
