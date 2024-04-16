@@ -16,46 +16,59 @@ public class CodingUIManager : MonoBehaviour
     public ECurrentLayout currentLayout = ECurrentLayout.Main;
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
-    [Header("캔버스 오브젝트")]
-    public GameObject Canvas;
+    [field: Header("캔버스 오브젝트")]
+    [field: SerializeField] public GameObject canvas { get; private set; }
 
-    [Header("그리드 레이아웃 오브젝트")]
-    public GameObject mainLayout;
-    public GameObject functionLayout;
-    public GameObject loopLayout;
 
-    private Image mainLayoutImage;
-    private Image functionLayoutImage;
-    private Image loopLayoutImage;
+    [field: Header("그리드 레이아웃 오브젝트")]
+    [field: SerializeField] public GameObject mainLayout { get; private set; }
+    [field: SerializeField] public GameObject functionLayout { get; private set; }
+    [field: SerializeField] public GameObject loopLayout { get; private set; }
 
-    [Header("블럭 삭제 버튼")]
-    public GameObject mainDelete;
-    public GameObject functionDelete;
-    public GameObject loopDelete;
+    private Image _mainLayoutImage;
+    private Image _functionLayoutImage;
+    private Image _loopLayoutImage;
 
-    [Header("북마크 오브젝트")]
-    public GameObject mainBookmark;
-    public GameObject functionBookmark;
-    public GameObject loopBookmark;
+    private Image _mainselectedImage;
+    private Image _functionselectedImage;
+    private Image _loopselectedImage;
 
-    [Header("플레이 & 정지, 스피드업 버튼")]
-    public GameObject executionButton;
-    public GameObject stopButton;
-    public GameObject timeControlButton;
+    [field: Header("블럭 삭제 버튼")]
+    [field: SerializeField] public GameObject mainDelete { get; private set; }
+    [field: SerializeField] public GameObject functionDelete { get; private set; }
+    [field: SerializeField] public GameObject loopDelete { get; private set; }
 
-    [Header("코딩블럭 버튼 오브젝트")]
-    public GameObject forwardButton;
-    public GameObject turnLeftButton;
-    public GameObject turnRightButton;
-    public GameObject functionButton;
-    public GameObject loopButton;
+    [field: Header("북마크 오브젝트")]
+    [field: SerializeField] public GameObject mainBookmark { get; private set; }
+    [field: SerializeField] public GameObject functionBookmark { get; private set; }
+    [field: SerializeField] public GameObject loopBookmark { get; private set; }
 
-    [Header("코딩블럭 프리팹")]
-    public GameObject forwardPrefab;
-    public GameObject turnLeftPrefab;
-    public GameObject turnRightPrefab;
-    public GameObject functionPrefab;
-    public GameObject loopPrefab;
+    [field: Header("플레이 & 정지, 스피드업 버튼")]
+    [field: SerializeField] public GameObject executionButton { get; private set; }
+    [field: SerializeField] public GameObject stopButton { get; private set; }
+    [field: SerializeField] public GameObject timeControlButton { get; private set; }
+
+    [field: Header("코딩블럭 버튼 오브젝트")]
+    [field: SerializeField] public GameObject forwardButton { get; private set; }
+    [field: SerializeField] public GameObject turnLeftButton { get; private set; }
+    [field: SerializeField] public GameObject turnRightButton { get; private set; }
+    [field: SerializeField] public GameObject functionButton { get; private set; }
+    [field: SerializeField] public GameObject loopButton { get; private set; }
+
+    [field: Header("코딩블럭 프리팹")]
+    [field: SerializeField] public GameObject forwardPrefab { get; private set; }
+    [field: SerializeField] public GameObject turnLeftPrefab { get; private set; }
+    [field: SerializeField] public GameObject turnRightPrefab { get; private set; }
+    [field: SerializeField] public GameObject functionPrefab { get; private set; }
+    [field: SerializeField] public GameObject loopPrefab { get; private set; }
+
+    private Vector3 initScale = new Vector3(0.9f, 0.9f, 0.9f);
+    private Vector3 targetScale = new Vector3(1f, 1f, 1f);
+
+    private Vector3 funcinitScale = new Vector3(0.5f, 0.5f, 0.5f);
+    private Vector3 functargetScale = new Vector3(0.75f, 0.75f, 0.75f);
+
+
 
     private void Start()
     {
@@ -100,22 +113,37 @@ public class CodingUIManager : MonoBehaviour
         {
             case ECurrentLayout.Main:
                 currentLayout = ECurrentLayout.Main;
+
+                mainLayout.transform.parent.transform.localScale = initScale;
+                mainLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
 
             case ECurrentLayout.Function:
                 currentLayout = ECurrentLayout.Function;
+
                 functionButton.gameObject.SetActive(true);
                 loopButton.gameObject.SetActive(false);
+                functionButton.transform.localScale = funcinitScale;
+                functionButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
+
                 functionLayout.transform.parent.gameObject.SetActive(true);
                 loopLayout.transform.parent.gameObject.SetActive(false);
+                functionLayout.transform.parent.transform.localScale = initScale;
+                functionLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
 
             case ECurrentLayout.Loop:
                 currentLayout = ECurrentLayout.Loop;
+
                 loopButton.gameObject.SetActive(true);
                 functionButton.gameObject.SetActive(false);
+                loopButton.transform.localScale = funcinitScale;
+                loopButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
+
                 loopLayout.transform.parent.gameObject.SetActive(true);
                 functionLayout.transform.parent.gameObject.SetActive(false);
+                loopLayout.transform.parent.transform.localScale = initScale;
+                loopLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
         }
     }

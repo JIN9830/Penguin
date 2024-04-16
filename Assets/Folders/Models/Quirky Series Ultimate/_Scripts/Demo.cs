@@ -58,7 +58,7 @@ public class Demo : MonoBehaviour {
 	void Start() {
 
 		animal_parent = GameObject.Find("Animals").transform;
-		Transform canvas = GameObject.Find("Canvas").transform;
+		Transform canvas = GameObject.Find("canvas").transform;
 		dropdownAnimal = canvas.Find("Animal").Find("Dropdown").GetComponent<Dropdown>();
 		dropdownAnimation = canvas.Find("Animation").Find("Dropdown").GetComponent<Dropdown>();
 		dropdownShapekey = canvas.Find("Shapekey").Find("Dropdown").GetComponent<Dropdown>();

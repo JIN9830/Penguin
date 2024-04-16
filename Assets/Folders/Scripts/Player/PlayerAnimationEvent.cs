@@ -24,26 +24,20 @@ public class PlayerAnimationEvent : MonoBehaviour
         }
         else if(isSad)
         {
-            isSad = AnimationTimer(1.2f);
+            isSad = AnimationTimer(1.0f);
             playerAnimator.SetBool("IsSad", isSad);
         }
     }
 
 
-    public void HitTheWall() // Event calling location (Death 0:04)
+    public void HitTheWallEvent() // Event called (Death 0:04)
     {
-        if(!isCry)
-        {
-            isCry = true;
-        }
+        isCry = true;
     }
 
-    public void EdgeHitAniamtion() // Event calling location (Idle B 0:01)
+    public void ReachTheEdgeEvent() // Event called (Idle B 0:01)
     {
-        if(!isSad)
-        {
-            isSad = true;
-        }
+        isSad = true;
     }
 
     private bool AnimationTimer(float limitTime)

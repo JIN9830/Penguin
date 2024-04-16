@@ -32,8 +32,7 @@ public class Forward : CodingBlock
             transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
         }
-        else
-            PlayerMove();
+        else PlayerMove();
     }
     private void PlayerMove()
     {
@@ -66,11 +65,13 @@ public class Forward : CodingBlock
                 CodingUIManager_Instance.ShakeUIElements();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
-            else if (hit.collider.CompareTag("Edge"))
+
+            if (hit.collider.CompareTag("Edge"))
             {
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("Edge");
                 this.GetComponent<CodingBlock>().enabled = false;
             }
+
         }
         else
         {
@@ -78,8 +79,4 @@ public class Forward : CodingBlock
             IsForwarding = true;
         }
     }
-
-
-
-
 }

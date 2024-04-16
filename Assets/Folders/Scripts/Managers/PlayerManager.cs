@@ -7,6 +7,8 @@ public class PlayerManager : MonoBehaviour
     [Header("플레이어 정보")]
     [SerializeField]
     public GameObject playerObject;
+
+    public GameObject CameraTargetObject;
     public Animator PlayerAnimator { get; private set; }
     public Vector3 PlayerStartPos { get; private set; }
     public Vector3 PlayerNewPos { get; private set; }
@@ -21,6 +23,9 @@ public class PlayerManager : MonoBehaviour
 
         PlayerRestPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
         PlayerRestRot = playerObject.transform.rotation;
+
+        CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
+        CameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
     }
 
 
