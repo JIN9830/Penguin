@@ -61,14 +61,14 @@ public class Forward : CodingBlock
 
             if (hit.collider.CompareTag("Wall"))
             {
-                PlayerManager_Instance.PlayerAnimator.SetTrigger("WallHit");
+                PlayerManager_Instance.PlayerAnimator.SetTrigger("HitTheWall");
                 CodingUIManager_Instance.ShakeUIElements();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
 
             if (hit.collider.CompareTag("Edge"))
             {
-                PlayerManager_Instance.PlayerAnimator.SetTrigger("Edge");
+                PlayerManager_Instance.PlayerAnimator.SetTrigger("ReachTheEdge");
                 this.GetComponent<CodingBlock>().enabled = false;
             }
 

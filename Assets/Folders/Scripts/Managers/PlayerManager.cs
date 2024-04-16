@@ -4,6 +4,16 @@ using static GameManager;
 
 public class PlayerManager : MonoBehaviour
 {
+    public enum PlayerState
+    {
+        None,
+        Forward,
+        Left,
+        Right,
+    }
+
+    public PlayerState playerState { get; private set; } = PlayerState.None;
+
     [Header("플레이어 정보")]
     [SerializeField]
     public GameObject playerObject;
@@ -27,7 +37,6 @@ public class PlayerManager : MonoBehaviour
         CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
         CameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
     }
-
 
     public void InitPlayerMoveVector()
     {
