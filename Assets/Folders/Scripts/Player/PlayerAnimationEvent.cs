@@ -15,14 +15,14 @@ public class PlayerAnimationEvent : MonoBehaviour
         _playerAnimator = this.GetComponent<Animator>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if(_isCry)
+        if (_isCry)
         {
             _isCry = AnimationTimer(1.6f);
             _playerAnimator.SetBool("IsCry", _isCry);
         }
-        else if(_isSad)
+        else if (_isSad)
         {
             _isSad = AnimationTimer(1.0f);
             _playerAnimator.SetBool("IsSad", _isSad);
@@ -42,7 +42,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private bool AnimationTimer(float limitTime)
     {
-        _timer += Time.fixedDeltaTime;
+        _timer += Time.deltaTime;
 
         if (_timer > limitTime)
         {

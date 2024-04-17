@@ -269,11 +269,11 @@ public class CodingUIManager : MonoBehaviour
     public void StopBlock()
     {
         ResetBlockAnimation();
+        PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
 
         GameManager_Instance.Set_ExecutionToggle(false);
         GameManager_Instance.Set_IsMainMethodRunning(false);
 
-        PlayerManager_Instance.PlayerAnimator.SetBool("ResetEmote", GameManager_Instance.IsMainMethodRunning);
         PlayerManager_Instance.ResetPlayerPosition();
 
         UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1);

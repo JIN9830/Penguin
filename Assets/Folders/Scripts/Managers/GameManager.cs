@@ -71,6 +71,11 @@ public class GameManager : MonoBehaviour
         _subBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
     }
 
+    private void Update()
+    {
+        Debug.Log(IsMainMethodRunning);
+    }
+
 
     /// <summary>
     /// 무한 루프를 돌고 있다가 실행 버튼의 클릭 이벤트를 감지했을 때 메인 레이아웃에 있는 블록들을 읽고 실행합니다.
@@ -82,7 +87,7 @@ public class GameManager : MonoBehaviour
             // .. 플레이어가 실행 버튼을 누르기 전까지 해당 부분에서 코드 제어권이 유니티에게 돌아갑니다. 실행 버튼이 눌리면 아래의 블록 컴파일 코드가 진행됩니다.
             yield return WaitUntilExecutionTrigger;
 
-            // .. 블록 컴파일의 현재 상태를 나타내는 변수입니다.
+            // .. 블록 컴파일의 실행 상태를 나타내는 변수입니다.
             IsMainMethodRunning = true;
 
             CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false); 
@@ -106,12 +111,13 @@ public class GameManager : MonoBehaviour
 
             if (IsMainMethodRunning) yield return WAIT_FOR_SECONDS;
 
-            PlayerManager_Instance.PlayerAnimator.SetBool("ResetEmote", IsMainMethodRunning);
+            PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", IsMainMethodRunning);
 
             ExecutionToggle = false;
             IsMainMethodRunning = false;
             CodingUIManager_Instance.DisableBlockHighlights();
             CodingUIManager_Instance.LockUIElements(false);
+            
         }
     }
 
