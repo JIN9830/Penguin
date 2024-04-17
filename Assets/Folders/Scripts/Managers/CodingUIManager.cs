@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using static GameManager;
+using System;
 
 public class CodingUIManager : MonoBehaviour
 {
@@ -29,9 +30,11 @@ public class CodingUIManager : MonoBehaviour
     private Image _functionLayoutImage;
     private Image _loopLayoutImage;
 
-    private Image _mainselectedImage;
-    private Image _functionselectedImage;
-    private Image _loopselectedImage;
+    private readonly Color _greyLayoutColor = new Color32(135, 135, 135, 125);
+    private readonly Color _greenLayoutColor = new Color32(148, 174, 140, 125);
+    private readonly Color _purpleLayoutColor = new Color32(122, 104, 142, 125);
+    private readonly Color _orangeLayoutColor = new Color32(186, 150, 118, 125);
+
 
     [field: Header("블럭 삭제 버튼")]
     [field: SerializeField] public GameObject MainDelete { get; private set; }
@@ -70,7 +73,12 @@ public class CodingUIManager : MonoBehaviour
     private Vector3 funcinitScale = new Vector3(0.5f, 0.5f, 0.5f);
     private Vector3 functargetScale = new Vector3(0.75f, 0.75f, 0.75f);
 
-
+    private void Awake()
+    {
+        MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
+        FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
+        LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
+    }
 
     private void Start()
     {
@@ -103,7 +111,7 @@ public class CodingUIManager : MonoBehaviour
         #region Play, Stop & TimeControl OnClickAddListener
         ExecutionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_ExecutionToggle(true));
         StopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
-        TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleButton());
+        TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleControl());
         #endregion
 
         GameManager_Instance.Initialize_CodingMethod();
@@ -113,40 +121,66 @@ public class CodingUIManager : MonoBehaviour
     {
         switch (selectMethod)
         {
+            #region MainLayout Select Code
             case ECurrentLayout.Main:
                 currentLayout = ECurrentLayout.Main;
 
+                // .. MainLayout 컬러 변경
+                _mainLayoutImage.color = _greenLayoutColor;
+                _functionLayoutImage.color = _greyLayoutColor;
+                _loopLayoutImage.color = _greyLayoutColor;
+
+                // .. MainLayout 활성화 애니메이션
                 MainLayout.transform.parent.transform.localScale = initScale;
                 MainLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
+            #endregion
 
+            #region FunctionLayout Select Code
             case ECurrentLayout.Function:
                 currentLayout = ECurrentLayout.Function;
 
+                // .. FunctionLayout 컬러 변경
+                _functionLayoutImage.color = _purpleLayoutColor;
+                _mainLayoutImage.color = _greyLayoutColor;
+                _loopLayoutImage.color = _greyLayoutColor;
+
+                // .. Function 버튼 활성화 & 애니메이션
                 FunctionButton.gameObject.SetActive(true);
                 LoopButton.gameObject.SetActive(false);
                 FunctionButton.transform.localScale = funcinitScale;
                 FunctionButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
 
+                // .. FunctionLayout 활성화 & 애니메이션
                 FunctionLayout.transform.parent.gameObject.SetActive(true);
                 LoopLayout.transform.parent.gameObject.SetActive(false);
                 FunctionLayout.transform.parent.transform.localScale = initScale;
                 FunctionLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
+            #endregion
 
+            #region LoopLayout Select Code
             case ECurrentLayout.Loop:
                 currentLayout = ECurrentLayout.Loop;
 
+                // .. LoopLayout 컬러 변경
+                _loopLayoutImage.color = _orangeLayoutColor;
+                _mainLayoutImage.color = _greyLayoutColor;
+                _functionLayoutImage.color = _greyLayoutColor;
+
+                // .. Loop 버튼 활성화 & 애니메이션
                 LoopButton.gameObject.SetActive(true);
                 FunctionButton.gameObject.SetActive(false);
                 LoopButton.transform.localScale = funcinitScale;
                 LoopButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
 
+                // .. LoopLayout 활성화 & 애니메이션
                 LoopLayout.transform.parent.gameObject.SetActive(true);
                 FunctionLayout.transform.parent.gameObject.SetActive(false);
                 LoopLayout.transform.parent.transform.localScale = initScale;
                 LoopLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
+                #endregion
         }
     }
     public void InsertBlock(GameObject prefab)
@@ -231,7 +265,7 @@ public class CodingUIManager : MonoBehaviour
     public void StopBlock()
     {
         ResetBlockAnimation();
-
+        
         GameManager_Instance.Set_ExecutionToggle(false);
         GameManager_Instance.Set_IsMainMethodRunning(false);
 
@@ -242,7 +276,7 @@ public class CodingUIManager : MonoBehaviour
         StopButton.gameObject.SetActive(false);
         ExecutionButton.gameObject.SetActive(true);
     }
-    public void TimeScaleButton()
+    public void TimeScaleControl()
     {
         if (Time.timeScale == 1f)
         {

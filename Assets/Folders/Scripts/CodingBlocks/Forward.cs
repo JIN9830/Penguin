@@ -5,12 +5,11 @@ using static GameManager;
 
 public class Forward : CodingBlock
 {
-    public bool IsForwarding { get; private set; } = false;
     private float _deltaTimeCount = 0;
-    private readonly float PLAYER_MOVESPEED = 1.5f;
+    private readonly float _PLAYER_MOVESPEED = 1.5f;
 
     private RaycastHit _hit;
-    private readonly float DISTANCE = 0.6f;
+    private readonly float _DISTANCE = 0.6f;
 
     private void OnEnable()
     {
@@ -19,7 +18,10 @@ public class Forward : CodingBlock
 
     private void OnDisable()
     {
-        IsForwarding = false;
+        blockTweener.Kill();
+        transform.localScale = Vector3.one;
+
+        PlayerManager_Instance.playerState = PlayerManager.PlayerState.None;
         _deltaTimeCount = 0.67f;
         PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
     }
@@ -28,20 +30,19 @@ public class Forward : CodingBlock
     {
         if (GameManager_Instance.ExecutionToggle == false) // 정지 버튼을 누르면 실행
         {
-            _blockTweener.Kill();
-            transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
         }
         else PlayerMove();
     }
+
     private void PlayerMove()
     {
         PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
 
-        if (IsForwarding == true)
+        if (PlayerManager_Instance.playerState == PlayerManager.PlayerState.Forwarding)
         {
             _deltaTimeCount += Time.deltaTime;
-            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, PLAYER_MOVESPEED * _deltaTimeCount);
+            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, _PLAYER_MOVESPEED * _deltaTimeCount);
             PlayerManager_Instance.playerObject.transform.localPosition = newPos;
 
             if (_deltaTimeCount > 1)
@@ -55,9 +56,9 @@ public class Forward : CodingBlock
     {
         ToggleHighLight(true);
 
-        if (Physics.Raycast(PlayerManager_Instance.playerObject.transform.localPosition, PlayerManager_Instance.playerObject.transform.forward, out _hit, DISTANCE))
+        if (Physics.Raycast(PlayerManager_Instance.playerObject.transform.localPosition, PlayerManager_Instance.playerObject.transform.forward, out _hit, _DISTANCE))
         {
-            _blockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
+            blockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (_hit.collider.CompareTag("Wall"))
             {
@@ -75,8 +76,8 @@ public class Forward : CodingBlock
         }
         else
         {
-            _blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-            IsForwarding = true;
+            blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+            PlayerManager_Instance.playerState = PlayerManager.PlayerState.Forwarding;
         }
     }
 }

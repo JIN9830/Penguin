@@ -9,7 +9,7 @@ public class Loop : CodingBlock
     {
         if (GameManager_Instance.ExecutionToggle == false)
         {
-            _blockTweener.Kill();
+            blockTweener.Kill();
             transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
         }
@@ -17,7 +17,7 @@ public class Loop : CodingBlock
     public override void MoveOrder()
     {
         ToggleHighLight(true);
-        _blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+        blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
 
         GameManager_Instance.currentMethod = ECurrentMethod.Loop;
         CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Loop);
