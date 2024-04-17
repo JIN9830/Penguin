@@ -50,6 +50,8 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject ExecutionButton { get; private set; }
     [field: SerializeField] public GameObject StopButton { get; private set; }
     [field: SerializeField] public GameObject TimeControlButton { get; private set; }
+    [SerializeField] private Sprite _timeControlOn;
+    [SerializeField] private Sprite _timeControlOff;
 
     [field: Header("코딩블럭 버튼 오브젝트")]
     [field: SerializeField] public GameObject ForwardButton { get; private set; }
@@ -75,21 +77,12 @@ public class CodingUIManager : MonoBehaviour
 
     private void Awake()
     {
-        MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
-        FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
-        LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
-    }
-
-    private void Start()
-    {
-        GameManager_Instance.Get_UIManager(this.gameObject);
-
         #region Coding blocks onClickAddListener
-        ForwardButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(ForwardPrefab));
-        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(TurnLeftPrefab));
-        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(TurnRightPrefab));
-        FunctionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(FunctionPrefab));
-        LoopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(LoopPrefab));
+        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(ForwardPrefab); UIAnimation.Animation_CodingBlockPop(ForwardButton); });
+        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(TurnLeftPrefab); UIAnimation.Animation_CodingBlockPop(TurnLeftButton); });
+        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(TurnRightPrefab); UIAnimation.Animation_CodingBlockPop(TurnRightButton); });
+        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(FunctionPrefab); UIAnimation.Animation_CodingBlockPop(FunctionButton); });
+        LoopButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(LoopPrefab); UIAnimation.Animation_CodingBlockPop(FunctionButton); });
         #endregion
 
         #region Layout activate onClickAddListener
@@ -114,7 +107,18 @@ public class CodingUIManager : MonoBehaviour
         TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleControl());
         #endregion
 
+        MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
+        FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
+        LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
+    }
+
+    private void Start()
+    {
         GameManager_Instance.Initialize_CodingMethod();
+
+        GameManager_Instance.Get_UIManager(this.gameObject);
+
+        SelectedMethods(ECurrentLayout.Main);
     }
 
     public void SelectedMethods(ECurrentLayout selectMethod)
@@ -272,19 +276,24 @@ public class CodingUIManager : MonoBehaviour
         PlayerManager_Instance.PlayerAnimator.SetBool("ResetEmote", GameManager_Instance.IsMainMethodRunning);
         PlayerManager_Instance.ResetPlayerPosition();
 
-        UIAnimation.Animation_PlayBlockDelay(ExecutionButton, 1);
+        UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1);
 
         StopButton.gameObject.SetActive(false);
         ExecutionButton.gameObject.SetActive(true);
     }
     public void TimeScaleControl()
     {
+        UIAnimation.Animation_ButtonDelay(TimeControlButton, 1);
+
         if (Time.timeScale == 1f)
         {
-            Time.timeScale = 1.4f;
+            TimeControlButton.GetComponent<Image>().sprite = _timeControlOn;
+            UIAnimation.Animation_TimeControl(TimeControlButton);
+            Time.timeScale = 1.3f;
         }
         else
         {
+            TimeControlButton.GetComponent<Image>().sprite = _timeControlOff;
             UIAnimation.Animation_BlockShake(TimeControlButton);
             Time.timeScale = 1f;
         }

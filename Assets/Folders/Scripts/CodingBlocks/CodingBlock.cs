@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class CodingBlock : MonoBehaviour
 {
     private GameObject _highlight;
-    public Tweener blockTweener;
+    protected Tweener _blockTweener;
     public bool IsRotating { get; protected set; } = false;
 
     private void Awake()

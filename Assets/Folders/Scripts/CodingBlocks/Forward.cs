@@ -18,9 +18,7 @@ public class Forward : CodingBlock
 
     private void OnDisable()
     {
-        blockTweener.Kill();
         transform.localScale = Vector3.one;
-
         PlayerManager_Instance.playerState = PlayerManager.PlayerState.None;
         _deltaTimeCount = 0.67f;
         PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
@@ -30,6 +28,7 @@ public class Forward : CodingBlock
     {
         if (GameManager_Instance.ExecutionToggle == false) // 정지 버튼을 누르면 실행
         {
+            _blockTweener.Kill();
             this.GetComponent<CodingBlock>().enabled = false;
         }
         else PlayerMove();
@@ -58,7 +57,7 @@ public class Forward : CodingBlock
 
         if (Physics.Raycast(PlayerManager_Instance.playerObject.transform.localPosition, PlayerManager_Instance.playerObject.transform.forward, out _hit, _DISTANCE))
         {
-            blockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
+            _blockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (_hit.collider.CompareTag("Wall"))
             {
@@ -66,8 +65,7 @@ public class Forward : CodingBlock
                 CodingUIManager_Instance.ShakeUIElements();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
-
-            if (_hit.collider.CompareTag("Edge"))
+            else if (_hit.collider.CompareTag("Edge"))
             {
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("ReachTheEdge");
                 this.GetComponent<CodingBlock>().enabled = false;
@@ -76,7 +74,7 @@ public class Forward : CodingBlock
         }
         else
         {
-            blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+            _blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
             PlayerManager_Instance.playerState = PlayerManager.PlayerState.Forwarding;
         }
     }
