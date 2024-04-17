@@ -106,6 +106,8 @@ public class GameManager : MonoBehaviour
 
             if (IsMainMethodRunning) yield return WAIT_FOR_SECONDS;
 
+            PlayerManager_Instance.PlayerAnimator.SetBool("ResetEmote", IsMainMethodRunning);
+
             ExecutionToggle = false;
             IsMainMethodRunning = false;
             CodingUIManager_Instance.DisableBlockHighlights();

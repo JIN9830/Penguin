@@ -30,10 +30,10 @@ public class CodingUIManager : MonoBehaviour
     private Image _functionLayoutImage;
     private Image _loopLayoutImage;
 
-    private readonly Color _greyLayoutColor = new Color32(135, 135, 135, 125);
-    private readonly Color _greenLayoutColor = new Color32(148, 174, 140, 125);
-    private readonly Color _purpleLayoutColor = new Color32(122, 104, 142, 125);
-    private readonly Color _orangeLayoutColor = new Color32(186, 150, 118, 125);
+    private readonly Color _GREY_LAYOUT_COLOR = new Color32(135, 135, 135, 125);
+    private readonly Color _GREEN_LAYOUT_COLOR = new Color32(122, 149, 113, 125);
+    private readonly Color _PURPLE_LAYOUT_COLOR = new Color32(122, 104, 142, 125);
+    private readonly Color _ORANGE_LAYOUT_COLOR = new Color32(186, 150, 118, 125);
 
 
     [field: Header("블럭 삭제 버튼")]
@@ -126,9 +126,9 @@ public class CodingUIManager : MonoBehaviour
                 currentLayout = ECurrentLayout.Main;
 
                 // .. MainLayout 컬러 변경
-                _mainLayoutImage.color = _greenLayoutColor;
-                _functionLayoutImage.color = _greyLayoutColor;
-                _loopLayoutImage.color = _greyLayoutColor;
+                _mainLayoutImage.color = _GREEN_LAYOUT_COLOR;
+                _functionLayoutImage.color = _GREY_LAYOUT_COLOR;
+                _loopLayoutImage.color = _GREY_LAYOUT_COLOR;
 
                 // .. MainLayout 활성화 애니메이션
                 MainLayout.transform.parent.transform.localScale = initScale;
@@ -141,9 +141,9 @@ public class CodingUIManager : MonoBehaviour
                 currentLayout = ECurrentLayout.Function;
 
                 // .. FunctionLayout 컬러 변경
-                _functionLayoutImage.color = _purpleLayoutColor;
-                _mainLayoutImage.color = _greyLayoutColor;
-                _loopLayoutImage.color = _greyLayoutColor;
+                _functionLayoutImage.color = _PURPLE_LAYOUT_COLOR;
+                _mainLayoutImage.color = _GREY_LAYOUT_COLOR;
+                _loopLayoutImage.color = _GREY_LAYOUT_COLOR;
 
                 // .. Function 버튼 활성화 & 애니메이션
                 FunctionButton.gameObject.SetActive(true);
@@ -164,9 +164,9 @@ public class CodingUIManager : MonoBehaviour
                 currentLayout = ECurrentLayout.Loop;
 
                 // .. LoopLayout 컬러 변경
-                _loopLayoutImage.color = _orangeLayoutColor;
-                _mainLayoutImage.color = _greyLayoutColor;
-                _functionLayoutImage.color = _greyLayoutColor;
+                _loopLayoutImage.color = _ORANGE_LAYOUT_COLOR;
+                _mainLayoutImage.color = _GREY_LAYOUT_COLOR;
+                _functionLayoutImage.color = _GREY_LAYOUT_COLOR;
 
                 // .. Loop 버튼 활성화 & 애니메이션
                 LoopButton.gameObject.SetActive(true);
@@ -265,10 +265,11 @@ public class CodingUIManager : MonoBehaviour
     public void StopBlock()
     {
         ResetBlockAnimation();
-        
+
         GameManager_Instance.Set_ExecutionToggle(false);
         GameManager_Instance.Set_IsMainMethodRunning(false);
 
+        PlayerManager_Instance.PlayerAnimator.SetBool("ResetEmote", GameManager_Instance.IsMainMethodRunning);
         PlayerManager_Instance.ResetPlayerPosition();
 
         UIAnimation.Animation_PlayBlockDelay(ExecutionButton, 1);
