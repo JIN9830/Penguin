@@ -71,12 +71,6 @@ public class GameManager : MonoBehaviour
         _subBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
     }
 
-    private void Update()
-    {
-        Debug.Log(IsMainMethodRunning);
-    }
-
-
     /// <summary>
     /// 무한 루프를 돌고 있다가 실행 버튼의 클릭 이벤트를 감지했을 때 메인 레이아웃에 있는 블록들을 읽고 실행합니다.
     /// </summary>
