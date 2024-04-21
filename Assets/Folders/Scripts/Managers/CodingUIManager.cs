@@ -16,8 +16,8 @@ public class CodingUIManager : MonoBehaviour
     public ECurrentLayout currentLayout = ECurrentLayout.Main;
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
-    [field: Header("캔버스 오브젝트")]
-    [field: SerializeField] public GameObject Canvas { get; private set; }
+    [field: Header("비활성화된 오브젝트 풀 오브젝트")]
+    [field: SerializeField] public GameObject ReleasedBlocks { get; private set; }
 
 
     [field: Header("그리드 레이아웃 오브젝트")]
@@ -65,6 +65,8 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject TurnRightPrefab { get; private set; }
     [field: SerializeField] public GameObject FunctionPrefab { get; private set; }
     [field: SerializeField] public GameObject LoopPrefab { get; private set; }
+
+    public CodingBlock LayoutSpawnBlock { get; private set; }
 
 
     // 테스트용 코드 (레이아웃 UI(Main, Fucn, Loop) 터치 할 때 팝업 애니메이션 벡터 값)
@@ -188,6 +190,8 @@ public class CodingUIManager : MonoBehaviour
     }
     public void InsertBlock(GameObject prefab)
     {
+        LayoutSpawnBlock = prefab.GetComponent<CodingBlock>();
+
         if (prefab == FunctionPrefab || prefab == LoopPrefab)
         {
             if (GameManager_Instance.MainMethod.Count < 10)
@@ -204,10 +208,12 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Main:
                     if (GameManager_Instance.MainMethod.Count < 10)
                     {
-                        var blockSpawn = ObjectPoolManager_Instance.CodingBlockPool.Get(); // blockSpawn 캐싱하기
-                        blockSpawn.transform.SetParent(MainLayout.transform);
-                        GameManager_Instance.MainMethod.Add(blockSpawn);
-                        blockSpawn.GetComponent<CodingBlock>().enabled = false;
+                        // .. ObjectPool에서 블록을 가져오고 Main 레이아웃에 블록을 넣어줍니다.
+                        LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
+                        LayoutSpawnBlock.transform.SetParent(MainLayout.transform);
+
+                        GameManager_Instance.MainMethod.Add(LayoutSpawnBlock);
+                        LayoutSpawnBlock.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
                     }
                     break;
@@ -215,10 +221,12 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Function:
                     if (GameManager_Instance.FunctionMethod.Count < 10)
                     {
-                        var blockSpawn = ObjectPoolManager_Instance.CodingBlockPool.Get(); // blockSpawn 캐싱하기
-                        blockSpawn.transform.SetParent(FunctionLayout.transform);
-                        GameManager_Instance.FunctionMethod.Add(blockSpawn);
-                        prefab.GetComponent<CodingBlock>().enabled = false;
+                        // .. ObjectPool에서 블록을 가져오고 Function 레이아웃에 블록을 넣어줍니다.
+                        LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
+                        LayoutSpawnBlock.transform.SetParent(FunctionLayout.transform);
+
+                        GameManager_Instance.FunctionMethod.Add(LayoutSpawnBlock);
+                        LayoutSpawnBlock.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.FunctionMethod.Last().gameObject);
                     }
                     break;

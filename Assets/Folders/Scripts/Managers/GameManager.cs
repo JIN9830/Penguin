@@ -80,10 +80,11 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            // .. 플레이어가 실행 버튼을 누르기 전까지 해당 부분에서 코드 제어권이 유니티에게 돌아갑니다. 실행 버튼이 눌리면 아래의 블록 컴파일 코드가 진행됩니다.
+            // .. 플레이어가 실행 버튼을 누르기 전까지 아래의 코드는 실행되지 않고 코드 제어권이 유니티에게 돌아갑니다.
             yield return WaitUntilExecutionTrigger;
 
-            // .. 블록 컴파일의 실행 상태를 나타내는 변수입니다.
+            
+            // .. 블록 컴파일을 실행/정지 상태를 제어할때 사용하는 변수입니다.
             IsMainMethodRunning = true;
 
             CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false);
@@ -92,7 +93,7 @@ public class GameManager : MonoBehaviour
 
             foreach (CodingBlock block in MainMethod)
             {
-                if (!IsMainMethodRunning) // 플레이어가 중지 버튼을 누르면 해당 변수는 false가 되어 블록 컴파일을 중단합니다.
+                if (!IsMainMethodRunning) // 플레이어가 중지 버튼을 누르면 조건문 내부의 변수는 false가 되어 블록 컴파일을 중단합니다.
                     break;
 
                 yield return WAIT_FOR_HALF_SECONDS;
@@ -124,8 +125,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            // .. 메인 레이아웃에서 (함수, 루프) 블록이 실행되기 전까지 해당 부분에서 코드 제어권이 유니티에게 돌아갑니다.
-            // .. (함수, 루프) 블록이 실행되면 아래의 서브 블록 컴파일 코드가 진행됩니다.
+            // .. MainLayout에서 [Func, Loop] 블록이 실행되기 전까지 아래의 코드는 실행되지 않고 코드 제어권이 유니티에게 돌아갑니다.
             yield return WaitUntilSubMethodTrigger;
 
             switch (currentMethod)
@@ -240,12 +240,22 @@ public class GameManager : MonoBehaviour
         PlayerManager_Instance = instance;
     }
 
+    /// <summary>
+    /// 해당 프로퍼티를 무단으로 변경하면 게임플레이(코드 실행, 정지) 부분에서 버그가 발생할 수 있습니다.
+    /// </summary>
+    /// <param name="enable"></param>
     public void Set_ExecutionToggle(bool enable)
     {
         ExecutionToggle = enable;
     }
+
+    /// <summary>
+    /// 해당 프로퍼티를 무단으로 변경하면 게임플레이(코드 실행, 정지) 부분에서 버그가 발생할 수 있습니다.
+    /// </summary>
+    /// <param name="enable"></param>
     public void Set_IsMainMethodRunning(bool enable)
     {
+        // .. 해당 프로퍼티를 무단으로 변경하면 게임플레이(코드 실행, 정지) 부분에서 버그가 발생할 수 있습니다.
         IsMainMethodRunning = enable;
     }
 }

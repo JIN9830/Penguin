@@ -9,25 +9,33 @@ public class ObjectPoolManager : MonoBehaviour
 {
     #region 오브젝트 풀 프리팹
 
+    public enum BlockCategory
+    {
+        Forward,
+        Left,
+        Right,
+        Function,
+        Loop,
+    }
+
     [System.Serializable]
     public class ObjectInfo
     {
-        public string objectName;
+        public BlockCategory objectName;
         public GameObject prefab;
-        public int count;
     }
 
-    [Header("오브젝트 풀 프리팹")]
+    [Header("Pool 오브젝트 정보")]
     public ObjectInfo[] objectInfo;
 
     #endregion
 
-    [field: Header("코딩블럭 프리팹")]
-    [field: SerializeField] public GameObject ForwardPrefab { get; private set; }
-    [field: SerializeField] public GameObject TurnLeftPrefab { get; private set; }
-    [field: SerializeField] public GameObject TurnRightPrefab { get; private set; }
-    [field: SerializeField] public GameObject FunctionPrefab { get; private set; }
-    [field: SerializeField] public GameObject LoopPrefab { get; private set; }
+    //[field: Header("코딩블럭 프리팹")]
+    //[field: SerializeField] public GameObject ForwardPrefab { get; private set; }
+    //[field: SerializeField] public GameObject TurnLeftPrefab { get; private set; }
+    //[field: SerializeField] public GameObject TurnRightPrefab { get; private set; }
+    //[field: SerializeField] public GameObject FunctionPrefab { get; private set; }
+    //[field: SerializeField] public GameObject LoopPrefab { get; private set; }
 
     public IObjectPool<CodingBlock> CodingBlockPool { get; private set; }
 
@@ -55,7 +63,7 @@ public class ObjectPoolManager : MonoBehaviour
 
     public CodingBlock CreateBlockObject()
     {
-        CodingBlock newBlock = Instantiate(ForwardPrefab).GetComponent<CodingBlock>();
+        CodingBlock newBlock = Instantiate(objectInfo[0].prefab).GetComponent<CodingBlock>();
         newBlock.GetComponent<CodingBlock>().Pool = this.CodingBlockPool;
         return newBlock;
     }
@@ -66,6 +74,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
     public void OnBlockRelease(CodingBlock block)
     {
+        block.transform.SetParent(CodingUIManager_Instance.ReleasedBlocks.transform);
         block.gameObject.SetActive(false);
     }
     public void OnBlockDestroy(CodingBlock block)
