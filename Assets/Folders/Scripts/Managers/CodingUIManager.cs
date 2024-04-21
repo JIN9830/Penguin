@@ -113,6 +113,8 @@ public class CodingUIManager : MonoBehaviour
 
         GameManager_Instance.Get_UIManager(this.gameObject);
 
+        ReleasedBlocks = GameManager_Instance.gameObject;
+
         SelectedMethods(ECurrentLayout.Main);
     }
 

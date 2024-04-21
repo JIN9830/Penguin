@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7317505727706802258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2463362469262092347}
+  - component: {fileID: 5251312231986217681}
+  - component: {fileID: 6789847955062975985}
+  - component: {fileID: 8907572542204903136}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2463362469262092347
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7317505727706802258}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1325.8901, y: 1680.1788, z: 29.045002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5251312231986217681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7317505727706802258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d41bed5d33aa82241afa876e7806efde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6789847955062975985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7317505727706802258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f01ece739c9283645b99a720cbdf47ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMethod: 0
+  codingBlockState: 1
+  _loopReaptCount: 1
+--- !u!114 &8907572542204903136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7317505727706802258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5076bfb816eca6b4fa3f8062c668cc4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectInfo:
+  - objectName: 0
+    prefab: {fileID: 4114433310597077788, guid: c4a2bf30ffbaed64f9d7691f2011a3bc,
+      type: 3}
+    poolCapacity: 10
+  - objectName: 1
+    prefab: {fileID: 3712590164119441793, guid: b5d72ed42ff5a214f875120ed6bfda20,
+      type: 3}
+    poolCapacity: 7
+  - objectName: 2
+    prefab: {fileID: 1576133001211970131, guid: 60eda511fe310c5429fe3cde22011456,
+      type: 3}
+    poolCapacity: 7
+  - objectName: 3
+    prefab: {fileID: 7320503171045899465, guid: 41230cf6e41569d498b59befee72067a,
+      type: 3}
+    poolCapacity: 3
+  - objectName: 4
+    prefab: {fileID: 7320503171045899465, guid: fb791fb60d5bfad47963ca281e01b5cd,
+      type: 3}
+    poolCapacity: 3
