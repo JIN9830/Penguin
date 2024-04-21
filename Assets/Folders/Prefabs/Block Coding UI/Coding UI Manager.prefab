@@ -32,6 +32,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 692590031412612855}
   - {fileID: 8725849315109830858}
   - {fileID: 4591183713464641694}
   - {fileID: 336310595729172571}
@@ -703,7 +704,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLayout: 0
-  <Canvas>k__BackingField: {fileID: 373343611639230003}
+  <ReleasedBlocks>k__BackingField: {fileID: 7306072608451614744}
   <MainLayout>k__BackingField: {fileID: 5079957943747705782}
   <FunctionLayout>k__BackingField: {fileID: 3308949840406312254}
   <LoopLayout>k__BackingField: {fileID: 5088727701558004640}
@@ -723,16 +724,6 @@ MonoBehaviour:
   <TurnRightButton>k__BackingField: {fileID: 6056869496678990303}
   <FunctionButton>k__BackingField: {fileID: 3601418297876945051}
   <LoopButton>k__BackingField: {fileID: 8843582054262847703}
-  <ForwardPrefab>k__BackingField: {fileID: 4114433310597077788, guid: c4a2bf30ffbaed64f9d7691f2011a3bc,
-    type: 3}
-  <TurnLeftPrefab>k__BackingField: {fileID: 3712590164119441793, guid: b5d72ed42ff5a214f875120ed6bfda20,
-    type: 3}
-  <TurnRightPrefab>k__BackingField: {fileID: 1576133001211970131, guid: 60eda511fe310c5429fe3cde22011456,
-    type: 3}
-  <FunctionPrefab>k__BackingField: {fileID: 7320503171045899465, guid: 41230cf6e41569d498b59befee72067a,
-    type: 3}
-  <LoopPrefab>k__BackingField: {fileID: 7320503171045899465, guid: fb791fb60d5bfad47963ca281e01b5cd,
-    type: 3}
 --- !u!1 &1757599564106947708
 GameObject:
   m_ObjectHideFlags: 0
@@ -3069,6 +3060,41 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -400}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &7306072608451614744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 692590031412612855}
+  m_Layer: 5
+  m_Name: Released Blocks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &692590031412612855
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7306072608451614744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2999392848176231307}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7579435641884331879

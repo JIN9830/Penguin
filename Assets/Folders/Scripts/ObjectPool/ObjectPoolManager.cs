@@ -8,31 +8,31 @@ using static ObjectPoolManager;
 
 public class ObjectPoolManager : MonoBehaviour
 {
-    #region 오브젝트 풀 프리팹
-    public enum BlockName
+    [System.Serializable]
+    public class ObjectInfo
+    {
+        public BlockCategory objectName;
+        public GameObject prefab;
+        public int poolCapacity;
+    }
+
+    public enum BlockCategory
     {
         Forward,
         Left,
         Right,
         Function,
         Loop,
-    } public BlockName blockName;
-
-    [System.Serializable]
-    public class ObjectInfo
-    {
-        public BlockName objectName;
-        public GameObject prefab;
-        public int poolDefaultCapacity;
     }
+
+    public BlockCategory blockName;
 
     [Header("Pool 내부 오브젝트 정보")]
     public ObjectInfo[] objectInfo;
-    #endregion
 
-    public Dictionary<BlockName, IObjectPool<CodingBlock>> poolManagerDic = new Dictionary<BlockName, IObjectPool<CodingBlock>>();
+    public Dictionary<BlockCategory, IObjectPool<CodingBlock>> poolManagerDic = new Dictionary<BlockCategory, IObjectPool<CodingBlock>>();
 
-    public Dictionary<BlockName, GameObject> poolObjectDic = new Dictionary<BlockName, GameObject>();
+    public Dictionary<BlockCategory, GameObject> poolObjectDic = new Dictionary<BlockCategory, GameObject>();
     public GameObject selectedPoolObject = null;
 
     private void Awake()
@@ -45,17 +45,17 @@ public class ObjectPoolManager : MonoBehaviour
             actionOnRelease: OnBlockRelease,
             actionOnDestroy: OnBlockDestroy,
             collectionCheck: false,
-            defaultCapacity: objectInfo[index].poolDefaultCapacity,
-            maxSize: objectInfo[index].poolDefaultCapacity
+            defaultCapacity: objectInfo[index].poolCapacity,
+            maxSize: objectInfo[index].poolCapacity
             );
 
             poolObjectDic.Add(objectInfo[index].objectName, objectInfo[index].prefab);
             poolManagerDic.Add(objectInfo[index].objectName, pool);
 
-            //for(int i = 0; i < objectInfo[index].poolDefaultCapacity; i++)
+            //for (int i = 0; i < objectInfo[index].poolCapacity; i++)
             //{
             //    CodingBlock poolCodingBlock = CreateBlockObject();
-            //    poolCodingBlock.Pool.Release(poolCodingBlock);
+            //    poolCodingBlock.ReleaseBlock();
             //}
         }
     }
@@ -65,10 +65,10 @@ public class ObjectPoolManager : MonoBehaviour
         GameManager_Instance.Get_ObjectPoolManager(this.gameObject);
     }
 
-    public void SelectedPoolObject(BlockName blockName)
+    public void SelectedPoolObject(BlockCategory selectedBlockName)
     {
-        this.blockName = blockName;
-        poolObjectDic.TryGetValue(blockName, out selectedPoolObject);
+        blockName = selectedBlockName;
+        poolObjectDic.TryGetValue(selectedBlockName, out selectedPoolObject);
     }
 
     public CodingBlock CreateBlockObject()
@@ -78,7 +78,7 @@ public class ObjectPoolManager : MonoBehaviour
         return newBlock;
     }
 
-    public CodingBlock SelectBlockFromPool(BlockName block)
+    public CodingBlock SelectBlockFromPool(BlockCategory block)
     {
         blockName = block;
 

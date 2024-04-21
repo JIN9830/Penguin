@@ -73,11 +73,11 @@ public class CodingUIManager : MonoBehaviour
     private void Awake()
     {
         #region Coding blocks onClickAddListener
-        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Forward); InsertBlock(); });
-        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Left); InsertBlock(); });
-        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Right); InsertBlock(); });
-        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Function); InsertBlock(); });
-        LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Loop); InsertBlock(); });
+        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockName = BlockCategory.Forward; InsertBlock(); });
+        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockName = BlockCategory.Left; InsertBlock(); });
+        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockName = BlockCategory.Right; InsertBlock(); });
+        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockName = BlockCategory.Function; InsertBlock(); });
+        LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockName = BlockCategory.Loop; InsertBlock(); });
         #endregion
 
         #region Layout activate onClickAddListener
@@ -184,7 +184,7 @@ public class CodingUIManager : MonoBehaviour
     }
     public void InsertBlock()
     {
-        if (ObjectPoolManager_Instance.blockName == BlockName.Function || ObjectPoolManager_Instance.blockName == BlockName.Loop)
+        if (ObjectPoolManager_Instance.blockName == BlockCategory.Function || ObjectPoolManager_Instance.blockName == BlockCategory.Loop)
         {
             if (GameManager_Instance.MainMethod.Count < 10)
             {
