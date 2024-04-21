@@ -73,11 +73,11 @@ public class CodingUIManager : MonoBehaviour
     private void Awake()
     {
         #region Coding blocks onClickAddListener
-        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Forward); InsertBlock(); });
-        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Left); InsertBlock(); });
-        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Right); InsertBlock(); });
-        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Function); InsertBlock(); });
-        LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Loop); InsertBlock(); });
+        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Forward); InsertBlock(); });
+        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Left); InsertBlock(); });
+        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Right); InsertBlock(); });
+        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Function); InsertBlock(); });
+        LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockName.Loop); InsertBlock(); });
         #endregion
 
         #region Layout activate onClickAddListener
@@ -184,12 +184,12 @@ public class CodingUIManager : MonoBehaviour
     }
     public void InsertBlock()
     {
-        if (ObjectPoolManager_Instance.blockCategory == BlockCategory.Function || ObjectPoolManager_Instance.blockCategory == BlockCategory.Loop)
+        if (ObjectPoolManager_Instance.blockName == BlockName.Function || ObjectPoolManager_Instance.blockName == BlockName.Loop)
         {
             if (GameManager_Instance.MainMethod.Count < 10)
             {
                 // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
-                LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
+                LayoutSpawnBlock = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.blockName);
                 LayoutSpawnBlock.transform.SetParent(MainLayout.transform);
 
                 GameManager_Instance.MainMethod.Add(LayoutSpawnBlock);
@@ -205,7 +205,7 @@ public class CodingUIManager : MonoBehaviour
                     if (GameManager_Instance.MainMethod.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
-                        LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
+                        LayoutSpawnBlock = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.blockName);
                         LayoutSpawnBlock.transform.SetParent(MainLayout.transform);
 
                         GameManager_Instance.MainMethod.Add(LayoutSpawnBlock);
@@ -218,7 +218,7 @@ public class CodingUIManager : MonoBehaviour
                     if (GameManager_Instance.FunctionMethod.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 FunctionLayout에 블록을 넣어줍니다.
-                        LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
+                        LayoutSpawnBlock = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.blockName);
                         LayoutSpawnBlock.transform.SetParent(FunctionLayout.transform);
 
                         GameManager_Instance.FunctionMethod.Add(LayoutSpawnBlock);
@@ -231,7 +231,7 @@ public class CodingUIManager : MonoBehaviour
                     if (GameManager_Instance.LoopMethod.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 LoopLayout에 블록을 넣어줍니다.
-                        LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
+                        LayoutSpawnBlock = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.blockName);
                         LayoutSpawnBlock.transform.SetParent(LoopLayout.transform);
 
                         GameManager_Instance.LoopMethod.Add(LayoutSpawnBlock);

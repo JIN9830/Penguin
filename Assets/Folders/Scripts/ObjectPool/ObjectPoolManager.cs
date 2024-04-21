@@ -9,53 +9,55 @@ using static ObjectPoolManager;
 public class ObjectPoolManager : MonoBehaviour
 {
     #region 오브젝트 풀 프리팹
-    public enum BlockCategory
+    public enum BlockName
     {
         Forward,
         Left,
         Right,
         Function,
         Loop,
-    } public BlockCategory blockCategory;
+    } public BlockName blockName;
 
     [System.Serializable]
     public class ObjectInfo
     {
-        public BlockCategory objectName;
+        public BlockName objectName;
         public GameObject prefab;
+        public int poolDefaultCapacity;
     }
 
     [Header("Pool 내부 오브젝트 정보")]
     public ObjectInfo[] objectInfo;
     #endregion
 
-    public Dictionary<BlockCategory, GameObject> PoolDictionary = new Dictionary<BlockCategory, GameObject>();
+    public Dictionary<BlockName, IObjectPool<CodingBlock>> poolManagerDic = new Dictionary<BlockName, IObjectPool<CodingBlock>>();
+
+    public Dictionary<BlockName, GameObject> poolObjectDic = new Dictionary<BlockName, GameObject>();
     public GameObject selectedPoolObject = null;
-
-    public IObjectPool<CodingBlock> CodingBlockPool { get; private set; }
-
-    [Header("Pool 크기 정보")]
-    [SerializeField] private int _initialPoolCapacity = 15;
-    [SerializeField] private int _poolMaxSize = 25;
 
     private void Awake()
     {
-        CodingBlockPool = new ObjectPool<CodingBlock>(
+        for (int index = 0; index < objectInfo.Length; index++)
+        {
+            IObjectPool<CodingBlock> pool = new ObjectPool<CodingBlock>(
             createFunc: CreateBlockObject,
-            actionOnGet: OnBlockGet,
+            actionOnGet: OnTakeFromPool,
             actionOnRelease: OnBlockRelease,
             actionOnDestroy: OnBlockDestroy,
             collectionCheck: false,
-            defaultCapacity: _initialPoolCapacity,
-            maxSize: _poolMaxSize
+            defaultCapacity: objectInfo[index].poolDefaultCapacity,
+            maxSize: objectInfo[index].poolDefaultCapacity
             );
 
-        PoolDictionary.Add(blockCategory = BlockCategory.Forward, objectInfo[0].prefab);
-        PoolDictionary.Add(blockCategory = BlockCategory.Left, objectInfo[1].prefab);
-        PoolDictionary.Add(blockCategory = BlockCategory.Right, objectInfo[2].prefab);
-        PoolDictionary.Add(blockCategory = BlockCategory.Function, objectInfo[3].prefab);
-        PoolDictionary.Add(blockCategory = BlockCategory.Loop, objectInfo[4].prefab);
+            poolObjectDic.Add(objectInfo[index].objectName, objectInfo[index].prefab);
+            poolManagerDic.Add(objectInfo[index].objectName, pool);
 
+            //for(int i = 0; i < objectInfo[index].poolDefaultCapacity; i++)
+            //{
+            //    CodingBlock poolCodingBlock = CreateBlockObject();
+            //    poolCodingBlock.Pool.Release(poolCodingBlock);
+            //}
+        }
     }
 
     private void Start()
@@ -63,26 +65,32 @@ public class ObjectPoolManager : MonoBehaviour
         GameManager_Instance.Get_ObjectPoolManager(this.gameObject);
     }
 
-    public void SelectedPoolObject(BlockCategory blockName)
+    public void SelectedPoolObject(BlockName blockName)
     {
-        blockCategory = blockName;
-        PoolDictionary.TryGetValue(blockName, out selectedPoolObject);
+        this.blockName = blockName;
+        poolObjectDic.TryGetValue(blockName, out selectedPoolObject);
     }
 
     public CodingBlock CreateBlockObject()
     {
-        CodingBlock newBlock = Instantiate(selectedPoolObject.gameObject).GetComponent<CodingBlock>();
-        newBlock.GetComponent<CodingBlock>().Pool = this.CodingBlockPool;
+        CodingBlock newBlock = Instantiate(poolObjectDic[blockName]).GetComponent<CodingBlock>();
+        newBlock.GetComponent<CodingBlock>().Pool = poolManagerDic[blockName];
         return newBlock;
     }
 
-    public void OnBlockGet(CodingBlock block)
+    public CodingBlock SelectBlockFromPool(BlockName block)
+    {
+        blockName = block;
+
+        return poolManagerDic[block].Get();
+    }
+    public void OnTakeFromPool(CodingBlock block)
     {
         block.gameObject.SetActive(true);
     }
     public void OnBlockRelease(CodingBlock block)
     {
-        // .. 오브젝트를 풀에 반환하기 전에 다른 오브젝트로 이동합니다. (레이아웃 내부의 오브젝트 순서 때문에 하는 작업)
+        // .. 오브젝트를 풀에 반환하기 전에 다른 오브젝트로 이동합니다.
         block.transform.SetParent(CodingUIManager_Instance.ReleasedBlocks.transform);
         block.gameObject.SetActive(false);
     }

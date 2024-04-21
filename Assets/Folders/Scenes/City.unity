@@ -868,26 +868,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5076bfb816eca6b4fa3f8062c668cc4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockCategory: 0
+  blockName: 0
   objectInfo:
   - objectName: 0
     prefab: {fileID: 4114433310597077788, guid: c4a2bf30ffbaed64f9d7691f2011a3bc,
       type: 3}
+    poolDefaultCapacity: 5
   - objectName: 1
     prefab: {fileID: 3712590164119441793, guid: b5d72ed42ff5a214f875120ed6bfda20,
       type: 3}
+    poolDefaultCapacity: 5
   - objectName: 2
     prefab: {fileID: 1576133001211970131, guid: 60eda511fe310c5429fe3cde22011456,
       type: 3}
+    poolDefaultCapacity: 5
   - objectName: 3
     prefab: {fileID: 7320503171045899465, guid: 41230cf6e41569d498b59befee72067a,
       type: 3}
+    poolDefaultCapacity: 5
   - objectName: 4
     prefab: {fileID: 7320503171045899465, guid: fb791fb60d5bfad47963ca281e01b5cd,
       type: 3}
+    poolDefaultCapacity: 5
   selectedPoolObject: {fileID: 0}
-  _initialPoolCapacity: 15
-  _poolMaxSize: 25
 --- !u!1001 &336920094
 PrefabInstance:
   m_ObjectHideFlags: 0
