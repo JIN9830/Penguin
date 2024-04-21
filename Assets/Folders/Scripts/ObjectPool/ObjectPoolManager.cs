@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Pool;
 using static GameManager;
+using static ObjectPoolManager;
 
 public class ObjectPoolManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class ObjectPoolManager : MonoBehaviour
         Right,
         Function,
         Loop,
-    }
+    } public BlockCategory blockCategory;
 
     [System.Serializable]
     public class ObjectInfo
@@ -41,7 +42,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         CodingBlockPool = new ObjectPool<CodingBlock>(
             createFunc: CreateBlockObject,
-            actionOnGet: OnBlockTakeFromPool,
+            actionOnGet: OnBlockGet,
             actionOnRelease: OnBlockRelease,
             actionOnDestroy: OnBlockDestroy,
             collectionCheck: false,
@@ -49,11 +50,11 @@ public class ObjectPoolManager : MonoBehaviour
             maxSize: _poolMaxSize
             );
 
-        PoolDictionary.Add(BlockCategory.Forward, objectInfo[0].prefab);
-        PoolDictionary.Add(BlockCategory.Left, objectInfo[1].prefab);
-        PoolDictionary.Add(BlockCategory.Right, objectInfo[2].prefab);
-        PoolDictionary.Add(BlockCategory.Function, objectInfo[3].prefab);
-        PoolDictionary.Add(BlockCategory.Loop, objectInfo[4].prefab);
+        PoolDictionary.Add(blockCategory = BlockCategory.Forward, objectInfo[0].prefab);
+        PoolDictionary.Add(blockCategory = BlockCategory.Left, objectInfo[1].prefab);
+        PoolDictionary.Add(blockCategory = BlockCategory.Right, objectInfo[2].prefab);
+        PoolDictionary.Add(blockCategory = BlockCategory.Function, objectInfo[3].prefab);
+        PoolDictionary.Add(blockCategory = BlockCategory.Loop, objectInfo[4].prefab);
 
     }
 
@@ -64,17 +65,18 @@ public class ObjectPoolManager : MonoBehaviour
 
     public void SelectedPoolObject(BlockCategory blockName)
     {
+        blockCategory = blockName;
         PoolDictionary.TryGetValue(blockName, out selectedPoolObject);
     }
 
     public CodingBlock CreateBlockObject()
     {
-        CodingBlock newBlock = Instantiate(selectedPoolObject).GetComponent<CodingBlock>();
+        CodingBlock newBlock = Instantiate(selectedPoolObject.gameObject).GetComponent<CodingBlock>();
         newBlock.GetComponent<CodingBlock>().Pool = this.CodingBlockPool;
         return newBlock;
     }
 
-    public void OnBlockTakeFromPool(CodingBlock block)
+    public void OnBlockGet(CodingBlock block)
     {
         block.gameObject.SetActive(true);
     }

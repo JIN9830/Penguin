@@ -60,13 +60,6 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject FunctionButton { get; private set; }
     [field: SerializeField] public GameObject LoopButton { get; private set; }
 
-    [field: Header("코딩블럭 프리팹")]
-    [field: SerializeField] public GameObject ForwardPrefab { get; private set; }
-    [field: SerializeField] public GameObject TurnLeftPrefab { get; private set; }
-    [field: SerializeField] public GameObject TurnRightPrefab { get; private set; }
-    [field: SerializeField] public GameObject FunctionPrefab { get; private set; }
-    [field: SerializeField] public GameObject LoopPrefab { get; private set; }
-
     public CodingBlock LayoutSpawnBlock { get; private set; }
 
 
@@ -80,11 +73,11 @@ public class CodingUIManager : MonoBehaviour
     private void Awake()
     {
         #region Coding blocks onClickAddListener
-        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Forward); InsertBlock(ForwardPrefab);  });
-        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Left); InsertBlock(TurnLeftPrefab);  });
-        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(TurnRightPrefab));
-        FunctionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(FunctionPrefab));
-        LoopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(LoopPrefab));
+        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Forward); InsertBlock(); });
+        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Left); InsertBlock(); });
+        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Right); InsertBlock(); });
+        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Function); InsertBlock(); });
+        LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Loop); InsertBlock(); });
         #endregion
 
         #region Layout activate onClickAddListener
@@ -189,16 +182,18 @@ public class CodingUIManager : MonoBehaviour
                 #endregion
         }
     }
-    public void InsertBlock(GameObject prefab)
+    public void InsertBlock()
     {
-        LayoutSpawnBlock = prefab.GetComponent<CodingBlock>();
-
-        if (prefab == FunctionPrefab || prefab == LoopPrefab)
+        if (ObjectPoolManager_Instance.blockCategory == BlockCategory.Function || ObjectPoolManager_Instance.blockCategory == BlockCategory.Loop)
         {
             if (GameManager_Instance.MainMethod.Count < 10)
             {
-                GameManager_Instance.MainMethod.Add(Instantiate(prefab,MainLayout.transform).GetComponent<CodingBlock>());
-                prefab.GetComponent<CodingBlock>().enabled = false;
+                // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
+                LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
+                LayoutSpawnBlock.transform.SetParent(MainLayout.transform);
+
+                GameManager_Instance.MainMethod.Add(LayoutSpawnBlock);
+                LayoutSpawnBlock.GetComponent<CodingBlock>().enabled = false;
                 UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
             }
         }
@@ -235,8 +230,12 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Loop:
                     if (GameManager_Instance.LoopMethod.Count < 10)
                     {
-                        GameManager_Instance.LoopMethod.Add(Instantiate(prefab, LoopLayout.transform).GetComponent<CodingBlock>());
-                        prefab.GetComponent<CodingBlock>().enabled = false;
+                        // .. ObjectPool에서 블록을 가져오고 LoopLayout에 블록을 넣어줍니다.
+                        LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
+                        LayoutSpawnBlock.transform.SetParent(LoopLayout.transform);
+
+                        GameManager_Instance.LoopMethod.Add(LayoutSpawnBlock);
+                        LayoutSpawnBlock.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.LoopMethod.Last().gameObject);
                     }
                     break;
