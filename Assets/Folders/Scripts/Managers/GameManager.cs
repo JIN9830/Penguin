@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Pool;
 using UnityEngine;
 
 
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     } public ECodingBlockState codingBlockState = ECodingBlockState.Finished;
 
     public static GameManager GameManager_Instance { get; private set; }
+    public static ObjectPoolManager ObjectPoolManager_Instance { get; private set; }
     public static PlayerManager PlayerManager_Instance { get; private set; }
     public static CodingUIManager CodingUIManager_Instance { get; private set; }
 
@@ -84,7 +86,7 @@ public class GameManager : MonoBehaviour
             // .. 블록 컴파일의 실행 상태를 나타내는 변수입니다.
             IsMainMethodRunning = true;
 
-            CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false); 
+            CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false);
             CodingUIManager_Instance.StopButton.gameObject.SetActive(true);
             CodingUIManager_Instance.LockUIElements(true);
 
@@ -197,7 +199,6 @@ public class GameManager : MonoBehaviour
                     #endregion
             }
 
-
             CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
             currentMethod = ECurrentMethod.Main;
         }
@@ -221,6 +222,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(blockObj.gameObject);
         }
+    }
+
+    public void Get_ObjectPoolManager(GameObject obj)
+    {
+        obj.TryGetComponent(out ObjectPoolManager instance);
+        ObjectPoolManager_Instance = instance;
     }
     public void Get_UIManager(GameObject obj)
     {

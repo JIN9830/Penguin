@@ -28,7 +28,7 @@ public class Forward : CodingBlock
     {
         if (GameManager_Instance.ExecutionToggle == false) // 정지 버튼을 누르면 실행
         {
-            _blockTweener.Kill();
+            BlockTweener.Kill();
             this.GetComponent<CodingBlock>().enabled = false;
         }
         else PlayerMove();
@@ -57,7 +57,7 @@ public class Forward : CodingBlock
 
         if (Physics.Raycast(PlayerManager_Instance.playerObject.transform.localPosition, PlayerManager_Instance.playerObject.transform.forward, out _hit, _DISTANCE))
         {
-            _blockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
+            BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (_hit.collider.CompareTag("Wall"))
             {
@@ -74,7 +74,7 @@ public class Forward : CodingBlock
         }
         else
         {
-            _blockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+            BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
             PlayerManager_Instance.playerState = PlayerManager.PlayerState.Forwarding;
         }
     }
