@@ -22,8 +22,6 @@ public class TurnLeft : CodingBlock
     {
         ToggleHighLight(true);
 
-        //PlayerManager_Instance.TurnLeft(this.gameObject);
-
         BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_LeftBlockPlay(this.gameObject);
 
         _playerStartRot = PlayerManager_Instance.playerObject.transform.rotation;
