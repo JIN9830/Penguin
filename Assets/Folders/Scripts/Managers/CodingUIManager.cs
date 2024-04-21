@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using static GameManager;
+using static ObjectPoolManager;
 
 public class CodingUIManager : MonoBehaviour
 {
@@ -79,11 +80,11 @@ public class CodingUIManager : MonoBehaviour
     private void Awake()
     {
         #region Coding blocks onClickAddListener
-        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(ForwardPrefab); UIAnimation.Animation_CodingBlockPop(ForwardButton); });
-        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(TurnLeftPrefab); UIAnimation.Animation_CodingBlockPop(TurnLeftButton); });
-        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(TurnRightPrefab); UIAnimation.Animation_CodingBlockPop(TurnRightButton); });
-        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(FunctionPrefab); UIAnimation.Animation_CodingBlockPop(FunctionButton); });
-        LoopButton.GetComponent<Button>().onClick.AddListener(() => { InsertBlock(LoopPrefab); UIAnimation.Animation_CodingBlockPop(FunctionButton); });
+        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Forward); InsertBlock(ForwardPrefab);  });
+        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.SelectedPoolObject(BlockCategory.Left); InsertBlock(TurnLeftPrefab);  });
+        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(TurnRightPrefab));
+        FunctionButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(FunctionPrefab));
+        LoopButton.GetComponent<Button>().onClick.AddListener(() => InsertBlock(LoopPrefab));
         #endregion
 
         #region Layout activate onClickAddListener
@@ -208,7 +209,7 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Main:
                     if (GameManager_Instance.MainMethod.Count < 10)
                     {
-                        // .. ObjectPool에서 블록을 가져오고 Main 레이아웃에 블록을 넣어줍니다.
+                        // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
                         LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
                         LayoutSpawnBlock.transform.SetParent(MainLayout.transform);
 
@@ -221,7 +222,7 @@ public class CodingUIManager : MonoBehaviour
                 case ECurrentLayout.Function:
                     if (GameManager_Instance.FunctionMethod.Count < 10)
                     {
-                        // .. ObjectPool에서 블록을 가져오고 Function 레이아웃에 블록을 넣어줍니다.
+                        // .. ObjectPool에서 블록을 가져오고 FunctionLayout에 블록을 넣어줍니다.
                         LayoutSpawnBlock = ObjectPoolManager_Instance.CodingBlockPool.Get();
                         LayoutSpawnBlock.transform.SetParent(FunctionLayout.transform);
 

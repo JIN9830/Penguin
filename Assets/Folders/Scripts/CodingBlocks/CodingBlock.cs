@@ -15,6 +15,11 @@ public abstract class CodingBlock : MonoBehaviour
         _highlight.SetActive(false);
     }
 
+    private void Start()
+    {
+        GameManager.CodingUIManager_Instance.UIAnimation.Animation_CodingBlockPop(this.gameObject);
+    }
+
     public void ToggleHighLight(bool enable)
     {
         _highlight.SetActive(enable);

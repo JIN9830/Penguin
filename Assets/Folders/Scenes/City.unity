@@ -884,6 +884,7 @@ MonoBehaviour:
   - objectName: 4
     prefab: {fileID: 7320503171045899465, guid: fb791fb60d5bfad47963ca281e01b5cd,
       type: 3}
+  selectedPoolObject: {fileID: 0}
   _initialPoolCapacity: 15
   _poolMaxSize: 25
 --- !u!1001 &336920094
