@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager_Instance.Get_PlayerManager(this.gameObject);
+        GameManager_Instance.Register_PlayerManager(this.gameObject);
 
         PlayerAnimator = playerObject.GetComponent<Animator>();
 

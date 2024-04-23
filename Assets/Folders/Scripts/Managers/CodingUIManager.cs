@@ -60,6 +60,9 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject FunctionButton { get; private set; }
     [field: SerializeField] public GameObject LoopButton { get; private set; }
 
+    [field: Header("기본 UI 요소")]
+    [field: SerializeField] public Button LoadSceneTest2 { get; private set; }
+
     public CodingBlock BlockObjectFromPool { get; private set; }
 
 
@@ -105,13 +108,17 @@ public class CodingUIManager : MonoBehaviour
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
         LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
+
+        LoadSceneTest2.onClick.AddListener(() => GameSceneManager.instance.LoadScene("Level Selection"));
     }
 
     private void Start()
     {
+        Time.timeScale = 1f;
+
         GameManager_Instance.Initialize_CodingMethod();
 
-        GameManager_Instance.Get_UIManager(this.gameObject);
+        GameManager_Instance.Register_UIManager(this.gameObject);
 
         ReleasedBlocks = GameManager_Instance.gameObject;
 

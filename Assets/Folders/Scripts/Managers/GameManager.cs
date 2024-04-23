@@ -11,13 +11,17 @@ public class GameManager : MonoBehaviour
         Main,
         Function,
         Loop,
-    } public ECurrentMethod currentMethod = ECurrentMethod.Main;
+    } 
+    
+    public ECurrentMethod currentMethod = ECurrentMethod.Main;
 
     public enum ECodingBlockState // TODO: 사용중 아님 (yield return 1초 딜레이 간격문 조정 코드로 사용 예정)
     {
         Playing,
         Finished,
-    } public ECodingBlockState codingBlockState = ECodingBlockState.Finished;
+    } 
+    
+    public ECodingBlockState codingBlockState = ECodingBlockState.Finished;
 
     public static GameManager GameManager_Instance { get; private set; }
     public static ObjectPoolManager ObjectPoolManager_Instance { get; private set; }
@@ -212,36 +216,36 @@ public class GameManager : MonoBehaviour
 
         foreach (CodingBlock blockObj in MainMethod)
         {
-            Destroy(blockObj.gameObject);
+            blockObj.ReleaseBlock();
         }
         foreach (CodingBlock blockObj in FunctionMethod)
         {
-            Destroy(blockObj.gameObject);
+            blockObj.ReleaseBlock();
         }
         foreach (CodingBlock blockObj in LoopMethod)
         {
-            Destroy(blockObj.gameObject);
+            blockObj.ReleaseBlock();
         }
     }
 
-    public void Get_ObjectPoolManager(GameObject obj)
+    public void Register_ObjectPoolManager(GameObject obj)
     {
         obj.TryGetComponent(out ObjectPoolManager instance);
         ObjectPoolManager_Instance = instance;
     }
-    public void Get_UIManager(GameObject obj)
+    public void Register_UIManager(GameObject obj)
     {
         obj.TryGetComponent(out CodingUIManager instance);
         CodingUIManager_Instance = instance;
     }
-    public void Get_PlayerManager(GameObject obj)
+    public void Register_PlayerManager(GameObject obj)
     {
         obj.TryGetComponent(out PlayerManager instance);
         PlayerManager_Instance = instance;
     }
 
     /// <summary>
-    /// 해당 프로퍼티를 무단으로 변경하면 게임플레이(코드 실행, 정지) 부분에서 버그가 발생할 수 있습니다.
+    /// 해당 프로퍼티 변수를 수동으로 변경하면 게임플레이(코드 실행, 정지) 부분에서 버그가 발생할 수 있습니다.
     /// </summary>
     /// <param name="enable"></param>
     public void Set_ExecutionToggle(bool enable)
@@ -250,7 +254,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 해당 프로퍼티를 무단으로 변경하면 게임플레이(코드 실행, 정지) 부분에서 버그가 발생할 수 있습니다.
+    /// 해당 프로퍼티 변수를 수동으로 변경하면 게임플레이(코드 실행, 정지) 부분에서 버그가 발생할 수 있습니다.
     /// </summary>
     /// <param name="enable"></param>
     public void Set_IsMainMethodRunning(bool enable)

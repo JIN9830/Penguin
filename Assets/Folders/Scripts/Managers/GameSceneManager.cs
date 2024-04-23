@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine;
 
 public class GameSceneManager : MonoBehaviour
 {
-    public void GoToStartScene()
+    public static GameSceneManager instance { get; private set; }
+
+    private void Awake()
     {
-        SceneManager.LoadScene("Start");
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }      
     }
 
-    public void GoToCityScene()
+    public void LoadScene(string sceneName)
     {
-        SceneManager.LoadScene("City");
-
+        SceneManager.LoadSceneAsync(sceneName);
     }
+
 }

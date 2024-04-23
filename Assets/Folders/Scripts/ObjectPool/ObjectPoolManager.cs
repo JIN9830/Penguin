@@ -24,14 +24,14 @@ public class ObjectPoolManager : MonoBehaviour
         Loop,
     } 
     
-    [Header("Pool 내부 오브젝트 정보")]
+    [Header("Object Pool 정보")]
     public ObjectInfo[] objectInfo;
 
     public BlockCategory BlockName { get; set; }
 
-    public Dictionary<BlockCategory, IObjectPool<CodingBlock>> poolManagedDic = new Dictionary<BlockCategory, IObjectPool<CodingBlock>>();
+    public Dictionary<BlockCategory, IObjectPool<CodingBlock>> PoolManagementDic { get; private set; } = new Dictionary<BlockCategory, IObjectPool<CodingBlock>>();
 
-    public Dictionary<BlockCategory, GameObject> poolObjectDic = new Dictionary<BlockCategory, GameObject>();
+    public Dictionary<BlockCategory, GameObject> PoolObjectDic { get; private set; } = new Dictionary<BlockCategory, GameObject>();
 
     private void Awake()
     {
@@ -47,33 +47,27 @@ public class ObjectPoolManager : MonoBehaviour
             maxSize: objectInfo[index].poolCapacity
             );
 
-            poolObjectDic.Add(objectInfo[index].objectName, objectInfo[index].prefab);
-            poolManagedDic.Add(objectInfo[index].objectName, pool);
-
-            //for (int i = 0; i < objectInfo[index].poolCapacity; i++)
-            //{
-            //    CodingBlock poolCodingBlock = CreateBlockObject();
-            //    poolCodingBlock.ReleaseBlock();
-            //}
+            PoolObjectDic.Add(objectInfo[index].objectName, objectInfo[index].prefab);
+            PoolManagementDic.Add(objectInfo[index].objectName, pool);
         }
     }
 
     private void Start()
     {
-        GameManager_Instance.Get_ObjectPoolManager(this.gameObject);
+        GameManager_Instance.Register_ObjectPoolManager(this.gameObject);
     }
 
     public CodingBlock SelectBlockFromPool(BlockCategory selectBlockName)
     {
         BlockName = selectBlockName;
 
-        return poolManagedDic[selectBlockName].Get();
+        return PoolManagementDic[selectBlockName].Get();
     }
 
     public CodingBlock CreateBlockObject()
     {
-        CodingBlock newBlock = Instantiate(poolObjectDic[BlockName]).GetComponent<CodingBlock>();
-        newBlock.GetComponent<CodingBlock>().Pool = poolManagedDic[BlockName];
+        CodingBlock newBlock = Instantiate(PoolObjectDic[BlockName]).GetComponent<CodingBlock>();
+        newBlock.GetComponent<CodingBlock>().Pool = PoolManagementDic[BlockName];
         return newBlock;
     }
     public void OnBlockGet(CodingBlock block)
