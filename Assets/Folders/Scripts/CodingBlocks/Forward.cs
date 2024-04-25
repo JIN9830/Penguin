@@ -26,7 +26,7 @@ public class Forward : CodingBlock
 
     private void Update()
     {
-        if (GameManager_Instance.ExecutionToggle == false) // 정지 버튼을 누르면 실행
+        if (GameManager_Instance.IsCompilerRunning == false) // 정지 버튼을 누르면 실행
         {
             BlockTweener.Kill();
             this.GetComponent<CodingBlock>().enabled = false;
@@ -41,7 +41,7 @@ public class Forward : CodingBlock
         if (PlayerManager_Instance.playerState == PlayerManager.PlayerState.Forwarding)
         {
             _deltaTimeCount += Time.deltaTime;
-            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, _PLAYER_MOVESPEED * _deltaTimeCount);
+            Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, _deltaTimeCount * _PLAYER_MOVESPEED);
             PlayerManager_Instance.playerObject.transform.localPosition = newPos;
 
             if (_deltaTimeCount > 1)

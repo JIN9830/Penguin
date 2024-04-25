@@ -2,6 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 using static GameManager;
 using static ObjectPoolManager;
 
@@ -41,10 +42,15 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject FunctionDelete { get; private set; }
     [field: SerializeField] public GameObject LoopDelete { get; private set; }
 
+
     [field: Header("북마크 오브젝트")]
     [field: SerializeField] public GameObject MainBookmark { get; private set; }
     [field: SerializeField] public GameObject FunctionBookmark { get; private set; }
     [field: SerializeField] public GameObject LoopBookmark { get; private set; }
+    [field: SerializeField] public Button LoopCountPlus { get; private set; }
+    [field: SerializeField] public Button LoopCountMinus { get; private set; }
+    [field: SerializeField] public TextMeshProUGUI LoopCountText { get; private set; }
+
 
     [field: Header("플레이 & 정지, 스피드업 버튼")]
     [field: SerializeField] public GameObject ExecutionButton { get; private set; }
@@ -60,8 +66,10 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject FunctionButton { get; private set; }
     [field: SerializeField] public GameObject LoopButton { get; private set; }
 
+
     [field: Header("기본 UI 요소")]
     [field: SerializeField] public Button LoadSceneTest2 { get; private set; }
+
 
     public CodingBlock BlockObjectFromPool { get; private set; }
 
@@ -99,22 +107,27 @@ public class CodingUIManager : MonoBehaviour
         LoopDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Loop; DeleteBlock(currentLayout); });
         #endregion
 
-        #region Play, Stop & TimeControl OnClickAddListener
-        ExecutionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_ExecutionToggle(true));
+        #region Play, Stop & TimeControl & Loop Count + - OnClickAddListener
+        ExecutionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_IsCompilerRunning(true));
         StopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
         TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleControl());
+        LoopCountPlus.onClick.AddListener(() => LoopCounter(true));
+        LoopCountMinus.onClick.AddListener(() => LoopCounter(false));
         #endregion
 
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
         LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
 
+        // == TEST CODE ==
         LoadSceneTest2.onClick.AddListener(() => GameSceneManager.instance.LoadScene("Level Selection"));
     }
 
     private void Start()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = 1;
+
+        LoopCountText.text = GameManager_Instance.LoopReaptCount.ToString();
 
         GameManager_Instance.Initialize_CodingMethod();
 
@@ -288,12 +301,10 @@ public class CodingUIManager : MonoBehaviour
 
     public void StopBlock()
     {
+        GameManager_Instance.Set_IsCompilerRunning(false);
+
         ResetBlockAnimation();
         PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
-
-        GameManager_Instance.Set_ExecutionToggle(false);
-        GameManager_Instance.Set_IsMainMethodRunning(false);
-
         PlayerManager_Instance.ResetPlayerPosition();
 
         UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1);
@@ -301,6 +312,7 @@ public class CodingUIManager : MonoBehaviour
         StopButton.gameObject.SetActive(false);
         ExecutionButton.gameObject.SetActive(true);
     }
+
     public void TimeScaleControl()
     {
         UIAnimation.Animation_ButtonDelay(TimeControlButton, 1);
@@ -317,6 +329,25 @@ public class CodingUIManager : MonoBehaviour
             UIAnimation.Animation_BlockShake(TimeControlButton);
             Time.timeScale = 1f;
         }
+    }
+
+    public void LoopCounter(bool increase)
+    {
+        int MinLoopCount = 1;
+        int MaxLoopCount = 9;
+
+        switch (increase)
+        {
+            case true: // 증가
+                if (GameManager_Instance.LoopReaptCount < MaxLoopCount) GameManager_Instance.LoopReaptCount++;
+                break;
+
+            case false: // 증감
+                if (GameManager_Instance.LoopReaptCount > MinLoopCount) GameManager_Instance.LoopReaptCount--;
+                break;
+        }
+
+        LoopCountText.text = GameManager_Instance.LoopReaptCount.ToString();
     }
 
     public void LockUIElements(bool enable)

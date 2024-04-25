@@ -7,7 +7,7 @@ public class Loop : CodingBlock
 {
     private void Update()
     {
-        if (GameManager_Instance.ExecutionToggle == false)
+        if (GameManager_Instance.IsCompilerRunning == false)
         {
             BlockTweener.Kill();
             transform.localScale = Vector3.one;

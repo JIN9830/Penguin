@@ -6,6 +6,7 @@ public abstract class CodingBlock : MonoBehaviour
 {
     private GameObject _highlight;
     public Tweener BlockTweener { get; protected set; }
+    public Tweener PlayerTweener { get; protected set; }
 
     public IObjectPool<CodingBlock> Pool { get; set; }
 
