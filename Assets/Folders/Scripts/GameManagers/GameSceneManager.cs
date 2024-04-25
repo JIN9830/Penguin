@@ -34,4 +34,8 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
+    public void OutOfCodingSceneProcess()
+    {
+
+    }
 }

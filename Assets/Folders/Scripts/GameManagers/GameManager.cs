@@ -10,15 +10,14 @@ public class GameManager : MonoBehaviour
         Function,
         Loop,
     }
-    
     public ECurrentMethod currentMethod = ECurrentMethod.Main;
+
 
     public enum ECodingBlockState // TODO: 사용중 아님 (yield return 1초 딜레이 간격문 조정 코드로 사용 예정)
     {
         Playing,
         Finished,
-    } 
-    
+    }
     public ECodingBlockState codingBlockState = ECodingBlockState.Finished;
 
     public static GameManager GameManager_Instance { get; private set; }

@@ -1,7 +1,14 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
+
+    private void Start()
+    {
+        
+    }
+
     public void OnTriggerEnter(Collider other)
     {
         Debug.Log("콜라이더 충돌!");
@@ -13,4 +20,5 @@ public class Coin : MonoBehaviour
             this.gameObject.SetActive(false);
         }
     }
+
 }

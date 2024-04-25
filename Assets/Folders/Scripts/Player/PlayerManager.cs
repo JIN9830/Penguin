@@ -46,7 +46,7 @@ public class PlayerManager : MonoBehaviour
 
     public void ResetPlayerPosition()
     {
-        playerObject.transform.DOMove(PlayerRestPos, 0.3f);
+        playerObject.transform.DOMove(PlayerRestPos, 0.3f).OnComplete(() => StageManager_Instance.ResetCoin());
         playerObject.transform.DORotateQuaternion(PlayerRestRot, 1f);
         PlayerAnimator.SetTrigger("Reset");
     }

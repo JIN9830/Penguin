@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
@@ -15,8 +14,12 @@ public class StageManager : MonoBehaviour
 
         GameManager.GameManager_Instance.Register_StageManager(this.gameObject);
     }
+
     public void ResetCoin()
     {
+        if (CoinCount == CoinObject.Length) 
+            return;
+
         CoinCount = CoinObject.Length;
 
         foreach(GameObject coin in CoinObject)
