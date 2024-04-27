@@ -6,6 +6,14 @@ using static GameManager;
 
 public class Function : CodingBlock
 {
+    public override void MoveOrder()
+    {
+        ToggleHighLight(true);
+        BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+
+        GameManager_Instance.currentMethod = ECurrentMethod.Function;
+        CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Function);
+    }
     private void Update()
     {
         if (GameManager_Instance.IsCompilerRunning == false)
@@ -14,13 +22,5 @@ public class Function : CodingBlock
             transform.localScale = Vector3.one;
             this.GetComponent<CodingBlock>().enabled = false;
         }
-    }
-    public override void MoveOrder()
-    {
-        ToggleHighLight(true);
-        BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-
-        GameManager_Instance.currentMethod = ECurrentMethod.Function;
-        CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Function);
     }
 }

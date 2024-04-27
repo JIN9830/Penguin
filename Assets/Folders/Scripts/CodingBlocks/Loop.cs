@@ -5,15 +5,6 @@ using static GameManager;
 
 public class Loop : CodingBlock
 {
-    private void Update()
-    {
-        if (GameManager_Instance.IsCompilerRunning == false)
-        {
-            BlockTweener.Kill();
-            transform.localScale = Vector3.one;
-            this.GetComponent<CodingBlock>().enabled = false;
-        }
-    }
     public override void MoveOrder()
     {
         ToggleHighLight(true);
@@ -22,5 +13,14 @@ public class Loop : CodingBlock
         GameManager_Instance.currentMethod = ECurrentMethod.Loop;
         CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Loop);
         
+    }
+    private void Update()
+    {
+        if (GameManager_Instance.IsCompilerRunning == false)
+        {
+            BlockTweener.Kill();
+            transform.localScale = Vector3.one;
+            this.GetComponent<CodingBlock>().enabled = false;
+        }
     }
 }

@@ -9,6 +9,6 @@ public class LevelSelection : MonoBehaviour
 
     private void Awake()
     {
-        LoadSceneTest.onClick.AddListener(() => GameSceneManager.instance.LoadScene("City")); ;
+        LoadSceneTest.onClick.AddListener(() => GameSceneManager.instance.LoadScene(2)); ;
     }
 }

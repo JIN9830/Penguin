@@ -120,7 +120,7 @@ public class CodingUIManager : MonoBehaviour
         LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
 
         // == TEST CODE ==
-        LoadSceneTest2.onClick.AddListener(() => GameSceneManager.instance.LoadScene("Level Selection"));
+        LoadSceneTest2.onClick.AddListener(() => GameSceneManager.instance.LoadScene(1));
     }
 
     private void Start()
@@ -211,11 +211,11 @@ public class CodingUIManager : MonoBehaviour
             if (GameManager_Instance.MainMethod.Count < 10)
             {
                 // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
-                BlockObjectFromPool = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.BlockName);
-                BlockObjectFromPool.transform.SetParent(MainLayout.transform);
+                CodingBlock block = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.BlockName);
+                block.transform.SetParent(MainLayout.transform);
 
-                GameManager_Instance.MainMethod.Add(BlockObjectFromPool);
-                BlockObjectFromPool.GetComponent<CodingBlock>().enabled = false;
+                GameManager_Instance.MainMethod.Add(block);
+                block.GetComponent<CodingBlock>().enabled = false;
                 UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
             }
         }
@@ -227,11 +227,11 @@ public class CodingUIManager : MonoBehaviour
                     if (GameManager_Instance.MainMethod.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
-                        BlockObjectFromPool = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.BlockName);
-                        BlockObjectFromPool.transform.SetParent(MainLayout.transform);
+                        CodingBlock block = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.BlockName);
+                        block.transform.SetParent(MainLayout.transform);
 
-                        GameManager_Instance.MainMethod.Add(BlockObjectFromPool);
-                        BlockObjectFromPool.GetComponent<CodingBlock>().enabled = false;
+                        GameManager_Instance.MainMethod.Add(block);
+                        block.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
                     }
                     break;
@@ -240,11 +240,11 @@ public class CodingUIManager : MonoBehaviour
                     if (GameManager_Instance.FunctionMethod.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 FunctionLayout에 블록을 넣어줍니다.
-                        BlockObjectFromPool = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.BlockName);
-                        BlockObjectFromPool.transform.SetParent(FunctionLayout.transform);
+                        CodingBlock block = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.BlockName);
+                        block.transform.SetParent(FunctionLayout.transform);
 
-                        GameManager_Instance.FunctionMethod.Add(BlockObjectFromPool);
-                        BlockObjectFromPool.GetComponent<CodingBlock>().enabled = false;
+                        GameManager_Instance.FunctionMethod.Add(block);
+                        block.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.FunctionMethod.Last().gameObject);
                     }
                     break;
@@ -253,11 +253,11 @@ public class CodingUIManager : MonoBehaviour
                     if (GameManager_Instance.LoopMethod.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 LoopLayout에 블록을 넣어줍니다.
-                        BlockObjectFromPool = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.BlockName);
-                        BlockObjectFromPool.transform.SetParent(LoopLayout.transform);
+                        CodingBlock block = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.BlockName);
+                        block.transform.SetParent(LoopLayout.transform);
 
-                        GameManager_Instance.LoopMethod.Add(BlockObjectFromPool);
-                        BlockObjectFromPool.GetComponent<CodingBlock>().enabled = false;
+                        GameManager_Instance.LoopMethod.Add(block);
+                        block.GetComponent<CodingBlock>().enabled = false;
                         UIAnimation.Animation_BlockPop(GameManager_Instance.LoopMethod.Last().gameObject);
                     }
                     break;
@@ -303,7 +303,7 @@ public class CodingUIManager : MonoBehaviour
     {
         GameManager_Instance.Set_IsCompilerRunning(false);
 
-        ResetBlockAnimation();
+        RestartBlockAnimation();
         PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
         PlayerManager_Instance.ResetPlayerPosition();
 
@@ -338,11 +338,11 @@ public class CodingUIManager : MonoBehaviour
 
         switch (increase)
         {
-            case true: // 증가
+            case true: // LoopReaptCount ++
                 if (GameManager_Instance.LoopReaptCount < MaxLoopCount) GameManager_Instance.LoopReaptCount++;
                 break;
 
-            case false: // 증감
+            case false: // LoopReaptCount --
                 if (GameManager_Instance.LoopReaptCount > MinLoopCount) GameManager_Instance.LoopReaptCount--;
                 break;
         }
@@ -374,6 +374,7 @@ public class CodingUIManager : MonoBehaviour
         LoopDelete.GetComponent<Button>().interactable = !enable;
         #endregion
     }
+
     public void ShakeUIElements()
     {
         UIAnimation.Animation_UIShake(MainLayout);
@@ -396,24 +397,56 @@ public class CodingUIManager : MonoBehaviour
 
     public void DisableBlockHighlights()
     {
-        foreach (CodingBlock block in GameManager_Instance.MainMethod)
+        if (GameManager_Instance.MainMethod.Count > 0)
         {
-            block.ToggleHighLight(false);
+            foreach (CodingBlock block in GameManager_Instance.MainMethod)
+            {
+                block.ToggleHighLight(false);
+            }
+
         }
-        foreach (CodingBlock block in GameManager_Instance.FunctionMethod)
+
+        if(GameManager_Instance.FunctionMethod.Count > 0)
         {
-            block.ToggleHighLight(false);
+            foreach (CodingBlock block in GameManager_Instance.FunctionMethod)
+            {
+                block.ToggleHighLight(false);
+            }
         }
-        foreach (CodingBlock block in GameManager_Instance.LoopMethod)
+
+        if (GameManager_Instance.LoopMethod.Count > 0)
         {
-            block.ToggleHighLight(false);
+            foreach (CodingBlock block in GameManager_Instance.LoopMethod)
+            {
+                block.ToggleHighLight(false);
+            }
         }
+
     }
-    public void ResetBlockAnimation()
+    public void RestartBlockAnimation()
     {
-        foreach (CodingBlock block in GameManager_Instance.MainMethod)
+        if (GameManager_Instance.MainMethod.Count > 0)
         {
-            UIAnimation.Animation_BlockShake(block.gameObject);
+            foreach (CodingBlock block in GameManager_Instance.MainMethod)
+            {
+                UIAnimation.Animation_BlockShake(block.gameObject);
+            }
+        }
+
+        if (GameManager_Instance.FunctionMethod.Count > 0)
+        {
+            foreach (CodingBlock block in GameManager_Instance.FunctionMethod)
+            {
+                UIAnimation.Animation_BlockShake(block.gameObject);
+            }
+        }
+
+        if (GameManager_Instance.LoopMethod.Count > 0)
+        {
+            foreach (CodingBlock block in GameManager_Instance.LoopMethod)
+            {
+                UIAnimation.Animation_BlockShake(block.gameObject);
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Pool;
 using UnityEngine;
 public class GameManager : MonoBehaviour
 {
@@ -60,7 +59,7 @@ public class GameManager : MonoBehaviour
         #endregion
 
         WaitUntilExecutionTrigger = new WaitUntil(() => IsCompilerRunning == true);
-        WaitUntilBlockFinished = new WaitUntil(() => codingBlockState == ECodingBlockState.Finished);
+        WaitUntilBlockFinished = new WaitUntil(() => codingBlockState == ECodingBlockState.Finished); // TODO: 사용중 아님 (yield return 1초 딜레이 간격문 조정 코드로 사용 예정)
         WaitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
         WaitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
 
@@ -107,7 +106,7 @@ public class GameManager : MonoBehaviour
             IsCompilerRunning = false;
             CodingUIManager_Instance.DisableBlockHighlights();
             CodingUIManager_Instance.LockUIElements(false);
-            
+
         }
     }
 
@@ -192,13 +191,9 @@ public class GameManager : MonoBehaviour
             currentMethod = ECurrentMethod.Main;
         }
     }
-    
+
     public void Initialize_CodingMethod()
     {
-        MainMethod.Clear(); // TODO: OnSceneLoad 델리게이트 체인을 걸어서 사용하기, 새로운 스테이지 마다 블록 초기화
-        FunctionMethod.Clear();   // TODO: 레이아웃 내부에 블록 프리팹도 Destroy 하기
-        LoopMethod.Clear();
-
         foreach (CodingBlock blockObj in MainMethod)
         {
             blockObj.ReleaseBlock();
@@ -211,6 +206,10 @@ public class GameManager : MonoBehaviour
         {
             blockObj.ReleaseBlock();
         }
+
+        MainMethod.Clear(); // TODO: OnSceneLoad 델리게이트 체인을 걸어서 사용하기, 새로운 스테이지 마다 블록 초기화
+        FunctionMethod.Clear();   // TODO: 레이아웃 내부에 블록 프리팹도 Destroy 하기
+        LoopMethod.Clear();
     }
 
     public void Register_ObjectPoolManager(GameObject obj)

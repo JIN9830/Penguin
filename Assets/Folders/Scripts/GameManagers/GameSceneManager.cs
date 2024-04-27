@@ -20,9 +20,11 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    public void LoadScene(string sceneName)
+    public void LoadScene(int sceneIndex)
     {
-        SceneManager.LoadSceneAsync(sceneName);
+        GameManager.GameManager_Instance.Set_IsCompilerRunning(false);
+        GameManager.GameManager_Instance.Initialize_CodingMethod();
+        SceneManager.LoadSceneAsync(sceneIndex);
     }
 
     public void LoadNextScene()
