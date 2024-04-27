@@ -102,9 +102,9 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         #region block delete OnClickAddListener
-        MainDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Main; DeleteBlock(currentLayout); });
-        FunctionDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Function; DeleteBlock(currentLayout); });
-        LoopDelete.GetComponent<Button>().onClick.AddListener(() => { currentLayout = ECurrentLayout.Loop; DeleteBlock(currentLayout); });
+        MainDelete.GetComponent<Button>().onClick.AddListener(() => { SelectedMethods(ECurrentLayout.Main); DeleteBlock(currentLayout); });
+        FunctionDelete.GetComponent<Button>().onClick.AddListener(() => { SelectedMethods(ECurrentLayout.Function); DeleteBlock(currentLayout); });
+        LoopDelete.GetComponent<Button>().onClick.AddListener(() => { SelectedMethods(ECurrentLayout.Loop); DeleteBlock(currentLayout); });
         #endregion
 
         #region Play, Stop & TimeControl & Loop Count + - OnClickAddListener
@@ -144,62 +144,74 @@ public class CodingUIManager : MonoBehaviour
         {
             #region MainLayout Select Code
             case ECurrentLayout.Main:
+
+                if(currentLayout != ECurrentLayout.Main)
+                {
+                    // .. MainLayout 활성화 애니메이션
+                    MainLayout.transform.parent.transform.localScale = initScale;
+                    MainLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
+                }
+                
                 currentLayout = ECurrentLayout.Main;
 
                 // .. MainLayout 컬러 변경
                 _mainLayoutImage.color = _GREEN_LAYOUT_COLOR;
                 _functionLayoutImage.color = _GREY_LAYOUT_COLOR;
                 _loopLayoutImage.color = _GREY_LAYOUT_COLOR;
-
-                // .. MainLayout 활성화 애니메이션
-                MainLayout.transform.parent.transform.localScale = initScale;
-                MainLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
             #endregion
 
             #region FunctionLayout Select Code
             case ECurrentLayout.Function:
+
+                if(currentLayout != ECurrentLayout.Function)
+                {
+                    // .. Function 버튼 활성화 & 애니메이션
+                    FunctionButton.gameObject.SetActive(true);
+                    LoopButton.gameObject.SetActive(false);
+                    FunctionButton.transform.localScale = funcinitScale;
+                    FunctionButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
+
+                    // .. FunctionLayout 활성화 & 애니메이션
+                    FunctionLayout.transform.parent.gameObject.SetActive(true);
+                    LoopLayout.transform.parent.gameObject.SetActive(false);
+                    FunctionLayout.transform.parent.transform.localScale = initScale;
+                    FunctionLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
+                }
+
                 currentLayout = ECurrentLayout.Function;
 
                 // .. FunctionLayout 컬러 변경
                 _functionLayoutImage.color = _PURPLE_LAYOUT_COLOR;
                 _mainLayoutImage.color = _GREY_LAYOUT_COLOR;
                 _loopLayoutImage.color = _GREY_LAYOUT_COLOR;
-
-                // .. Function 버튼 활성화 & 애니메이션
-                FunctionButton.gameObject.SetActive(true);
-                LoopButton.gameObject.SetActive(false);
-                FunctionButton.transform.localScale = funcinitScale;
-                FunctionButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
-
-                // .. FunctionLayout 활성화 & 애니메이션
-                FunctionLayout.transform.parent.gameObject.SetActive(true);
-                LoopLayout.transform.parent.gameObject.SetActive(false);
-                FunctionLayout.transform.parent.transform.localScale = initScale;
-                FunctionLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
             #endregion
 
             #region LoopLayout Select Code
             case ECurrentLayout.Loop:
+
+                if(currentLayout != ECurrentLayout.Loop)
+                {
+                    // .. Loop 버튼 활성화 & 애니메이션
+                    LoopButton.gameObject.SetActive(true);
+                    FunctionButton.gameObject.SetActive(false);
+                    LoopButton.transform.localScale = funcinitScale;
+                    LoopButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
+
+                    // .. LoopLayout 활성화 & 애니메이션
+                    LoopLayout.transform.parent.gameObject.SetActive(true);
+                    FunctionLayout.transform.parent.gameObject.SetActive(false);
+                    LoopLayout.transform.parent.transform.localScale = initScale;
+                    LoopLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
+                }
+
                 currentLayout = ECurrentLayout.Loop;
 
                 // .. LoopLayout 컬러 변경
                 _loopLayoutImage.color = _ORANGE_LAYOUT_COLOR;
                 _mainLayoutImage.color = _GREY_LAYOUT_COLOR;
                 _functionLayoutImage.color = _GREY_LAYOUT_COLOR;
-
-                // .. Loop 버튼 활성화 & 애니메이션
-                LoopButton.gameObject.SetActive(true);
-                FunctionButton.gameObject.SetActive(false);
-                LoopButton.transform.localScale = funcinitScale;
-                LoopButton.transform.DOScale(functargetScale, 0.3f).SetEase(Ease.OutBack);
-
-                // .. LoopLayout 활성화 & 애니메이션
-                LoopLayout.transform.parent.gameObject.SetActive(true);
-                FunctionLayout.transform.parent.gameObject.SetActive(false);
-                LoopLayout.transform.parent.transform.localScale = initScale;
-                LoopLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 break;
                 #endregion
         }
