@@ -216,6 +216,7 @@ public class CodingUIManager : MonoBehaviour
                 #endregion
         }
     }
+
     public void InsertBlock()
     {
         if (ObjectPoolManager_Instance.BlockName == BlockCategory.Function || ObjectPoolManager_Instance.BlockName == BlockCategory.Loop)
@@ -277,7 +278,6 @@ public class CodingUIManager : MonoBehaviour
         }
     }
 
-    
     public void DeleteBlock(ECurrentLayout currentLayout)
     {
         switch (currentLayout)
@@ -435,6 +435,7 @@ public class CodingUIManager : MonoBehaviour
         }
 
     }
+
     public void RestartBlockAnimation()
     {
         if (GameManager_Instance.MainMethod.Count > 0)

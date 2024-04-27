@@ -9,7 +9,7 @@ public class GameSceneManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -22,6 +22,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void LoadScene(int sceneIndex)
     {
+        GameManager.GameManager_Instance.Initialize_CodingMethod();
         SceneManager.LoadSceneAsync(sceneIndex);
     }
 
@@ -32,10 +33,5 @@ public class GameSceneManager : MonoBehaviour
         {
             SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
         }
-    }
-
-    public void OutOfCodingSceneProcess()
-    {
-
     }
 }

@@ -25,6 +25,9 @@ public class PlayerManager : MonoBehaviour
     public Vector3 PlayerRestPos { get; private set; }
     public Quaternion PlayerRestRot { get; private set; }
 
+    public Tweener PlayerMoveTween { get; private set; }
+    public Tweener PlayerRotateTween { get; private set; }
+
     private void Start()
     {
         GameManager_Instance.Register_PlayerManager(this.gameObject);

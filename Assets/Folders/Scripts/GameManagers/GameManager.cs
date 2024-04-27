@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
                 PlayerManager_Instance.InitPlayerMoveVector();
                 block.GetComponent<CodingBlock>().enabled = true;
                 block.MoveOrder();
-                yield return WaitUntilEndOfSubMethod; // Func, Loop 블럭의 실행이 끝날때 까지 대기
+                yield return WaitUntilEndOfSubMethod; // Func, Loop 블럭의 실행이 끝날때 까지 대기합니다.
             }
 
             if (IsCompilerRunning) yield return WAIT_FOR_SECONDS;
