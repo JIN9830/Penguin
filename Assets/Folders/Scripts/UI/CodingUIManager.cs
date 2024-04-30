@@ -126,6 +126,8 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         OptionOpenButton.onClick.AddListener(()=> OpenOption());
+        OptionToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadScene(1));
+        ClearToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadScene(1));
 
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);

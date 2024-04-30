@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class GameSceneManager : MonoBehaviour
 {
-    public static GameSceneManager instance { get; private set; }
+    public static GameSceneManager Instance { get; private set; }
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
