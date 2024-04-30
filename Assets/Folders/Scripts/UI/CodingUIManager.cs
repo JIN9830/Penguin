@@ -117,7 +117,7 @@ public class CodingUIManager : MonoBehaviour
         LoopDelete.GetComponent<Button>().onClick.AddListener(() => { SelectedMethods(ECurrentLayout.Loop); DeleteBlock(currentLayout); });
         #endregion
 
-        #region Play, Stop & TimeControl & Loop Count + - OnClickAddListener
+        #region Play, Stop & TimeControl & Loop Count Plus, Minus OnClickAddListener
         ExecutionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_IsCompilerRunning(true));
         StopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
         TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleControl());
@@ -125,7 +125,7 @@ public class CodingUIManager : MonoBehaviour
         LoopCountMinus.onClick.AddListener(() => LoopCounter(false));
         #endregion
 
-        OptionOpenButton.onClick.AddListener(()=> OpenOption());
+        OptionOpenButton.onClick.AddListener(() => OpenOption());
         OptionToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadScene(1));
         ClearToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadScene(1));
 
@@ -156,13 +156,13 @@ public class CodingUIManager : MonoBehaviour
             #region MainLayout Select Code
             case ECurrentLayout.Main:
 
-                if(currentLayout != ECurrentLayout.Main)
+                if (currentLayout != ECurrentLayout.Main)
                 {
                     // .. MainLayout 활성화 애니메이션
                     MainLayout.transform.parent.transform.localScale = initScale;
                     MainLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 }
-                
+
                 currentLayout = ECurrentLayout.Main;
 
                 // .. MainLayout 컬러 변경
@@ -175,7 +175,7 @@ public class CodingUIManager : MonoBehaviour
             #region FunctionLayout Select Code
             case ECurrentLayout.Function:
 
-                if(currentLayout != ECurrentLayout.Function)
+                if (currentLayout != ECurrentLayout.Function)
                 {
                     // .. Function 버튼 활성화 & 애니메이션
                     FunctionButton.gameObject.SetActive(true);
@@ -202,7 +202,7 @@ public class CodingUIManager : MonoBehaviour
             #region LoopLayout Select Code
             case ECurrentLayout.Loop:
 
-                if(currentLayout != ECurrentLayout.Loop)
+                if (currentLayout != ECurrentLayout.Loop)
                 {
                     // .. Loop 버튼 활성화 & 애니메이션
                     LoopButton.gameObject.SetActive(true);
@@ -381,8 +381,9 @@ public class CodingUIManager : MonoBehaviour
             case true:
                 OptionOpenButton.interactable = false;
                 TuchBlockPanel.SetActive(false);
-                OptionPanel.transform.DOScale(0,0.3f).SetEase(Ease.OutExpo).SetUpdate(true)
-                    .OnComplete(()=> 
+
+                OptionPanel.transform.DOScale(0, 0.3f).SetEase(Ease.OutExpo).SetUpdate(true)
+                    .OnComplete(() =>
                     {
                         OptionPanel.SetActive(false);
                         isOptionOpen = false;
@@ -395,12 +396,13 @@ public class CodingUIManager : MonoBehaviour
                 OptionPanel.SetActive(true);
                 TuchBlockPanel.SetActive(true);
                 OptionPanel.transform.localScale = Vector3.zero;
+
                 OptionPanel.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo).SetUpdate(true)
-                    .OnComplete(() => 
+                    .OnComplete(() =>
                     {
-                        isOptionOpen = true; 
-                        OptionOpenButton.interactable = true; 
-                    }); 
+                        isOptionOpen = true;
+                        OptionOpenButton.interactable = true;
+                    });
                 break;
         }
     }
@@ -428,6 +430,9 @@ public class CodingUIManager : MonoBehaviour
         MainDelete.GetComponent<Button>().interactable = !enable;
         FunctionDelete.GetComponent<Button>().interactable = !enable;
         LoopDelete.GetComponent<Button>().interactable = !enable;
+
+        LoopCountPlus.interactable = !enable;
+        LoopCountMinus.interactable = !enable;
         #endregion
     }
 
@@ -462,7 +467,7 @@ public class CodingUIManager : MonoBehaviour
 
         }
 
-        if(GameManager_Instance.FunctionMethod.Count > 0)
+        if (GameManager_Instance.FunctionMethod.Count > 0)
         {
             foreach (CodingBlock block in GameManager_Instance.FunctionMethod)
             {

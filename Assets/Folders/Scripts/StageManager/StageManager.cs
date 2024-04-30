@@ -42,7 +42,6 @@ public class StageManager : MonoBehaviour
     public void StageClear()
     {
         Time.timeScale = 1;
-
         GameManager.CodingUIManager_Instance.ExecutionButton.GetComponent<Button>().interactable= false;
         GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1).SetEase(Ease.OutExpo);
     }

@@ -144,9 +144,6 @@ public class GameManager : MonoBehaviour
 
                     for (int i = 0; i < LoopReaptCount; i++)
                     {
-                        if (IsCompilerRunning == false)
-                            break;
-
                         foreach (CodingBlock block in LoopMethod)
                         {
                             if (IsCompilerRunning == false)
