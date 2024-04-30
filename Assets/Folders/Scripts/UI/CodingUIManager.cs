@@ -67,10 +67,18 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject LoopButton { get; private set; }
 
 
-    [field: Header("메뉴 UI")]
+    [field: Header("옵션 UI")]
+    [field: SerializeField] public Button OptionOpenButton { get; private set; }
+    private bool isOptionOpen = false;
+    [field: SerializeField] public GameObject OptionPanel { get; private set; }
+    [field: SerializeField] public Button OptionToMenuButton { get; private set; }
+    [field: SerializeField] public GameObject TuchBlockPanel { get; private set; }
 
+
+    [field: Header("클리어 메뉴 UI")]
     [field: SerializeField] public GameObject ClearPanel { get; private set; }
-    [field: SerializeField] public Button LoadSceneTest2 { get; private set; }
+    [field: SerializeField] public Button NextButton { get; private set; }
+    [field: SerializeField] public Button ClearToMenuButton { get; private set; }
 
 
     public CodingBlock BlockObjectFromPool { get; private set; }
@@ -117,12 +125,11 @@ public class CodingUIManager : MonoBehaviour
         LoopCountMinus.onClick.AddListener(() => LoopCounter(false));
         #endregion
 
+        OptionOpenButton.onClick.AddListener(()=> OpenOption());
+
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
         LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
-
-        // == TEST CODE ==
-        LoadSceneTest2.onClick.AddListener(() => GameSceneManager.instance.LoadScene(1));
     }
 
     private void Start()
@@ -363,6 +370,39 @@ public class CodingUIManager : MonoBehaviour
 
         LoopCountText.text = GameManager_Instance.LoopReaptCount.ToString();
     }
+
+
+    public void OpenOption()
+    {
+        switch (isOptionOpen)
+        {
+            case true:
+                OptionOpenButton.interactable = false;
+                TuchBlockPanel.SetActive(false);
+                OptionPanel.transform.DOScale(0,0.3f).SetEase(Ease.OutExpo).SetUpdate(true)
+                    .OnComplete(()=> 
+                    {
+                        OptionPanel.SetActive(false);
+                        isOptionOpen = false;
+                        OptionOpenButton.interactable = true;
+                    });
+                break;
+
+            case false:
+                OptionOpenButton.interactable = false;
+                OptionPanel.SetActive(true);
+                TuchBlockPanel.SetActive(true);
+                OptionPanel.transform.localScale = Vector3.zero;
+                OptionPanel.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo).SetUpdate(true)
+                    .OnComplete(() => 
+                    {
+                        isOptionOpen = true; 
+                        OptionOpenButton.interactable = true; 
+                    }); 
+                break;
+        }
+    }
+
 
     public void LockUIElements(bool enable)
     {

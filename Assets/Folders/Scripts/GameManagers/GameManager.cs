@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
 
             foreach (CodingBlock block in MainMethod)
             {
-                if (!IsCompilerRunning) // 플레이어가 블록 정지 버튼을 누르면 IsCompilerRunning 변수가 false로 바뀌어 순차 실행 코드를 탈출하여 블록 실행을 중단합니다.
+                if (!IsCompilerRunning) // .. 플레이어가 블록 정지 버튼을 누르면 IsCompilerRunning 변수가 false로 바뀌어 순차 실행 코드를 탈출하여 블록 실행을 중단합니다.
                     break;
 
                 yield return WAIT_FOR_SECONDS;
@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
                 PlayerManager_Instance.InitPlayerMoveVector();
                 block.GetComponent<CodingBlock>().enabled = true;
                 block.MoveOrder();
-                yield return WaitUntilEndOfSubMethod; // Func, Loop 메서드 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
+                yield return WaitUntilEndOfSubMethod; // .. Func, Loop 메서드 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
             }
 
             if (IsCompilerRunning) yield return WAIT_FOR_SECONDS;

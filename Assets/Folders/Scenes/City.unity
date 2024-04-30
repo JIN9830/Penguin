@@ -217,12 +217,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 13164676}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &53219338 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8061024355647797110, guid: 8b84deb3cf9ed8342a7181304729a753,
-    type: 3}
-  m_PrefabInstance: {fileID: 635202813}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &185336673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -759,6 +753,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 336920094}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &340051547 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3792768780833341935, guid: 8b84deb3cf9ed8342a7181304729a753,
+    type: 3}
+  m_PrefabInstance: {fileID: 635202813}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &371986203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1050,6 +1056,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 414007640}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &414169457 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 705640171520509869, guid: 8b84deb3cf9ed8342a7181304729a753,
+    type: 3}
+  m_PrefabInstance: {fileID: 635202813}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &444107386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1619,6 +1637,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 576688779555239685, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: === Function UI ==========
+      objectReference: {fileID: 0}
+    - target: {fileID: 1111534676500549332, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: Option Background
+      objectReference: {fileID: 0}
+    - target: {fileID: 1528258228689653052, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: === Loop UI ============
+      objectReference: {fileID: 0}
     - target: {fileID: 1541416447966350260, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1674,6 +1707,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coding UI Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 2206850034674845836, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: === Option UI ===========
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456651361862638914, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: Option Open Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3627485783783103867, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: Clear To Menu Button
+      objectReference: {fileID: 0}
     - target: {fileID: 3728843257884652948, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1693,6 +1741,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4015171457049761683, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: Clear Used Blocks Count
+      objectReference: {fileID: 0}
+    - target: {fileID: 6398264577748974913, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: Clear To Next Button
       objectReference: {fileID: 0}
     - target: {fileID: 6522330287248390638, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
@@ -1734,6 +1792,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6975337075788461731, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: === Execution Buttons =====
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992452084139240978, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: === Main UI ============
+      objectReference: {fileID: 0}
     - target: {fileID: 7332209469326837663, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1753,12 +1821,42 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7578754624626137488, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: Option To Menu Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 8061024355647797110, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: === Clear UI ============
       objectReference: {fileID: 0}
     - target: {fileID: 8081695970784325305, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
-      propertyPath: <ClearPanel>k__BackingField
+      propertyPath: <OptionOpenButton>k__BackingField
       value: 
-      objectReference: {fileID: 53219338}
+      objectReference: {fileID: 340051547}
+    - target: {fileID: 8081695970784325305, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: <ClearToMenuButton>k__BackingField
+      value: 
+      objectReference: {fileID: 414169457}
+    - target: {fileID: 8081695970784325305, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: <OptionToMenuButton>k__BackingField
+      value: 
+      objectReference: {fileID: 1798978142}
+    - target: {fileID: 8612663686816648776, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: === Coding Block Buttons ==
+      objectReference: {fileID: 0}
+    - target: {fileID: 9124788183127570279, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_Name
+      value: Option TuchBlock
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5008,6 +5106,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1745182535}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1798978142 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4215527638904583600, guid: 8b84deb3cf9ed8342a7181304729a753,
+    type: 3}
+  m_PrefabInstance: {fileID: 635202813}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1814695546
 PrefabInstance:
   m_ObjectHideFlags: 0

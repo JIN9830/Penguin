@@ -41,8 +41,8 @@ public class StageManager : MonoBehaviour
 
     public void StageClear()
     {
-        Debug.Log("스테이지 클리어 메서드 작동!");
         Time.timeScale = 1;
+
         GameManager.CodingUIManager_Instance.ExecutionButton.GetComponent<Button>().interactable= false;
         GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1).SetEase(Ease.OutExpo);
     }
