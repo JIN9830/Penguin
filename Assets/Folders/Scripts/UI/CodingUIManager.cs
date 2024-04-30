@@ -433,6 +433,8 @@ public class CodingUIManager : MonoBehaviour
 
         LoopCountPlus.interactable = !enable;
         LoopCountMinus.interactable = !enable;
+
+        CodingUIManager_Instance.OptionOpenButton.enabled = !enable;
         #endregion
     }
 
