@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine;
 
@@ -31,19 +32,19 @@ public class StageManager : MonoBehaviour
 
     public void UpdateCoin() // 코인 스크립트에서 코인이 콜라이더에 닿아 비활성화 될때
     {
-        if(CoinCount == 0)
-        {
-            StageClear(); // 게임 클리어 메서드 호출, 메뉴UI가 등장함
-        }
-        else
-        {
+        if(CoinCount != 0)
             CoinCount--;
-        }
+
+        if (CoinCount == 0)
+            StageClear();
     }
 
     public void StageClear()
     {
-
+        Debug.Log("스테이지 클리어 메서드 작동!");
+        Time.timeScale = 1;
+        GameManager.CodingUIManager_Instance.ExecutionButton.GetComponent<Button>().interactable= false;
+        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1).SetEase(Ease.OutExpo);
     }
 
     // 스테이지 상호작용에 필요한 공동 메서드를 작성

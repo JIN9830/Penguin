@@ -67,7 +67,9 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject LoopButton { get; private set; }
 
 
-    [field: Header("기본 UI 요소")]
+    [field: Header("메뉴 UI")]
+
+    [field: SerializeField] public GameObject ClearPanel { get; private set; }
     [field: SerializeField] public Button LoadSceneTest2 { get; private set; }
 
 

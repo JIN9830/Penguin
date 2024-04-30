@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class GameManager : MonoBehaviour
@@ -10,14 +10,6 @@ public class GameManager : MonoBehaviour
         Loop,
     }
     public ECurrentMethod currentMethod = ECurrentMethod.Main;
-
-
-    public enum ECodingBlockState // TODO: »ç¿ëÁß ¾Æ´Ô (yield return 1ÃÊ µô·¹ÀÌ °£°İ¹® Á¶Á¤ ÄÚµå·Î »ç¿ë ¿¹Á¤)
-    {
-        Playing,
-        Finished,
-    }
-    public ECodingBlockState codingBlockState = ECodingBlockState.Finished;
 
     public static GameManager GameManager_Instance { get; private set; }
     public static ObjectPoolManager ObjectPoolManager_Instance { get; private set; }
@@ -40,7 +32,6 @@ public class GameManager : MonoBehaviour
     public readonly WaitForSeconds WAIT_FOR_HALF_SECONDS = new(0.5f);
 
     public WaitUntil WaitUntilExecutionTrigger { get; private set; }
-    public WaitUntil WaitUntilBlockFinished { get; private set; } //TODO: ¾ÆÁ÷ »ç¿ëÁßÀÌ ¾Æ´Ô (yield return 1ÃÊ µô·¹ÀÌ °£°İ¹® Á¶Á¤ ÄÚµå·Î »ç¿ë ¿¹Á¤)
     public WaitUntil WaitUntilSubMethodTrigger { get; private set; }
     public WaitUntil WaitUntilEndOfSubMethod { get; private set; }
 
@@ -59,7 +50,6 @@ public class GameManager : MonoBehaviour
         #endregion
 
         WaitUntilExecutionTrigger = new WaitUntil(() => IsCompilerRunning == true);
-        WaitUntilBlockFinished = new WaitUntil(() => codingBlockState == ECodingBlockState.Finished); // TODO: »ç¿ëÁß ¾Æ´Ô (yield return 1ÃÊ µô·¹ÀÌ °£°İ¹® Á¶Á¤ ÄÚµå·Î »ç¿ë ¿¹Á¤)
         WaitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
         WaitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
 
@@ -73,13 +63,13 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¹«ÇÑ ·çÇÁ¸¦ µ¹°í ÀÖ´Ù°¡ ½ÇÇà ¹öÆ°ÀÇ Å¬¸¯ ÀÌº¥Æ®¸¦ °¨ÁöÇßÀ» ¶§ ¸ŞÀÎ ·¹ÀÌ¾Æ¿ô¿¡ ÀÖ´Â ºí·ÏµéÀ» ÀĞ°í ½ÇÇàÇÕ´Ï´Ù.
+    /// GameManager ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ë¬´í•œ ë£¨í”„ë¥¼ ëŒê³  ìˆëŠ” ë©”ì„œë“œì´ë©°, MainLayoutì— ìˆëŠ” ë¸”ë¡ë“¤ì„ ìˆœì°¨ì ìœ¼ë¡œ ì‹¤í–‰í•©ë‹ˆë‹¤.
     /// </summary>
     public IEnumerator BlockCompiler_Co()
     {
         while (true)
         {
-            // .. ÇÃ·¹ÀÌ¾î°¡ ½ÇÇà ¹öÆ°À» ´©¸£±â Àü±îÁö ¾Æ·¡ÀÇ ÄÚµå´Â ½ÇÇàµÇÁö ¾Ê°í ÄÚµå Á¦¾î±ÇÀÌ À¯´ÏÆ¼¿¡°Ô µ¹¾Æ°©´Ï´Ù.
+            // .. í”Œë ˆì´ì–´ê°€ ë¸”ë¡ ì‹¤í–‰ ë²„íŠ¼ì„ ëˆ„ë¥´ê¸° ì „ê¹Œì§€ í•´ë‹¹ ë¶€ë¶„ì—ì„œ ëŒ€ê¸°í•˜ë‹¤ê°€ ë¸”ë¡ ì‹¤í–‰ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ ì•„ë˜ì˜ ì½”ë“œë“¤ì´ ì§„í–‰ë˜ë©° ë¸”ë¡ë“¤ì´ ì‹¤í–‰ë©ë‹ˆë‹¤.
             yield return WaitUntilExecutionTrigger;
 
             CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false);
@@ -88,7 +78,7 @@ public class GameManager : MonoBehaviour
 
             foreach (CodingBlock block in MainMethod)
             {
-                if (!IsCompilerRunning) // ÇÃ·¹ÀÌ¾î°¡ ÁßÁö ¹öÆ°À» ´©¸£¸é Á¶°Ç¹® ³»ºÎÀÇ º¯¼ö´Â false°¡ µÇ¾î ºí·Ï ÄÄÆÄÀÏÀ» Áß´ÜÇÕ´Ï´Ù.
+                if (!IsCompilerRunning) // í”Œë ˆì´ì–´ê°€ ë¸”ë¡ ì •ì§€ ë²„íŠ¼ì„ ëˆ„ë¥´ë©´ IsCompilerRunning ë³€ìˆ˜ê°€ falseë¡œ ë°”ë€Œì–´ ìˆœì°¨ ì‹¤í–‰ ì½”ë“œë¥¼ íƒˆì¶œí•˜ì—¬ ë¸”ë¡ ì‹¤í–‰ì„ ì¤‘ë‹¨í•©ë‹ˆë‹¤.
                     break;
 
                 yield return WAIT_FOR_SECONDS;
@@ -96,7 +86,7 @@ public class GameManager : MonoBehaviour
                 PlayerManager_Instance.InitPlayerMoveVector();
                 block.GetComponent<CodingBlock>().enabled = true;
                 block.MoveOrder();
-                yield return WaitUntilEndOfSubMethod; // Func, Loop ºí·°ÀÇ ½ÇÇàÀÌ ³¡³¯¶§ ±îÁö ´ë±âÇÕ´Ï´Ù.
+                yield return WaitUntilEndOfSubMethod; // Func, Loop ë©”ì„œë“œ ë¸”ë¡ì´ ì‹¤í–‰ì¤‘ì´ë¼ë©´ ì‹¤í–‰ì´ ëë‚ ë•Œê¹Œì§€ ëŒ€ê¸°í•©ë‹ˆë‹¤.
             }
 
             if (IsCompilerRunning) yield return WAIT_FOR_SECONDS;
@@ -111,13 +101,13 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¹«ÇÑ ·çÇÁ¸¦ µ¹°í ÀÖ´Ù°¡ (ÇÔ¼ö, ·çÇÁ) ºí·ÏÀÌ ¸ŞÀÎ ·¹ÀÌ¾Æ¿ô¿¡¼­ ½ÇÇàµÆÀ» ¶§ ÇÔ¼ö, ·çÇÁ ·¹ÀÌ¾Æ¿ô¿¡ ÀÖ´Â ºí·ÏµéÀ» ÀĞ°í ½ÇÇàÇÕ´Ï´Ù.
+    /// GameManager ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ë¬´í•œ ë£¨í”„ë¥¼ ëŒê³  ìˆëŠ” ë©”ì„œë“œì´ë©°, MainLayoutì— ìˆëŠ” Func, Loop ë¸”ë¡ì˜ ë‚´ë¶€ì— ìˆëŠ” ë¸”ë¡ë“¤ì„ ìˆœì°¨ì ìœ¼ë¡œ ì‹¤í–‰í•©ë‹ˆë‹¤.
     /// </summary>
     public IEnumerator SubBlockCompiler_Co()
     {
         while (true)
         {
-            // .. MainLayout¿¡¼­ [Func, Loop] ºí·ÏÀÌ ½ÇÇàµÇ±â Àü±îÁö ¾Æ·¡ÀÇ ÄÚµå´Â ½ÇÇàµÇÁö ¾Ê°í ÄÚµå Á¦¾î±ÇÀÌ À¯´ÏÆ¼¿¡°Ô µ¹¾Æ°©´Ï´Ù.
+            // .. MainLayoutì—ì„œ [Func, Loop] ë¸”ë¡ì´ ì‹¤í–‰ë˜ì—ˆë‹¤ë©´ ì•„ë˜ì˜ ì½”ë“œë¥¼ ì§„í–‰í•©ë‹ˆë‹¤. ê·¸ë ‡ì§€ ì•Šë‹¤ë©´ ëŒ€ê¸°í•©ë‹ˆë‹¤.
             yield return WaitUntilSubMethodTrigger;
 
             switch (currentMethod)
@@ -207,8 +197,8 @@ public class GameManager : MonoBehaviour
             blockObj.ReleaseBlock();
         }
 
-        MainMethod.Clear(); // TODO: OnSceneLoad µ¨¸®°ÔÀÌÆ® Ã¼ÀÎÀ» °É¾î¼­ »ç¿ëÇÏ±â, »õ·Î¿î ½ºÅ×ÀÌÁö ¸¶´Ù ºí·Ï ÃÊ±âÈ­
-        FunctionMethod.Clear();   // TODO: ·¹ÀÌ¾Æ¿ô ³»ºÎ¿¡ ºí·Ï ÇÁ¸®ÆÕµµ Destroy ÇÏ±â
+        MainMethod.Clear();
+        FunctionMethod.Clear();   
         LoopMethod.Clear();
     }
 
@@ -234,7 +224,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ÇØ´ç ÇÁ·ÎÆÛÆ¼¸¦ ¼öµ¿À¸·Î º¯°æÇÏ¸é °ÔÀÓÇÃ·¹ÀÌ(ÄÚµå ½ÇÇà, Á¤Áö) ºÎºĞ¿¡¼­ ¹ö±×°¡ ¹ß»ıÇÒ ¼ö ÀÖ½À´Ï´Ù.
+    /// í•´ë‹¹ í”„ë¡œí¼í‹°ì˜ ìˆ˜ì •ì€ ê²Œì„í”Œë ˆì´(ë¸”ë¡ ì‹¤í–‰ / ì •ì§€) ë¶€ë¶„ì—ì„œ ì˜¤ë¥˜ê°€ ë°œìƒí• ìˆ˜ìˆìŠµë‹ˆë‹¤.
     /// </summary>
     /// <param name="enable"></param>
     public void Set_IsCompilerRunning(bool enable)

@@ -49,7 +49,7 @@ public class Forward : CodingBlock
             }
 
         }
-        // ... 장애물이 없다면 Update 내부에서 앞으로 전진하는 PlayerMove를 호출하도록 PlayerState를 Forwarding로 변경
+        // ... 장애물이 없다면 Update에서 앞으로 전진하는 PlayerMove를 호출하도록 PlayerState를 Forwarding로 변경
         else
         {
             BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
