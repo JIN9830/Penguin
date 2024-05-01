@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> LoopMethod { get; private set; } = new List<CodingBlock>();
 
     [field: SerializeField] public int LoopReaptCount { get; set; } = 1;
+    private int _loopCountTemp;
 
     public bool IsCompilerRunning { get; private set; } = false;
 
@@ -112,7 +113,7 @@ public class GameManager : MonoBehaviour
 
             switch (currentMethod)
             {
-                #region Function Compiler Code
+                #region ======================== Function Compiler Code ===========================================
                 case ECurrentMethod.Function:
 
                     foreach (CodingBlock block in FunctionMethod)
@@ -137,13 +138,16 @@ public class GameManager : MonoBehaviour
                     CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
                     break;
-                #endregion
+                #endregion ========================================================================================
 
-                #region Loop Compiler Code
+
+
+                #region ======================== Loop Compiler Code ===============================================
                 case ECurrentMethod.Loop:
 
                     for (int i = 0; i < LoopReaptCount; i++)
                     {
+                        // .. Loop 메서드의 내부의 블록들을 순차적으로 실행합니다.
                         foreach (CodingBlock block in LoopMethod)
                         {
                             if (IsCompilerRunning == false)
@@ -156,6 +160,8 @@ public class GameManager : MonoBehaviour
                             block.MoveOrder();
                         }
 
+                        // .. Loop 메서드 실행도중에 중지버튼을 누르지 않았다면 다음 루프 사이클을 시작합니다.
+                        // ... 1초 딜레이 후 실행했던 블록들의 하이라이트를 제거 하고 다시 Loop 메서드의 다음 사이클 시작합니다.
                         if (IsCompilerRunning == true)
                         {
                             yield return WAIT_FOR_SECONDS;
@@ -165,13 +171,14 @@ public class GameManager : MonoBehaviour
                                 block.ToggleHighLight(false);
                             }
                         }
-
+                        
+                        
                     }
 
                     CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
                     break;
-                    #endregion
+                    #endregion ===================================================================================
             }
 
             CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);

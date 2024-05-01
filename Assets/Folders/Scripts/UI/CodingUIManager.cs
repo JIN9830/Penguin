@@ -81,7 +81,10 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public Button ClearToMenuButton { get; private set; }
 
 
-    public CodingBlock BlockObjectFromPool { get; private set; }
+    // ============= TEST CODE ============= //
+    public Tweener ForwardTweener { get; private set; }
+
+
 
 
     // 테스트용 코드 (레이아웃 UI(Main, Fucn, Loop) 터치 할 때 팝업 애니메이션 벡터 값)

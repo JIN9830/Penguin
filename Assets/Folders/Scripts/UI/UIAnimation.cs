@@ -15,7 +15,7 @@ public class UIAnimation
     public Tweener Animation_ForwardBlockPlay(GameObject blockObj)
     {
         blockObj.gameObject.transform.localScale = Vector3.zero;
-        Tweener blockTweener = blockObj.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo);
+        Tweener blockTweener = blockObj.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo).SetRecyclable(true);
         return blockTweener;
     }
 

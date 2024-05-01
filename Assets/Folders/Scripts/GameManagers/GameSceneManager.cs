@@ -7,6 +7,8 @@ public class GameSceneManager : MonoBehaviour
 {
     public static GameSceneManager Instance { get; private set; }
 
+    [field: SerializeField] public GameObject CurtainObject;
+
     private void Awake()
     {
         if (Instance == null)
