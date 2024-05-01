@@ -113,6 +113,7 @@ public class GameManager : MonoBehaviour
 
             switch (currentMethod)
             {
+
                 #region ======================== Function Compiler Code ===========================================
                 case ECurrentMethod.Function:
 
@@ -138,6 +139,7 @@ public class GameManager : MonoBehaviour
                     CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
                     break;
+
                 #endregion ========================================================================================
 
 
@@ -178,7 +180,9 @@ public class GameManager : MonoBehaviour
                     CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
                     break;
+
                     #endregion ===================================================================================
+
             }
 
             CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
