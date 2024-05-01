@@ -22,8 +22,8 @@ public class PlayerManager : MonoBehaviour
     public Animator PlayerAnimator { get; private set; }
     public Vector3 PlayerStartPos { get; private set; }
     public Vector3 PlayerNewPos { get; private set; }
-    public Vector3 PlayerRestPos { get; private set; }
-    public Quaternion PlayerRestRot { get; private set; }
+    public Vector3 PlayerResetPos { get; private set; }
+    public Quaternion PlayerResetRot { get; private set; }
 
     public Tweener PlayerMoveTween { get; private set; }
     public Tweener PlayerRotateTween { get; private set; }
@@ -34,8 +34,8 @@ public class PlayerManager : MonoBehaviour
 
         PlayerAnimator = playerObject.GetComponent<Animator>();
 
-        PlayerRestPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
-        PlayerRestRot = playerObject.transform.rotation;
+        PlayerResetPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
+        PlayerResetRot = playerObject.transform.rotation;
 
         cameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
         cameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
@@ -49,8 +49,8 @@ public class PlayerManager : MonoBehaviour
 
     public void ResetPlayerPosition()
     {
-        playerObject.transform.DOMove(PlayerRestPos, 0.3f).OnComplete(() => StageManager_Instance.ResetCoin());
-        playerObject.transform.DORotateQuaternion(PlayerRestRot, 1f);
         PlayerAnimator.SetTrigger("Reset");
+        playerObject.transform.DOMove(PlayerResetPos, 0.5f).OnComplete(() => StageManager_Instance.ResetCoin());
+        playerObject.transform.DORotateQuaternion(PlayerResetRot, 1f);
     }
 }

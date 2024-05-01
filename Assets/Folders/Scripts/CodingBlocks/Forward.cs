@@ -10,8 +10,6 @@ public class Forward : CodingBlock
     private RaycastHit _hit;
     private float _deltaTimeCount = 0;
 
-    public Tweener forwardTweener;
-
     private void OnEnable()
     {
         _deltaTimeCount = 0;

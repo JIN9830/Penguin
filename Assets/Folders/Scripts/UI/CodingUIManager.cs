@@ -120,7 +120,7 @@ public class CodingUIManager : MonoBehaviour
         LoopDelete.GetComponent<Button>().onClick.AddListener(() => { SelectedMethods(ECurrentLayout.Loop); DeleteBlock(currentLayout); });
         #endregion
 
-        #region Play, Stop & TimeControl & Loop Count Plus, Minus OnClickAddListener
+        #region Execution, Stop & TimeControl & Loop Count Plus, Minus OnClickAddListener
         ExecutionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_IsCompilerRunning(true));
         StopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
         TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleControl());
@@ -333,10 +333,9 @@ public class CodingUIManager : MonoBehaviour
         PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
         PlayerManager_Instance.ResetPlayerPosition();
 
-        UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1);
 
         StopButton.gameObject.SetActive(false);
-        ExecutionButton.gameObject.SetActive(true);
+        UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1f);
     }
 
     public void TimeScaleControl()
