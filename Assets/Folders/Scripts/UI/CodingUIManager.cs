@@ -150,6 +150,8 @@ public class CodingUIManager : MonoBehaviour
         ReleasedBlocks = GameManager_Instance.gameObject;
 
         SelectedMethods(ECurrentLayout.Main);
+
+        AudioManager.Instance.PlayMusic("CityTheme");
     }
 
     public void SelectedMethods(ECurrentLayout selectMethod)
