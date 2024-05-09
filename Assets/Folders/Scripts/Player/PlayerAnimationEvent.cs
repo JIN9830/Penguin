@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAnimationEvent : MonoBehaviour
@@ -38,6 +39,16 @@ public class PlayerAnimationEvent : MonoBehaviour
     public void ReachTheEdgeEvent() // Event called (Idle B 0:01)
     {
         _isSad = true;
+    }
+
+    public void WalkingSound()
+    {
+        AudioManager.Instance.PlaySFX("Walking");
+    }
+
+    public void TurningSound()
+    {
+        AudioManager.Instance.PlaySFX("Turning");
     }
 
     private bool AnimationTimer(float limitTime)

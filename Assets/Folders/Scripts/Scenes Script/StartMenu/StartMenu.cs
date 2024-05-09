@@ -9,6 +9,6 @@ public class StartMenu : MonoBehaviour
 
     private void Awake()
     {
-        LoadSceneTest.onClick.AddListener(() => GameSceneManager.Instance.LoadScene(1)); ;
+        LoadSceneTest.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1)); ;
     }
 }

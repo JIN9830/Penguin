@@ -9,6 +9,6 @@ public class LevelSelection : MonoBehaviour
 
     private void Awake()
     {
-        LoadSceneTest.onClick.AddListener(() => GameSceneManager.Instance.LoadScene(2)); ;
+        LoadSceneTest.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(2)); ;
     }
 }

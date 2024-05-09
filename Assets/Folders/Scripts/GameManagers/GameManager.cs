@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     public WaitUntil WaitUntilSubMethodTrigger { get; private set; }
     public WaitUntil WaitUntilEndOfSubMethod { get; private set; }
 
+    
+
     private void Awake()
     {
         #region Singleton Code
@@ -162,8 +164,8 @@ public class GameManager : MonoBehaviour
                             block.MoveOrder();
                         }
 
-                        // .. Loop 메서드 실행도중에 중지버튼을 누르지 않았다면 다음 루프 사이클을 시작합니다.
-                        // ... 1초 딜레이 후 실행했던 블록들의 하이라이트를 제거 하고 다시 Loop 메서드의 다음 사이클 시작합니다.
+                        // .. Loop 메서드 실행 도중에 중지버튼을 누르지 않았다면 다음 루프를 반복 실행할 준비를 합니다.
+                        // ... 1초 딜레이 후 실행했던 블록들의 하이라이트를 제거 하고 Loop 메서드의 카운트 만큼 반복합니다.
                         if (IsCompilerRunning == true)
                         {
                             yield return WAIT_FOR_SECONDS;
@@ -173,7 +175,6 @@ public class GameManager : MonoBehaviour
                                 block.ToggleHighLight(false);
                             }
                         }
-                        
                         
                     }
 

@@ -129,8 +129,8 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         OptionOpenButton.onClick.AddListener(() => OpenOption());
-        OptionToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadScene(1));
-        ClearToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadScene(1));
+        OptionToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
+        ClearToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
 
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
@@ -235,6 +235,8 @@ public class CodingUIManager : MonoBehaviour
 
     public void InsertBlock()
     {
+        AudioManager.Instance.PlaySFX("InsertCodingBlock");
+
         if (ObjectPoolManager_Instance.BlockName == BlockCategory.Function || ObjectPoolManager_Instance.BlockName == BlockCategory.Loop)
         {
             if (GameManager_Instance.MainMethod.Count < 10)
@@ -296,6 +298,8 @@ public class CodingUIManager : MonoBehaviour
 
     public void DeleteBlock(ECurrentLayout currentLayout)
     {
+        AudioManager.Instance.PlaySFX("DeleteCodingBlock");
+
         switch (currentLayout)
         {
             case ECurrentLayout.Main:

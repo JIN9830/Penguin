@@ -19,7 +19,7 @@ public class StageManager : MonoBehaviour
 
     public void ResetCoin()
     {
-        if (CoinCount == CoinObject.Length) 
+        if (CoinCount == CoinObject.Length)
             return;
 
         CoinCount = CoinObject.Length;
