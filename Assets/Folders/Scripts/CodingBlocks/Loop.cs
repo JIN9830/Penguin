@@ -11,7 +11,7 @@ public class Loop : CodingBlock
         BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
 
         GameManager_Instance.currentMethod = ECurrentMethod.Loop;
-        CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Loop);
+        CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Loop);
         
     }
     private void Update()

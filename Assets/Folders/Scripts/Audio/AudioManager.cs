@@ -7,8 +7,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public Sound[] musicSounds, sfxSounds;
-    public AudioSource musicSource, sfxSource;
+    public Sound[] musicSounds, playerSfxSounds, uiSfxSound;
+    public AudioSource musicSource, playerSfxSource, uiSfxSource;
 
     private void Awake()
     {
@@ -38,17 +38,31 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySFX(string name)
+    public void PlayerSFX(string name)
     {
-        Sound s = Array.Find(sfxSounds, x => x.name == name);
+        Sound s = Array.Find(playerSfxSounds, x => x.name == name);
 
         if (s == null)
         {
-            Debug.Log("Sound Not Found");
+            Debug.Log("Player Sound Not Found");
         }
         else
         {
-            sfxSource.PlayOneShot(s.clip);
+            playerSfxSource.PlayOneShot(s.clip);
+        }
+    }
+
+    public void UISFX(string name)
+    {
+        Sound s = Array.Find(uiSfxSound, x => x.name == name);
+
+        if (s == null)
+        {
+            Debug.Log("UI Sound Not Found");
+        }
+        else
+        {
+            uiSfxSource.PlayOneShot(s.clip);
         }
     }
 }

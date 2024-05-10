@@ -15,7 +15,7 @@ public class CodingUIManager : MonoBehaviour
         Loop,
     }
 
-    public ECurrentLayout currentLayout = ECurrentLayout.Main;
+    public ECurrentLayout currentLayout;
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
     [field: Header("비활성화된 오브젝트 풀 오브젝트")]
@@ -105,23 +105,23 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         #region Layout activate onClickAddListener
-        MainLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Main));
-        FunctionLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Function));
-        LoopLayout.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Loop));
+        MainLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Main));
+        FunctionLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Function));
+        LoopLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Loop));
 
-        MainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Main));
-        FunctionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Loop));
-        LoopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectedMethods(ECurrentLayout.Function));
+        MainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Main));
+        FunctionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Loop));
+        LoopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Function));
         #endregion
 
         #region block delete OnClickAddListener
-        MainDelete.GetComponent<Button>().onClick.AddListener(() => { SelectedMethods(ECurrentLayout.Main); DeleteBlock(currentLayout); });
-        FunctionDelete.GetComponent<Button>().onClick.AddListener(() => { SelectedMethods(ECurrentLayout.Function); DeleteBlock(currentLayout); });
-        LoopDelete.GetComponent<Button>().onClick.AddListener(() => { SelectedMethods(ECurrentLayout.Loop); DeleteBlock(currentLayout); });
+        MainDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Main); DeleteBlock(currentLayout); });
+        FunctionDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Function); DeleteBlock(currentLayout); });
+        LoopDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Loop); DeleteBlock(currentLayout); });
         #endregion
 
         #region Execution, Stop & TimeControl & Loop Count Plus, Minus OnClickAddListener
-        ExecutionButton.GetComponent<Button>().onClick.AddListener(() => GameManager_Instance.Set_IsCompilerRunning(true));
+        ExecutionButton.GetComponent<Button>().onClick.AddListener(() => ExecutionBlock());
         StopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
         TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleControl());
         LoopCountPlus.onClick.AddListener(() => LoopCounter(true));
@@ -149,13 +149,18 @@ public class CodingUIManager : MonoBehaviour
 
         ReleasedBlocks = GameManager_Instance.gameObject;
 
-        SelectedMethods(ECurrentLayout.Main);
+        SelectMethod(ECurrentLayout.Main);
 
-        AudioManager.Instance.PlayMusic("CityTheme");
+        //AudioManager.Instance.PlayMusic("CityTheme");
     }
 
-    public void SelectedMethods(ECurrentLayout selectMethod)
+    public void SelectMethod(ECurrentLayout selectMethod)
     {
+        if(selectMethod == currentLayout)
+            return;
+
+        AudioManager.Instance.UISFX("SelectMethod");
+
         switch (selectMethod)
         {
             #region MainLayout Select Code
@@ -231,11 +236,12 @@ public class CodingUIManager : MonoBehaviour
                 break;
                 #endregion
         }
+
     }
 
     public void InsertBlock()
     {
-        AudioManager.Instance.PlaySFX("InsertCodingBlock");
+        AudioManager.Instance.UISFX("InsertCodingBlock");
 
         if (ObjectPoolManager_Instance.BlockName == BlockCategory.Function || ObjectPoolManager_Instance.BlockName == BlockCategory.Loop)
         {
@@ -298,13 +304,12 @@ public class CodingUIManager : MonoBehaviour
 
     public void DeleteBlock(ECurrentLayout currentLayout)
     {
-        AudioManager.Instance.PlaySFX("DeleteCodingBlock");
-
         switch (currentLayout)
         {
             case ECurrentLayout.Main:
                 if (GameManager_Instance.MainMethod.Count > 0)
                 {
+                    AudioManager.Instance.UISFX("DeleteCodingBlock");
                     CodingBlock lastblock = GameManager_Instance.MainMethod.Last();
                     GameManager_Instance.MainMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
@@ -314,6 +319,7 @@ public class CodingUIManager : MonoBehaviour
             case ECurrentLayout.Function:
                 if (GameManager_Instance.FunctionMethod.Count > 0)
                 {
+                    AudioManager.Instance.UISFX("DeleteCodingBlock");
                     CodingBlock lastblock = GameManager_Instance.FunctionMethod.Last();
                     GameManager_Instance.FunctionMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
@@ -323,6 +329,7 @@ public class CodingUIManager : MonoBehaviour
             case ECurrentLayout.Loop:
                 if (GameManager_Instance.LoopMethod.Count > 0)
                 {
+                    AudioManager.Instance.UISFX("DeleteCodingBlock");
                     CodingBlock lastblock = GameManager_Instance.LoopMethod.Last();
                     GameManager_Instance.LoopMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
@@ -330,10 +337,22 @@ public class CodingUIManager : MonoBehaviour
                 break;
         }
     }
+    public void ExecutionBlock()
+    {
+        GameManager_Instance.Set_IsCompilerRunning(true);
+
+        CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false);
+        CodingUIManager_Instance.StopButton.gameObject.SetActive(true);
+        CodingUIManager_Instance.LockUIElements(true);
+
+        AudioManager.Instance.UISFX("ExecutionButton");
+    }
 
     public void StopBlock()
     {
         GameManager_Instance.Set_IsCompilerRunning(false);
+
+        AudioManager.Instance.UISFX("StopButton");
 
         RestartBlockAnimation();
         PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);

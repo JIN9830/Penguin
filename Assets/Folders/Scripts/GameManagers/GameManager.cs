@@ -75,10 +75,6 @@ public class GameManager : MonoBehaviour
             // .. 플레이어가 블록 실행 버튼을 누르기 전까지 해당 부분에서 대기하다가 블록 실행 버튼을 누르면 아래의 코드들이 진행되며 블록들이 실행됩니다.
             yield return WaitUntilExecutionTrigger;
 
-            CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false);
-            CodingUIManager_Instance.StopButton.gameObject.SetActive(true);
-            CodingUIManager_Instance.LockUIElements(true);
-
             foreach (CodingBlock block in MainMethod)
             {
                 if (!IsCompilerRunning) // .. 플레이어가 블록 정지 버튼을 누르면 IsCompilerRunning 변수가 false로 바뀌어 순차 실행 코드를 탈출하여 블록 실행을 중단합니다.
@@ -138,7 +134,7 @@ public class GameManager : MonoBehaviour
                         block.ToggleHighLight(false);
                     }
 
-                    CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
+                    CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
                     break;
 
@@ -178,7 +174,7 @@ public class GameManager : MonoBehaviour
                         
                     }
 
-                    CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
+                    CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
                     break;
 
@@ -186,7 +182,7 @@ public class GameManager : MonoBehaviour
 
             }
 
-            CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Main);
+            CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
             currentMethod = ECurrentMethod.Main;
         }
     }

@@ -12,7 +12,7 @@ public class Function : CodingBlock
         BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
 
         GameManager_Instance.currentMethod = ECurrentMethod.Function;
-        CodingUIManager_Instance.SelectedMethods(CodingUIManager.ECurrentLayout.Function);
+        CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Function);
     }
     private void Update()
     {
