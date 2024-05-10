@@ -24,7 +24,7 @@ public class GameSceneManager : MonoBehaviour
 
     public void LoadIndexScene(int sceneIndex)
     {
-        GameManager.GameManager_Instance.Initialize_CodingMethod();
+        //GameManager.GameManager_Instance.Initialize_CodingMethod(); // TODO: 테스트 후 제거나 수정
         SceneManager.LoadSceneAsync(sceneIndex);
     }
 

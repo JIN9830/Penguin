@@ -45,6 +45,7 @@ public class Forward : CodingBlock
             }
             else if (_hit.collider.CompareTag("Edge"))
             {
+                AudioManager.Instance.PlayerSFX("ReachTheEdge");
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("ReachTheEdge");
                 this.GetComponent<CodingBlock>().enabled = false;
             }

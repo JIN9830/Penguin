@@ -19,6 +19,7 @@ public class Coin : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             GameManager.StageManager_Instance.UpdateCoin();
+            AudioManager.Instance.PlayerSFX("EatCoin");
             this.gameObject.SetActive(false);
         }
     }

@@ -69,7 +69,7 @@ public class CodingUIManager : MonoBehaviour
 
     [field: Header("¿É¼Ç UI")]
     [field: SerializeField] public Button OptionOpenButton { get; private set; }
-    private bool isOptionOpen = false;
+    private bool isOptionOpened = false;
     [field: SerializeField] public GameObject OptionPanel { get; private set; }
     [field: SerializeField] public Button OptionToMenuButton { get; private set; }
     [field: SerializeField] public GameObject TuchBlockPanel { get; private set; }
@@ -403,7 +403,7 @@ public class CodingUIManager : MonoBehaviour
 
     public void OpenOption()
     {
-        switch (isOptionOpen)
+        switch (isOptionOpened)
         {
             case true:
                 OptionOpenButton.interactable = false;
@@ -413,7 +413,7 @@ public class CodingUIManager : MonoBehaviour
                     .OnComplete(() =>
                     {
                         OptionPanel.SetActive(false);
-                        isOptionOpen = false;
+                        isOptionOpened = false;
                         OptionOpenButton.interactable = true;
                     });
                 break;
@@ -424,10 +424,10 @@ public class CodingUIManager : MonoBehaviour
                 TuchBlockPanel.SetActive(true);
                 OptionPanel.transform.localScale = Vector3.zero;
 
-                OptionPanel.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo).SetUpdate(true)
+                OptionPanel.transform.DOScale(1, 0.5f).SetEase(Ease.OutBack).SetUpdate(true)
                     .OnComplete(() =>
                     {
-                        isOptionOpen = true;
+                        isOptionOpened = true;
                         OptionOpenButton.interactable = true;
                     });
                 break;

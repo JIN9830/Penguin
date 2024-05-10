@@ -123,6 +123,7 @@ public class GameManager : MonoBehaviour
 
                         yield return WAIT_FOR_SECONDS;
 
+                        AudioManager.Instance.UISFX("ActiveCodingBlock");
                         PlayerManager_Instance.InitPlayerMoveVector();
                         block.GetComponent<CodingBlock>().enabled = true;
                         block.MoveOrder();
@@ -146,7 +147,9 @@ public class GameManager : MonoBehaviour
                 #region ======================== Loop Compiler Code ===============================================
                 case ECurrentMethod.Loop:
 
-                    for (int i = 0; i < LoopReaptCount; i++)
+                    int LoopReaptCountTemp = LoopReaptCount;
+
+                    for (int i = 0; i < LoopReaptCountTemp; i++)
                     {
                         // .. Loop 메서드의 내부의 블록들을 순차적으로 실행합니다.
                         foreach (CodingBlock block in LoopMethod)
@@ -156,6 +159,7 @@ public class GameManager : MonoBehaviour
 
                             yield return WAIT_FOR_SECONDS;
 
+                            AudioManager.Instance.UISFX("ActiveCodingBlock");
                             PlayerManager_Instance.InitPlayerMoveVector();
                             block.GetComponent<CodingBlock>().enabled = true;
                             block.MoveOrder();
@@ -172,8 +176,13 @@ public class GameManager : MonoBehaviour
                                 block.ToggleHighLight(false);
                             }
                         }
-                        
+
+                        LoopReaptCount--;
+                        CodingUIManager_Instance.LoopCountText.text= LoopReaptCount.ToString();
                     }
+
+                    LoopReaptCount = LoopReaptCountTemp;
+                    CodingUIManager_Instance.LoopCountText.text = LoopReaptCount.ToString();
 
                     CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
                     currentMethod = ECurrentMethod.Main;
