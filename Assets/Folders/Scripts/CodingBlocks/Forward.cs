@@ -38,6 +38,7 @@ public class Forward : CodingBlock
 
             if (_hit.collider.CompareTag("Wall"))
             {
+                AudioManager.Instance.PlayerSFX("HitTheWall");
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("HitTheWall");
                 CodingUIManager_Instance.ShakeUIElements();
                 this.GetComponent<CodingBlock>().enabled = false;

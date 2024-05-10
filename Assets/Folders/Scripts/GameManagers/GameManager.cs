@@ -82,6 +82,7 @@ public class GameManager : MonoBehaviour
 
                 yield return WAIT_FOR_SECONDS;
 
+                AudioManager.Instance.UISFX("ActiveCodingBlock");
                 PlayerManager_Instance.InitPlayerMoveVector();
                 block.GetComponent<CodingBlock>().enabled = true;
                 block.MoveOrder();

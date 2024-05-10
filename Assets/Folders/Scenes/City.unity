@@ -5160,10 +5160,10 @@ MonoBehaviour:
   playerSfxSounds:
   - name: Walking
     clip: {fileID: 8300000, guid: b6b5d42ebcdf22549bfb497269f133d7, type: 3}
-  - name: Turn
-    clip: {fileID: 0}
+  - name: Turning
+    clip: {fileID: 8300000, guid: 208c908e64b093f45bed5675ddae84d8, type: 3}
   - name: HitTheWall
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 28aeadba7b84d564ea3462bfc50860f5, type: 3}
   - name: ReachTheEdge
     clip: {fileID: 0}
   uiSfxSound:
@@ -5174,9 +5174,11 @@ MonoBehaviour:
   - name: ExecutionButton
     clip: {fileID: 8300000, guid: 1519d3f63ff6a0549b0d69a9e1d466c7, type: 3}
   - name: StopButton
-    clip: {fileID: 8300000, guid: e3163b0355ebd834588030dd06fd7ef0, type: 3}
+    clip: {fileID: 8300000, guid: 5120f07db37d6e14bac92f09519a45b9, type: 3}
   - name: SelectMethod
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 63071481f2a6a1e45855faa3565c46a1, type: 3}
+  - name: ActiveCodingBlock
+    clip: {fileID: 8300000, guid: bd30d0fe887c8b74c99135659aa8ec98, type: 3}
   - name: null
     clip: {fileID: 0}
   musicSource: {fileID: 1092012135}

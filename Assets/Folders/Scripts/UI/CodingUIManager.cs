@@ -151,7 +151,7 @@ public class CodingUIManager : MonoBehaviour
 
         SelectMethod(ECurrentLayout.Main);
 
-        //AudioManager.Instance.PlayMusic("CityTheme");
+        AudioManager.Instance.PlayMusic("CityTheme");
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
