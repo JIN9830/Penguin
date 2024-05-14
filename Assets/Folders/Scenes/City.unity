@@ -2784,9 +2784,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fontSize: 90
-  color: {r: 0.3722855, g: 0.38244683, b: 0.8867924, a: 1}
-  width: 500
-  height: 500
+  color: {r: 0, g: 0.021820819, b: 0.9528302, a: 1}
+  width: 400
+  height: 200
 --- !u!4 &1075641808
 Transform:
   m_ObjectHideFlags: 0
@@ -6547,5 +6547,5 @@ SceneRoots:
   - {fileID: 7496196995299647719}
   - {fileID: 2945888527652234797}
   - {fileID: 5342355076474053389}
-  - {fileID: 3209202506747992512}
   - {fileID: 4790145621610146005}
+  - {fileID: 3209202506747992512}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine;
+using static GameManager;
 
 public class StageManager : MonoBehaviour
 {
@@ -10,11 +11,42 @@ public class StageManager : MonoBehaviour
     [field: SerializeField] public GameObject[] CoinObject { get; private set; }
     [field: SerializeField] public int CoinCount { get; private set; }
 
+    [Header("카메라 조작 범위값")]
+    [SerializeField] private float _camPanMinValue;
+    [SerializeField] private float _camPanMaxValue;
+
+    private float _panSpeed = 0.5f;
+
+    private bool _isDragging = false;
+
     private void Start()
     {
         CoinCount = CoinObject.Length;
 
-        GameManager.GameManager_Instance.Register_StageManager(this.gameObject);
+        GameManager_Instance.Register_StageManager(this.gameObject);
+    }
+
+    public void Update()
+    {
+        if (GameManager_Instance.IsCompilerRunning)
+            return;
+
+        CameraPan();
+    }
+
+    public void CameraPan()
+    {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+        {
+
+            Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
+            Vector3 newPosition = PlayerManager_Instance.cameraTargetObject.transform.localPosition +
+                _panSpeed * Time.deltaTime * new Vector3(0, 0, -TouchDeltaPosition.x);
+
+            newPosition.z = Mathf.Clamp(newPosition.z, _camPanMinValue, _camPanMaxValue);
+            PlayerManager_Instance.cameraTargetObject.transform.localPosition = newPosition;
+
+        }
     }
 
     public void ResetCoin()
@@ -24,7 +56,7 @@ public class StageManager : MonoBehaviour
 
         CoinCount = CoinObject.Length;
 
-        foreach(GameObject coin in CoinObject)
+        foreach (GameObject coin in CoinObject)
         {
             coin.gameObject.SetActive(true);
         }
@@ -32,7 +64,7 @@ public class StageManager : MonoBehaviour
 
     public void UpdateCoin() // 코인 스크립트에서 코인이 콜라이더에 닿아 비활성화 될때
     {
-        if(CoinCount != 0)
+        if (CoinCount != 0)
             CoinCount--;
 
         if (CoinCount == 0)
@@ -42,7 +74,7 @@ public class StageManager : MonoBehaviour
     public void StageClear()
     {
         Time.timeScale = 1;
-        GameManager.CodingUIManager_Instance.ExecutionButton.GetComponent<Button>().interactable= false;
+        GameManager.CodingUIManager_Instance.ExecutionButton.GetComponent<Button>().interactable = false;
         GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1).SetEase(Ease.OutExpo);
     }
 

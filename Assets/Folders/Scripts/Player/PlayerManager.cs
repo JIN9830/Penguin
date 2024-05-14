@@ -30,12 +30,6 @@ public class PlayerManager : MonoBehaviour
     public Tweener PlayerMoveTween { get; private set; }
     public Tweener PlayerRotateTween { get; private set; }
 
-    private float _camPanMinValue = -2;
-    private float _camPanMaxValue = 4;
-    private float _camClampValue;
-
-    private float _panSpeed = 0.5f;
-
     private void Start()
     {
         GameManager_Instance.Register_PlayerManager(this.gameObject);
@@ -48,27 +42,6 @@ public class PlayerManager : MonoBehaviour
         cameraTargetObjectInitPos = cameraTargetObject.transform.localPosition;
         cameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
         cameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
-    }
-
-    public void Update()
-    {
-        if (GameManager_Instance.IsCompilerRunning)
-            return;
-
-        CameraPan();
-    }
-
-    public void CameraPan()
-    {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-        {
-            Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            Vector3 newPosition = cameraTargetObject.transform.localPosition +
-                _panSpeed * Time.deltaTime * new Vector3(0, 0, -TouchDeltaPosition.x);
-
-            newPosition.z = Mathf.Clamp(newPosition.z, _camPanMinValue, _camPanMaxValue);
-            cameraTargetObject.transform.localPosition = newPosition;
-        }
     }
 
     public void InitPlayerMoveVector()
