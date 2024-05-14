@@ -34,6 +34,8 @@ public class PlayerManager : MonoBehaviour
     private float _camPanMaxValue = 4;
     private float _camClampValue;
 
+    private float _panSpeed = 0.5f;
+
     private void Start()
     {
         GameManager_Instance.Register_PlayerManager(this.gameObject);
@@ -61,7 +63,11 @@ public class PlayerManager : MonoBehaviour
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
             Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            cameraTargetObject.transform.localPosition -= 0.5f * Time.deltaTime * new Vector3(0, 0, TouchDeltaPosition.x);
+            Vector3 newPosition = cameraTargetObject.transform.localPosition +
+                _panSpeed * Time.deltaTime * new Vector3(0, 0, -TouchDeltaPosition.x);
+
+            newPosition.z = Mathf.Clamp(newPosition.z, _camPanMinValue, _camPanMaxValue);
+            cameraTargetObject.transform.localPosition = newPosition;
         }
     }
 
