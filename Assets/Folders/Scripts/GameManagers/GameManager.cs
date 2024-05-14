@@ -75,14 +75,16 @@ public class GameManager : MonoBehaviour
             // .. 플레이어가 블록 실행 버튼을 누르기 전까지 해당 부분에서 대기하다가 블록 실행 버튼을 누르면 아래의 코드들이 진행되며 블록들이 실행됩니다.
             yield return WaitUntilExecutionTrigger;
 
+            PlayerManager_Instance.cameraTargetObject.transform.localPosition = PlayerManager_Instance.cameraTargetObjectInitPos;
+
             foreach (CodingBlock block in MainMethod)
             {
-                if (!IsCompilerRunning) // .. 플레이어가 블록 정지 버튼을 누르면 IsCompilerRunning 변수가 false로 바뀌어 순차 실행 코드를 탈출하여 블록 실행을 중단합니다.
+                if (!IsCompilerRunning) // .. 플레이어가 블록 정지 버튼을 누르면 IsCompilerRunning가 false로 바뀌어 블록 순차 실행 코드를 탈출하여 블록 실행을 중단합니다.
                     break;
 
                 yield return WAIT_FOR_SECONDS;
 
-                AudioManager.Instance.UISFX("ActiveCodingBlock");
+                AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                 PlayerManager_Instance.InitPlayerMoveVector();
                 block.GetComponent<CodingBlock>().enabled = true;
                 block.MoveOrder();
@@ -123,7 +125,7 @@ public class GameManager : MonoBehaviour
 
                         yield return WAIT_FOR_SECONDS;
 
-                        AudioManager.Instance.UISFX("ActiveCodingBlock");
+                        AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                         PlayerManager_Instance.InitPlayerMoveVector();
                         block.GetComponent<CodingBlock>().enabled = true;
                         block.MoveOrder();
@@ -159,7 +161,7 @@ public class GameManager : MonoBehaviour
 
                             yield return WAIT_FOR_SECONDS;
 
-                            AudioManager.Instance.UISFX("ActiveCodingBlock");
+                            AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                             PlayerManager_Instance.InitPlayerMoveVector();
                             block.GetComponent<CodingBlock>().enabled = true;
                             block.MoveOrder();

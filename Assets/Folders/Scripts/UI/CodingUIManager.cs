@@ -18,8 +18,7 @@ public class CodingUIManager : MonoBehaviour
     public ECurrentLayout currentLayout;
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
-    [field: Header("비활성화된 오브젝트 풀 오브젝트")]
-    [field: SerializeField] public GameObject ReleasedBlocks { get; private set; }
+    public GameObject ReleasedBlocks { get; private set; }
 
 
     [field: Header("그리드 레이아웃 오브젝트")]
@@ -71,7 +70,8 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public Button OptionOpenButton { get; private set; }
     private bool isOptionOpened = false;
     [field: SerializeField] public GameObject OptionPanel { get; private set; }
-    [field: SerializeField] public Button OptionToMenuButton { get; private set; }
+    [field: SerializeField] public Button OptionMenuBackButton { get; private set; }
+    [field: SerializeField] public Button OptionMenuExitButton { get; private set; }
     [field: SerializeField] public GameObject TuchBlockPanel { get; private set; }
 
 
@@ -129,7 +129,8 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         OptionOpenButton.onClick.AddListener(() => OpenOption());
-        OptionToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
+        OptionMenuExitButton.onClick.AddListener(()=> OpenOption());
+        OptionMenuBackButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
         ClearToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
 
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
@@ -151,7 +152,7 @@ public class CodingUIManager : MonoBehaviour
 
         SelectMethod(ECurrentLayout.Main);
 
-        AudioManager.Instance.PlayMusic("CityTheme");
+        AudioManager.Instance.Play_Music("CityTheme");
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
@@ -159,7 +160,7 @@ public class CodingUIManager : MonoBehaviour
         if(selectMethod == currentLayout)
             return;
 
-        AudioManager.Instance.UISFX("SelectMethod");
+        AudioManager.Instance.Play_UISFX("SelectMethod");
 
         switch (selectMethod)
         {
@@ -241,7 +242,7 @@ public class CodingUIManager : MonoBehaviour
 
     public void InsertBlock()
     {
-        AudioManager.Instance.UISFX("InsertCodingBlock");
+        AudioManager.Instance.Play_UISFX("InsertCodingBlock");
 
         if (ObjectPoolManager_Instance.BlockName == BlockCategory.Function || ObjectPoolManager_Instance.BlockName == BlockCategory.Loop)
         {
@@ -309,7 +310,7 @@ public class CodingUIManager : MonoBehaviour
             case ECurrentLayout.Main:
                 if (GameManager_Instance.MainMethod.Count > 0)
                 {
-                    AudioManager.Instance.UISFX("DeleteCodingBlock");
+                    AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
                     CodingBlock lastblock = GameManager_Instance.MainMethod.Last();
                     GameManager_Instance.MainMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
@@ -319,7 +320,7 @@ public class CodingUIManager : MonoBehaviour
             case ECurrentLayout.Function:
                 if (GameManager_Instance.FunctionMethod.Count > 0)
                 {
-                    AudioManager.Instance.UISFX("DeleteCodingBlock");
+                    AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
                     CodingBlock lastblock = GameManager_Instance.FunctionMethod.Last();
                     GameManager_Instance.FunctionMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
@@ -329,7 +330,7 @@ public class CodingUIManager : MonoBehaviour
             case ECurrentLayout.Loop:
                 if (GameManager_Instance.LoopMethod.Count > 0)
                 {
-                    AudioManager.Instance.UISFX("DeleteCodingBlock");
+                    AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
                     CodingBlock lastblock = GameManager_Instance.LoopMethod.Last();
                     GameManager_Instance.LoopMethod.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
@@ -345,14 +346,14 @@ public class CodingUIManager : MonoBehaviour
         CodingUIManager_Instance.StopButton.gameObject.SetActive(true);
         CodingUIManager_Instance.LockUIElements(true);
 
-        AudioManager.Instance.UISFX("ExecutionButton");
+        AudioManager.Instance.Play_UISFX("ExecutionButton");
     }
 
     public void StopBlock()
     {
         GameManager_Instance.Set_IsCompilerRunning(false);
 
-        AudioManager.Instance.UISFX("StopButton");
+        AudioManager.Instance.Play_UISFX("StopButton");
 
         RestartBlockAnimation();
         PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
@@ -403,6 +404,8 @@ public class CodingUIManager : MonoBehaviour
 
     public void OpenOption()
     {
+        AudioManager.Instance.Play_UISFX("OptionMenuOpen");
+
         switch (isOptionOpened)
         {
             case true:

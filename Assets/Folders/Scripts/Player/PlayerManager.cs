@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using static GameManager;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerManager : MonoBehaviour
         Forwarding,
         TurnLeft,
         TurnRight,
-    } 
+    }
     public PlayerState playerState = PlayerState.None;
 
     [Header("플레이어 정보")]
@@ -19,6 +20,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject playerObject;
 
     public GameObject cameraTargetObject; // TODO: 테스트용 코드 (플레이어가 카메라를 조작할때 움직이는 오브젝트)
+    public Vector3 cameraTargetObjectInitPos;
     public Animator PlayerAnimator { get; private set; }
     public Vector3 PlayerStartPos { get; private set; }
     public Vector3 PlayerNewPos { get; private set; }
@@ -27,6 +29,10 @@ public class PlayerManager : MonoBehaviour
 
     public Tweener PlayerMoveTween { get; private set; }
     public Tweener PlayerRotateTween { get; private set; }
+
+    private float _camPanMinValue = -2;
+    private float _camPanMaxValue = 4;
+    private float _camClampValue;
 
     private void Start()
     {
@@ -37,8 +43,26 @@ public class PlayerManager : MonoBehaviour
         PlayerResetPos = playerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
         PlayerResetRot = playerObject.transform.rotation;
 
+        cameraTargetObjectInitPos = cameraTargetObject.transform.localPosition;
         cameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
         cameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
+    }
+
+    public void Update()
+    {
+        if (GameManager_Instance.IsCompilerRunning)
+            return;
+
+        CameraPan();
+    }
+
+    public void CameraPan()
+    {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+        {
+            Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
+            cameraTargetObject.transform.localPosition -= 0.5f * Time.deltaTime * new Vector3(0, 0, TouchDeltaPosition.x);
+        }
     }
 
     public void InitPlayerMoveVector()

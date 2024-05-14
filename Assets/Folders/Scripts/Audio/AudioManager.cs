@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayMusic(string name)
+    public void Play_Music(string name)
     {
         Sound s = Array.Find(musicSounds, x => x.name == name);
 
@@ -38,7 +38,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayerSFX(string name)
+    public void Play_PlayerSFX(string name)
     {
         Sound s = Array.Find(playerSfxSounds, x => x.name == name);
 
@@ -52,7 +52,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void UISFX(string name)
+    public void Play_UISFX(string name)
     {
         Sound s = Array.Find(uiSfxSound, x => x.name == name);
 
@@ -64,5 +64,31 @@ public class AudioManager : MonoBehaviour
         {
             uiSfxSource.PlayOneShot(s.clip);
         }
+    }
+
+    public void ToggleMusic()
+    {
+        musicSource.mute = !musicSource.mute;
+    }
+    public void ToggleUISFX()
+    {
+        uiSfxSource.mute = !uiSfxSource.mute;
+    }
+    public void TogglePlayerSFX()
+    {
+        playerSfxSource.mute = !playerSfxSource.mute;
+    }
+
+    public void MusicVolume(float volume)
+    {
+        musicSource.volume = volume;
+    }
+    public void UISFXVolume(float volume)
+    {
+        uiSfxSource.volume = volume;
+    }
+    public void PlayerSFXVolume(float volume)
+    {
+        playerSfxSource.volume = volume;
     }
 }

@@ -43,12 +43,12 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     public void WalkingSound()
     {
-        AudioManager.Instance.PlayerSFX("Walking");
+        AudioManager.Instance.Play_PlayerSFX("Walking");
     }
 
     public void TurningSound()
     {
-        AudioManager.Instance.PlayerSFX("Turning");
+        AudioManager.Instance.Play_PlayerSFX("Turning");
     }
 
     private bool AnimationTimer(float limitTime)

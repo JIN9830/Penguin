@@ -38,14 +38,14 @@ public class Forward : CodingBlock
 
             if (_hit.collider.CompareTag("Wall"))
             {
-                AudioManager.Instance.PlayerSFX("HitTheWall");
+                AudioManager.Instance.Play_PlayerSFX("HitTheWall");
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("HitTheWall");
                 CodingUIManager_Instance.ShakeUIElements();
                 this.GetComponent<CodingBlock>().enabled = false;
             }
             else if (_hit.collider.CompareTag("Edge"))
             {
-                AudioManager.Instance.PlayerSFX("ReachTheEdge");
+                AudioManager.Instance.Play_PlayerSFX("ReachTheEdge");
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("ReachTheEdge");
                 this.GetComponent<CodingBlock>().enabled = false;
             }
@@ -56,7 +56,7 @@ public class Forward : CodingBlock
         {
             BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
             PlayerManager_Instance.playerState = PlayerManager.PlayerState.Forwarding;
-            //AudioManager.Instance.PlayerSFX("Walking");
+            //AudioManager.Instance.Play_PlayerSFX("Walking");
         }
     }
 
