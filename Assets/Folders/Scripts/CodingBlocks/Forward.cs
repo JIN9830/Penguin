@@ -29,6 +29,9 @@ public class Forward : CodingBlock
 
     public override void MoveOrder()
     {
+        if (GameManager_Instance.IsStageClear)
+            return;
+
         ToggleHighLight(true);
 
         // .. 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
@@ -56,7 +59,6 @@ public class Forward : CodingBlock
         {
             BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
             PlayerManager_Instance.playerState = PlayerManager.PlayerState.Forwarding;
-            //AudioManager.Instance.Play_PlayerSFX("Walking");
         }
     }
 
@@ -76,7 +78,7 @@ public class Forward : CodingBlock
 
     private void Update()
     {
-        // .. 플레이어가 정지 버튼을 누르면 블록의 애니메이션을 종료하고 블록 스크립트를 비활성화
+        // ..플레이어가 정지 버튼을 누르면 블록의 애니메이션을 종료하고 블록 스크립트를 비활성화
         if (GameManager_Instance.IsCompilerRunning == false)
         {
             BlockTweener.Kill();

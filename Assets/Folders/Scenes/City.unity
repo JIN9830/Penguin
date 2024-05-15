@@ -6153,6 +6153,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
         type: 3}
+      propertyPath: <CoinCount>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
       propertyPath: <CoinObject>k__BackingField.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -6402,6 +6407,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Coin
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970418564686916432, guid: 4b8bd81c04ecc8c4b810466c3ead0b59,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

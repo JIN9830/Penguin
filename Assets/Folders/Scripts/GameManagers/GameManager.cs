@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private int _loopCountTemp;
 
     public bool IsCompilerRunning { get; private set; } = false;
+    public bool IsStageClear { get; private set; } = false;
 
     private Coroutine _blockCompiler;
     private Coroutine _subBlockCompiler;
@@ -79,10 +80,10 @@ public class GameManager : MonoBehaviour
 
             foreach (CodingBlock block in MainMethod)
             {
-                if (!IsCompilerRunning) // .. 플레이어가 블록 정지 버튼을 누르면 IsCompilerRunning가 false로 바뀌어 블록 순차 실행 코드를 탈출하여 블록 실행을 중단합니다.
-                    break;
-
                 yield return WAIT_FOR_SECONDS;
+
+                if (!IsCompilerRunning || IsStageClear) // .. 플레이어가 블록 정지 버튼을 누르거나 스테이지를 클리어하면 IsCompilerRunning가 false로 바뀌어 블록 순차 실행 코드를 탈출하여 블록 실행을 중단합니다.
+                    break;
 
                 AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                 PlayerManager_Instance.InitPlayerMoveVector();
@@ -120,10 +121,10 @@ public class GameManager : MonoBehaviour
 
                     foreach (CodingBlock block in FunctionMethod)
                     {
-                        if (IsCompilerRunning == false)
-                            break;
-
                         yield return WAIT_FOR_SECONDS;
+
+                        if (!IsCompilerRunning || IsStageClear)
+                            break;
 
                         AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                         PlayerManager_Instance.InitPlayerMoveVector();
@@ -156,10 +157,10 @@ public class GameManager : MonoBehaviour
                         // .. Loop 메서드의 내부의 블록들을 순차적으로 실행합니다.
                         foreach (CodingBlock block in LoopMethod)
                         {
-                            if (IsCompilerRunning == false)
-                                break;
-
                             yield return WAIT_FOR_SECONDS;
+
+                            if (!IsCompilerRunning || IsStageClear)
+                                break;
 
                             AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                             PlayerManager_Instance.InitPlayerMoveVector();
@@ -217,6 +218,9 @@ public class GameManager : MonoBehaviour
         MainMethod.Clear();
         FunctionMethod.Clear();   
         LoopMethod.Clear();
+
+        IsCompilerRunning = false;
+        IsStageClear = false;
     }
 
     public void Register_ObjectPoolManager(GameObject obj)
@@ -247,5 +251,10 @@ public class GameManager : MonoBehaviour
     public void Set_IsCompilerRunning(bool enable)
     {
         IsCompilerRunning = enable;
+    }
+
+    public void Set_IsStageClear(bool enable)
+    {
+        IsStageClear = enable;
     }
 }

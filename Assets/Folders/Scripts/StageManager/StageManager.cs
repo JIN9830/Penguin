@@ -17,8 +17,6 @@ public class StageManager : MonoBehaviour
 
     private float _panSpeed = 0.5f;
 
-    private bool _isDragging = false;
-
     private void Start()
     {
         CoinCount = CoinObject.Length;
@@ -67,7 +65,7 @@ public class StageManager : MonoBehaviour
         if (CoinCount != 0)
             CoinCount--;
 
-        if (CoinCount == 0)
+        if (CoinCount <= 0)
             StageClear();
     }
 
@@ -75,7 +73,8 @@ public class StageManager : MonoBehaviour
     {
         Time.timeScale = 1;
         GameManager.CodingUIManager_Instance.ExecutionButton.GetComponent<Button>().interactable = false;
-        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1).SetEase(Ease.OutExpo);
+        GameManager_Instance.Set_IsStageClear(true);
+        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo);
     }
 
     // 스테이지 상호작용에 필요한 공동 메서드를 작성
