@@ -35,7 +35,7 @@ public class Forward : CodingBlock
         ToggleHighLight(true);
 
         // .. 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
-        if (Physics.Raycast(PlayerManager_Instance.playerObject.transform.localPosition, PlayerManager_Instance.playerObject.transform.forward, out _hit, _DISTANCE))
+        if (Physics.Raycast(PlayerManager_Instance.PlayerObject.transform.localPosition, PlayerManager_Instance.PlayerObject.transform.forward, out _hit, _DISTANCE))
         {
             BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
@@ -68,7 +68,7 @@ public class Forward : CodingBlock
 
         _deltaTimeCount += Time.deltaTime;
         Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, _deltaTimeCount * _PLAYER_MOVESPEED);
-        PlayerManager_Instance.playerObject.transform.localPosition = newPos;
+        PlayerManager_Instance.PlayerObject.transform.localPosition = newPos;
 
         if (_deltaTimeCount > 1)
         {

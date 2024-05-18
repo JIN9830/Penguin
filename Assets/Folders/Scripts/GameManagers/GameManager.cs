@@ -8,8 +8,7 @@ public class GameManager : MonoBehaviour
         Main,
         Function,
         Loop,
-    }
-    public ECurrentMethod currentMethod = ECurrentMethod.Main;
+    } public ECurrentMethod currentMethod = ECurrentMethod.Main;
 
     public static GameManager GameManager_Instance { get; private set; }
     public static ObjectPoolManager ObjectPoolManager_Instance { get; private set; }
@@ -76,7 +75,7 @@ public class GameManager : MonoBehaviour
             // .. 플레이어가 블록 실행 버튼을 누르기 전까지 해당 부분에서 대기하다가 블록 실행 버튼을 누르면 아래의 코드들이 진행되며 블록들이 실행됩니다.
             yield return WaitUntilExecutionTrigger;
 
-            PlayerManager_Instance.cameraTargetObject.transform.localPosition = PlayerManager_Instance.cameraTargetObjectInitPos;
+            PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.InitCameraTargetPosition; // 블록 실행을 누르면 카메라타겟이 플레이어 위치로 고정
 
             foreach (CodingBlock block in MainMethod)
             {
@@ -92,7 +91,7 @@ public class GameManager : MonoBehaviour
                 yield return WaitUntilEndOfSubMethod; // .. Func, Loop 메서드 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
             }
 
-            if (IsCompilerRunning) yield return WAIT_FOR_SECONDS;
+            if (IsCompilerRunning && !IsStageClear) yield return WAIT_FOR_SECONDS;
 
             PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", IsCompilerRunning);
 
@@ -132,7 +131,7 @@ public class GameManager : MonoBehaviour
                         block.MoveOrder();
                     }
 
-                    if (IsCompilerRunning == true) yield return WAIT_FOR_SECONDS;
+                    if (IsCompilerRunning || !IsStageClear) yield return WAIT_FOR_SECONDS;
 
                     foreach (CodingBlock block in FunctionMethod)
                     {
@@ -170,7 +169,7 @@ public class GameManager : MonoBehaviour
 
                         // .. Loop 메서드 실행 도중에 중지버튼을 누르지 않았다면 다음 루프를 반복 실행할 준비를 합니다.
                         // ... 1초 딜레이 후 실행했던 블록들의 하이라이트를 제거 하고 Loop 메서드의 카운트 만큼 반복합니다.
-                        if (IsCompilerRunning == true)
+                        if (IsCompilerRunning || !IsStageClear)
                         {
                             yield return WAIT_FOR_SECONDS;
 

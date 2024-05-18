@@ -73,4 +73,11 @@ public class UIAnimation
         blockObj.transform.DOShakePosition(1, 5, 10, 10)
             .OnComplete(() => blockObj.transform.localPosition = blockInit);
     }
+
+    public void Animation_DelayPopUpButton(Button blockObj)
+    {
+        blockObj.gameObject.SetActive(true);
+        blockObj.interactable = false;
+        blockObj.gameObject.transform.DOScale(1, 1.5f).SetEase(Ease.OutBack).OnComplete(() => blockObj.interactable = true);
+    }
 }

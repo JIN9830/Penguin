@@ -38,11 +38,11 @@ public class StageManager : MonoBehaviour
         {
 
             Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            Vector3 newPosition = PlayerManager_Instance.cameraTargetObject.transform.localPosition +
+            Vector3 newPosition = PlayerManager_Instance.CameraTargetObject.transform.localPosition +
                 _panSpeed * Time.deltaTime * new Vector3(0, 0, -TouchDeltaPosition.x);
 
             newPosition.z = Mathf.Clamp(newPosition.z, _camPanMinValue, _camPanMaxValue);
-            PlayerManager_Instance.cameraTargetObject.transform.localPosition = newPosition;
+            PlayerManager_Instance.CameraTargetObject.transform.localPosition = newPosition;
 
         }
     }
@@ -65,18 +65,19 @@ public class StageManager : MonoBehaviour
         if (CoinCount != 0)
             CoinCount--;
 
-        if (CoinCount <= 0)
+        if (CoinCount == 0)
             StageClear();
     }
 
     public void StageClear()
     {
         Time.timeScale = 1;
-        GameManager.CodingUIManager_Instance.ExecutionButton.GetComponent<Button>().interactable = false;
-        GameManager_Instance.Set_IsStageClear(true);
-        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo);
-    }
 
-    // 스테이지 상호작용에 필요한 공동 메서드를 작성
-    // 해당 공동 메서드는 각 스테이지의 StageManager 인스펙터의 기재된 값을 참조하여 실행된다
+        GameManager.CodingUIManager_Instance.StopButton.GetComponent<Button>().interactable = false;
+
+        GameManager_Instance.Set_IsStageClear(true);
+
+        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo).OnComplete(()=> CodingUIManager_Instance.ActiveStageClearUI());
+        
+    }
 }

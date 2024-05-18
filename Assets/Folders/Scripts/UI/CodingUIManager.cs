@@ -13,9 +13,8 @@ public class CodingUIManager : MonoBehaviour
         Main,
         Function,
         Loop,
-    }
+    } public ECurrentLayout currentLayout;
 
-    public ECurrentLayout currentLayout;
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
     public GameObject ReleasedBlocks { get; private set; }
@@ -25,11 +24,7 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public GameObject MainLayout { get; private set; }
     [field: SerializeField] public GameObject FunctionLayout { get; private set; }
     [field: SerializeField] public GameObject LoopLayout { get; private set; }
-
-    private Image _mainLayoutImage;
-    private Image _functionLayoutImage;
-    private Image _loopLayoutImage;
-
+    private Image _mainLayoutImage, _functionLayoutImage, _loopLayoutImage;
     private readonly Color _GREY_LAYOUT_COLOR = new Color32(135, 135, 135, 125);
     private readonly Color _GREEN_LAYOUT_COLOR = new Color32(122, 149, 113, 125);
     private readonly Color _PURPLE_LAYOUT_COLOR = new Color32(122, 104, 142, 125);
@@ -58,6 +53,7 @@ public class CodingUIManager : MonoBehaviour
     [SerializeField] private Sprite _timeControlOn;
     [SerializeField] private Sprite _timeControlOff;
 
+
     [field: Header("코딩블럭 버튼 오브젝트")]
     [field: SerializeField] public GameObject ForwardButton { get; private set; }
     [field: SerializeField] public GameObject TurnLeftButton { get; private set; }
@@ -77,15 +73,11 @@ public class CodingUIManager : MonoBehaviour
 
     [field: Header("클리어 메뉴 UI")]
     [field: SerializeField] public GameObject ClearPanel { get; private set; }
-    [field: SerializeField] public Button NextButton { get; private set; }
-    [field: SerializeField] public Button ClearToMenuButton { get; private set; }
+    [field: SerializeField] public Button ClearNextButton { get; private set; }
+    [field: SerializeField] public Button ClearBackButton { get; private set; }
 
 
     // ============= TEST CODE ============= //
-    public Tweener ForwardTweener { get; private set; }
-
-
-
 
     // 테스트용 코드 (레이아웃 UI(Main, Fucn, Loop) 터치 할 때 팝업 애니메이션 벡터 값)
     private Vector3 initScale = new Vector3(0.9f, 0.9f, 0.9f);
@@ -131,7 +123,7 @@ public class CodingUIManager : MonoBehaviour
         OptionOpenButton.onClick.AddListener(() => OpenOption());
         OptionMenuExitButton.onClick.AddListener(()=> OpenOption());
         OptionMenuBackButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
-        ClearToMenuButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
+        ClearBackButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
 
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
@@ -366,6 +358,7 @@ public class CodingUIManager : MonoBehaviour
 
     public void TimeScaleControl()
     {
+        AudioManager.Instance.Play_UISFX("TimeControl");
         UIAnimation.Animation_ButtonDelay(TimeControlButton, 1);
 
         if (Time.timeScale == 1f)
@@ -542,5 +535,12 @@ public class CodingUIManager : MonoBehaviour
                 UIAnimation.Animation_BlockShake(block.gameObject);
             }
         }
+    }
+
+    public void ActiveStageClearUI()
+    {
+        GameManager_Instance.Set_IsCompilerRunning(false);
+
+        UIAnimation.Animation_DelayPopUpButton(ClearBackButton);
     }
 }

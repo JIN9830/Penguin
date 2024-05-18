@@ -22,16 +22,16 @@ public class ObjectPoolManager : MonoBehaviour
         Right,
         Function,
         Loop,
-    } 
-    
-    [Header("Object Pool 정보")]
-    public ObjectInfo[] objectInfo;
-
+    }
     public BlockCategory BlockName { get; set; }
 
     public Dictionary<BlockCategory, IObjectPool<CodingBlock>> PoolManagementDic { get; private set; } = new Dictionary<BlockCategory, IObjectPool<CodingBlock>>();
 
     public Dictionary<BlockCategory, GameObject> PoolObjectDic { get; private set; } = new Dictionary<BlockCategory, GameObject>();
+
+    [Header("Object Pool 정보")]
+    public ObjectInfo[] objectInfo;
+
 
     private void Awake()
     {
