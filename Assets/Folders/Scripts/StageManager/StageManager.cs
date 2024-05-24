@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine;
 using static GameManager;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -19,14 +20,29 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
+        // .. 스테이지별 코인 갯수로 코인 정보를 갱신
         CoinCount = CoinObject.Length;
 
+        // .. 게임매니저에 해당 스크립트를 등록
         GameManager_Instance.Register_StageManager(this.gameObject);
+
+        // .. 카메라 팬 예외 처리
+        if(_camPanMinValue == 0 || _camPanMaxValue == 0)
+        {
+            Debug.Log("카메라 팬 Min, Max 값이 초기화되어 있지 않음!");
+        }
+
+
+        // 코딩시티 씬이 시작될때 카메라 무빙을 시작
+        PlayerManager_Instance.CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
+        PlayerManager_Instance.CameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
+
+        CodingUIManager_Instance.CodingUICanvas.SetActive(true);
     }
 
     public void Update()
     {
-        if (GameManager_Instance.IsCompilerRunning)
+        if (GameManager_Instance.IsCompilerRunning || CodingUIManager_Instance.IsOptionOpened)
             return;
 
         CameraPan();
@@ -38,13 +54,21 @@ public class StageManager : MonoBehaviour
         {
 
             Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            Vector3 newPosition = PlayerManager_Instance.CameraTargetObject.transform.localPosition +
-                _panSpeed * Time.deltaTime * new Vector3(0, 0, -TouchDeltaPosition.x);
+            Vector3 newPosition = PlayerManager_Instance.CameraTargetObject.transform.localPosition + _panSpeed * Time.deltaTime * new Vector3(0, 0, -TouchDeltaPosition.x);
 
             newPosition.z = Mathf.Clamp(newPosition.z, _camPanMinValue, _camPanMaxValue);
             PlayerManager_Instance.CameraTargetObject.transform.localPosition = newPosition;
 
         }
+    }
+
+    public void UpdateCoin() // Coin.cs에서 코인이 콜라이더에 닿아 비활성화 될때
+    {
+        if (CoinCount != 0)
+            CoinCount--;
+
+        if (CoinCount == 0)
+            StageClear();
     }
 
     public void ResetCoin()
@@ -60,17 +84,10 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    public void UpdateCoin() // 코인 스크립트에서 코인이 콜라이더에 닿아 비활성화 될때
-    {
-        if (CoinCount != 0)
-            CoinCount--;
-
-        if (CoinCount == 0)
-            StageClear();
-    }
-
     public void StageClear()
     {
+        UnlockNewLevel();
+
         Time.timeScale = 1;
 
         GameManager.CodingUIManager_Instance.StopButton.GetComponent<Button>().interactable = false;
@@ -79,5 +96,15 @@ public class StageManager : MonoBehaviour
 
         GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo).OnComplete(()=> CodingUIManager_Instance.ActiveStageClearUI());
         
+    }
+
+    public void UnlockNewLevel()
+    {
+        if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
+        {
+            PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
+            PlayerPrefs.Save();
+        }
     }
 }

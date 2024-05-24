@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public Sound[] musicSounds, playerSfxSounds, uiSfxSound;
+    public Sound[] musicSounds, uiSfxSound, playerSfxSounds;
+    private Sound _music, _uiSfx, _playerSfx;
     public AudioSource musicSource, playerSfxSource, uiSfxSource;
 
     private void Awake()
@@ -25,46 +25,52 @@ public class AudioManager : MonoBehaviour
 
     public void Play_Music(string name)
     {
-        Sound s = Array.Find(musicSounds, x => x.name == name);
+        _music = null;
+        _music = Array.Find(musicSounds, x => x.name == name);
 
-        if(s == null)
+        if(_music == null)
         {
             Debug.Log("Sound Not Found");
         }
         else
         {
-            musicSource.clip = s.clip;
+            musicSource.clip = _music.clip;
             musicSource.Play();
         }
     }
 
     public void Play_PlayerSFX(string name)
     {
-        Sound s = Array.Find(playerSfxSounds, x => x.name == name);
+        _uiSfx = null;
+        _uiSfx = Array.Find(playerSfxSounds, x => x.name == name);
 
-        if (s == null)
+        if (_uiSfx == null)
         {
             Debug.Log("Player Sound Not Found");
         }
         else
         {
-            playerSfxSource.PlayOneShot(s.clip);
+            playerSfxSource.PlayOneShot(_uiSfx.clip);
         }
     }
 
     public void Play_UISFX(string name)
     {
-        Sound s = Array.Find(uiSfxSound, x => x.name == name);
+        _playerSfx = null;
+        _playerSfx = Array.Find(uiSfxSound, x => x.name == name);
 
-        if (s == null)
+        if (_playerSfx == null)
         {
             Debug.Log("UI Sound Not Found");
         }
         else
         {
-            uiSfxSource.PlayOneShot(s.clip);
+            uiSfxSource.PlayOneShot(_playerSfx.clip);
         }
     }
+
+
+
 
     public void ToggleMusic()
     {
@@ -78,6 +84,9 @@ public class AudioManager : MonoBehaviour
     {
         playerSfxSource.mute = !playerSfxSource.mute;
     }
+
+
+
 
     public void MusicVolume(float volume)
     {

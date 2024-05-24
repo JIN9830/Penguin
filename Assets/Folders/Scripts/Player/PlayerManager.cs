@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour
     public Vector3 PlayerResetPos { get; private set; }
     public Quaternion PlayerResetRot { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         GameManager_Instance.Register_PlayerManager(this.gameObject);
 
@@ -37,11 +37,9 @@ public class PlayerManager : MonoBehaviour
         PlayerResetRot = PlayerObject.transform.rotation;
 
         InitCameraTargetPosition = CameraTargetObject.transform.localPosition;
-        CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
-        CameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
     }
 
-    public void InitPlayerMoveVector()
+    public void InitPlayerMoveVector() // .. 현재 플레이어의 포지션, 전진 벡터 값을 갱신
     {
         PlayerStartPos = PlayerObject.transform.localPosition;
         PlayerNewPos = PlayerStartPos + PlayerObject.transform.forward;

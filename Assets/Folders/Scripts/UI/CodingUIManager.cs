@@ -15,16 +15,22 @@ public class CodingUIManager : MonoBehaviour
         Loop,
     } public ECurrentLayout currentLayout;
 
+
+    public static CodingUIManager Instance { get; private set; }
+
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
-    public GameObject ReleasedBlocks { get; private set; }
+    [field: SerializeField] public GameObject ReleasedBlocks { get; private set; }
 
+    [field: SerializeField] public GameObject CodingUICanvas { get; private set; }
 
     [field: Header("그리드 레이아웃 오브젝트")]
     [field: SerializeField] public GameObject MainLayout { get; private set; }
     [field: SerializeField] public GameObject FunctionLayout { get; private set; }
     [field: SerializeField] public GameObject LoopLayout { get; private set; }
+
     private Image _mainLayoutImage, _functionLayoutImage, _loopLayoutImage;
+
     private readonly Color _GREY_LAYOUT_COLOR = new Color32(135, 135, 135, 125);
     private readonly Color _GREEN_LAYOUT_COLOR = new Color32(122, 149, 113, 125);
     private readonly Color _PURPLE_LAYOUT_COLOR = new Color32(122, 104, 142, 125);
@@ -64,7 +70,8 @@ public class CodingUIManager : MonoBehaviour
 
     [field: Header("옵션 UI")]
     [field: SerializeField] public Button OptionOpenButton { get; private set; }
-    private bool isOptionOpened = false;
+    public bool IsOptionOpened { get; private set; } = false;
+
     [field: SerializeField] public GameObject OptionPanel { get; private set; }
     [field: SerializeField] public Button OptionMenuBackButton { get; private set; }
     [field: SerializeField] public Button OptionMenuExitButton { get; private set; }
@@ -88,6 +95,17 @@ public class CodingUIManager : MonoBehaviour
 
     private void Awake()
     {
+        #region Singleton Code
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+            Destroy(this.gameObject);
+        #endregion
+
+
         #region Coding blocks onClickAddListener
         ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.BlockName = BlockCategory.Forward; InsertBlock(); });
         TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.BlockName = BlockCategory.Left; InsertBlock(); });
@@ -121,9 +139,10 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         OptionOpenButton.onClick.AddListener(() => OpenOption());
-        OptionMenuExitButton.onClick.AddListener(()=> OpenOption());
-        OptionMenuBackButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
+        OptionMenuExitButton.onClick.AddListener(() => OpenOption());
+        OptionMenuBackButton.onClick.AddListener(() => { OpenOption(); GameSceneManager.Instance.LoadIndexScene(0); });
         ClearBackButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
+        ClearNextButton.onClick.AddListener(() => GameSceneManager.Instance.LoadNextScene());
 
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
@@ -138,13 +157,11 @@ public class CodingUIManager : MonoBehaviour
 
         GameManager_Instance.Initialize_CodingMethod();
 
-        GameManager_Instance.Register_UIManager(this.gameObject);
-
-        ReleasedBlocks = GameManager_Instance.gameObject;
+        GameManager_Instance.Register_UIManager(Instance);
 
         SelectMethod(ECurrentLayout.Main);
 
-        AudioManager.Instance.Play_Music("CityTheme");
+        // AudioManager.Instance.Play_Music("CityTheme");
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
@@ -345,6 +362,8 @@ public class CodingUIManager : MonoBehaviour
     {
         GameManager_Instance.Set_IsCompilerRunning(false);
 
+        PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.InitCameraTargetPosition;
+
         AudioManager.Instance.Play_UISFX("StopButton");
 
         RestartBlockAnimation();
@@ -399,7 +418,7 @@ public class CodingUIManager : MonoBehaviour
     {
         AudioManager.Instance.Play_UISFX("OptionMenuOpen");
 
-        switch (isOptionOpened)
+        switch (IsOptionOpened)
         {
             case true:
                 OptionOpenButton.interactable = false;
@@ -409,7 +428,7 @@ public class CodingUIManager : MonoBehaviour
                     .OnComplete(() =>
                     {
                         OptionPanel.SetActive(false);
-                        isOptionOpened = false;
+                        IsOptionOpened = false;
                         OptionOpenButton.interactable = true;
                     });
                 break;
@@ -423,7 +442,7 @@ public class CodingUIManager : MonoBehaviour
                 OptionPanel.transform.DOScale(1, 0.5f).SetEase(Ease.OutBack).SetUpdate(true)
                     .OnComplete(() =>
                     {
-                        isOptionOpened = true;
+                        IsOptionOpened = true;
                         OptionOpenButton.interactable = true;
                     });
                 break;
@@ -542,5 +561,6 @@ public class CodingUIManager : MonoBehaviour
         GameManager_Instance.Set_IsCompilerRunning(false);
 
         UIAnimation.Animation_DelayPopUpButton(ClearBackButton);
+        UIAnimation.Animation_DelayPopUpButton(ClearNextButton);
     }
 }

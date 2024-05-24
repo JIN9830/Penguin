@@ -15,26 +15,25 @@ public class Forward : CodingBlock
         _deltaTimeCount = 0;
     }
 
-    private void OnDisable() 
+    private void OnDisable() // 전진 블록 실행이 종료될 때 초기화해야 할 작업들
     {
-        // .. 블록 실행이 종료될 때 초기화해야 할 작업들
         transform.localScale = Vector3.one;
-
         PlayerManager_Instance.playerState = PlayerManager.PlayerState.None;
 
-        // .. 앞으로 전진하는 애니메이션의 싱크를 맞추기위한 설정
-        _deltaTimeCount = 0.67f;
+        // .. 앞으로 전진하는 애니메이션의 발 움직임 싱크를 맞추기위한 설정
+       _deltaTimeCount = 0.70f;
         PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
     }
 
     public override void MoveOrder()
     {
-        if (GameManager_Instance.IsStageClear)
-            return;
+        // 마지막 코인을 먹어서 스테이지를 클리어 했다면 다음 블럭 명령은 처리하지 않고 돌아감
+        //if (GameManager_Instance.IsStageClear)
+        //    return;
 
         ToggleHighLight(true);
 
-        // .. 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
+        // 1.. 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
         if (Physics.Raycast(PlayerManager_Instance.PlayerObject.transform.localPosition, PlayerManager_Instance.PlayerObject.transform.forward, out _hit, _DISTANCE))
         {
             BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
@@ -54,7 +53,7 @@ public class Forward : CodingBlock
             }
 
         }
-        // ... 장애물이 없다면 Update에서 앞으로 전진하는 PlayerMove를 호출하도록 PlayerState를 Forwarding로 변경
+        // 2... 장애물이 없다면 Update에서 앞으로 전진하는 PlayerMove를 호출하도록 PlayerState를 Forwarding로 변경
         else
         {
             BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
@@ -89,6 +88,4 @@ public class Forward : CodingBlock
             PlayerMove();
         }
     }
-
-
 }

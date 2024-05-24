@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         WaitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
         WaitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
 
-        Application.targetFrameRate = 144;
+        Application.targetFrameRate = 120;
     }
 
     private void Start()
@@ -220,6 +220,8 @@ public class GameManager : MonoBehaviour
 
         IsCompilerRunning = false;
         IsStageClear = false;
+
+
     }
 
     public void Register_ObjectPoolManager(GameObject obj)
@@ -227,7 +229,7 @@ public class GameManager : MonoBehaviour
         obj.TryGetComponent(out ObjectPoolManager instance);
         ObjectPoolManager_Instance = instance;
     }
-    public void Register_UIManager(GameObject obj)
+    public void Register_UIManager(CodingUIManager obj)
     {
         obj.TryGetComponent(out CodingUIManager instance);
         CodingUIManager_Instance = instance;
