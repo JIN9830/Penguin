@@ -418,7 +418,7 @@ public class CodingUIManager : MonoBehaviour
     {
         AudioManager.Instance.Play_UISFX("OptionMenuOpen");
 
-        switch (IsOptionOpened)
+        switch (OptionPanel.activeSelf)
         {
             case true:
                 OptionOpenButton.interactable = false;
@@ -428,7 +428,6 @@ public class CodingUIManager : MonoBehaviour
                     .OnComplete(() =>
                     {
                         OptionPanel.SetActive(false);
-                        IsOptionOpened = false;
                         OptionOpenButton.interactable = true;
                     });
                 break;
@@ -442,7 +441,6 @@ public class CodingUIManager : MonoBehaviour
                 OptionPanel.transform.DOScale(1, 0.5f).SetEase(Ease.OutBack).SetUpdate(true)
                     .OnComplete(() =>
                     {
-                        IsOptionOpened = true;
                         OptionOpenButton.interactable = true;
                     });
                 break;
