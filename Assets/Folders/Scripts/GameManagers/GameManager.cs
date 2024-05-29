@@ -202,6 +202,7 @@ public class GameManager : MonoBehaviour
 
     public void Initialize_CodingMethod()
     {
+        // .. 레이아웃에 있는 블록 오브젝트들을 오브젝트 풀에 전부 반환
         foreach (CodingBlock blockObj in MainMethod)
         {
             blockObj.ReleaseBlock();
@@ -215,12 +216,18 @@ public class GameManager : MonoBehaviour
             blockObj.ReleaseBlock();
         }
 
+        // .. 각 리스트 내부의 코딩블럭 데이터를 전부 삭제
         MainMethod.Clear();
         FunctionMethod.Clear();   
         LoopMethod.Clear();
 
+        // .. 코딩블럭 컴파일의 실행 상태 변수와 & 게임 클리어 상태 변수를 디폴드 값인 거짓으로 변경
         IsCompilerRunning = false;
         IsStageClear = false;
+
+        // .. 루프 반속 횟수를 기본값인 1로 변경
+        LoopReaptCount = 1;
+        CodingUIManager_Instance.LoopCountText.text = GameManager_Instance.LoopReaptCount.ToString();
     }
 
     public void Register_ObjectPoolManager(GameObject obj)
@@ -228,7 +235,7 @@ public class GameManager : MonoBehaviour
         obj.TryGetComponent(out ObjectPoolManager instance);
         ObjectPoolManager_Instance = instance;
     }
-    public void Register_UIManager(CodingUIManager obj)
+    public void Register_CodingUIManager(GameObject obj)
     {
         obj.TryGetComponent(out CodingUIManager instance);
         CodingUIManager_Instance = instance;

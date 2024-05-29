@@ -308,16 +308,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 117523799}
-  m_LocalRotation: {x: -0, y: -0, z: 0.03155222, w: 0.9995022}
+  m_LocalRotation: {x: -0, y: -0, z: 0.052052796, w: 0.99864435}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 460032326}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 3.616}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 5.968}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 8, y: -26}
+  m_AnchoredPosition: {x: 8, y: -6}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &117523801
@@ -340,7 +340,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level  6
+  m_text: Stage 6
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 785c2428696ab4b47964c7ceef96c277, type: 2}
   m_sharedMaterial: {fileID: 7462599495780046181, guid: 785c2428696ab4b47964c7ceef96c277,
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level  1
+  m_text: Stage 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 785c2428696ab4b47964c7ceef96c277, type: 2}
   m_sharedMaterial: {fileID: 7462599495780046181, guid: 785c2428696ab4b47964c7ceef96c277,
@@ -664,7 +664,7 @@ GameObject:
   - component: {fileID: 371851722}
   - component: {fileID: 371851721}
   m_Layer: 5
-  m_Name: Level 3 Button
+  m_Name: Stage 3 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -829,7 +829,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level  8
+  m_text: Stage 8
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 785c2428696ab4b47964c7ceef96c277, type: 2}
   m_sharedMaterial: {fileID: 7462599495780046181, guid: 785c2428696ab4b47964c7ceef96c277,
@@ -920,7 +920,7 @@ GameObject:
   - component: {fileID: 460032328}
   - component: {fileID: 460032327}
   m_Layer: 5
-  m_Name: Level 6 Button
+  m_Name: Stage 6 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1041,7 +1041,7 @@ GameObject:
   - component: {fileID: 463530715}
   - component: {fileID: 463530714}
   m_Layer: 5
-  m_Name: Level 8 Button
+  m_Name: Stage 8 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1157,6 +1157,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 373343611639230003, guid: 8b84deb3cf9ed8342a7181304729a753,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1541416447966350260, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1215,82 +1220,82 @@ PrefabInstance:
     - target: {fileID: 3728843257884652948, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3728843257884652948, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3728843257884652948, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1137.5
       objectReference: {fileID: 0}
     - target: {fileID: 3728843257884652948, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -162.5
       objectReference: {fileID: 0}
     - target: {fileID: 6522330287248390638, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6522330287248390638, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6522330287248390638, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 487.5
       objectReference: {fileID: 0}
     - target: {fileID: 6522330287248390638, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -162.5
       objectReference: {fileID: 0}
     - target: {fileID: 6965206515733169050, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6965206515733169050, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6965206515733169050, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 812.5
       objectReference: {fileID: 0}
     - target: {fileID: 6965206515733169050, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -162.5
       objectReference: {fileID: 0}
     - target: {fileID: 7332209469326837663, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7332209469326837663, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7332209469326837663, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 162.5
       objectReference: {fileID: 0}
     - target: {fileID: 7332209469326837663, guid: 8b84deb3cf9ed8342a7181304729a753,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -162.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1310,7 +1315,7 @@ GameObject:
   - component: {fileID: 633622203}
   - component: {fileID: 633622202}
   m_Layer: 5
-  m_Name: Level 7 Button
+  m_Name: Stage 7 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1527,7 +1532,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.338}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0, y: -26}
+  m_AnchoredPosition: {x: -0, y: -36}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &769493615
@@ -1550,7 +1555,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level  7
+  m_text: Stage 7
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 785c2428696ab4b47964c7ceef96c277, type: 2}
   m_sharedMaterial: {fileID: 7462599495780046181, guid: 785c2428696ab4b47964c7ceef96c277,
@@ -1578,8 +1583,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 75
+  m_fontSizeBase: 75
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1959,13 +1964,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120082794}
-  m_LocalRotation: {x: -0, y: -0, z: -0.0005003438, w: 0.9999999}
+  m_LocalRotation: {x: -0, y: -0, z: 0.032047816, w: 0.9994864}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 371851720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.057}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 3.673}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 7, y: -32.99997}
@@ -1991,7 +1996,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Level  3
+  m_text: 'Stage 3
 
 '
   m_isRightToLeft: 0
@@ -2218,7 +2223,7 @@ GameObject:
   - component: {fileID: 1213121193}
   - component: {fileID: 1213121192}
   m_Layer: 5
-  m_Name: Level 2 Button
+  m_Name: Stage 2 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2451,7 +2456,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level  2
+  m_text: Stage 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 785c2428696ab4b47964c7ceef96c277, type: 2}
   m_sharedMaterial: {fileID: 7462599495780046181, guid: 785c2428696ab4b47964c7ceef96c277,
@@ -2479,8 +2484,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 70
+  m_fontSize: 75
+  m_fontSizeBase: 75
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2610,7 +2615,7 @@ GameObject:
   - component: {fileID: 1424922404}
   - component: {fileID: 1424922403}
   m_Layer: 5
-  m_Name: Level 1 Button
+  m_Name: Stage 1 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2775,7 +2780,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Level  5
+  m_text: 'Stage 5
 
 '
   m_isRightToLeft: 0
@@ -2989,7 +2994,7 @@ GameObject:
   - component: {fileID: 1569899224}
   - component: {fileID: 1569899223}
   m_Layer: 5
-  m_Name: Level 5 Button
+  m_Name: Stage 5 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3283,7 +3288,7 @@ GameObject:
   - component: {fileID: 1799221547}
   - component: {fileID: 1799221546}
   m_Layer: 5
-  m_Name: Level 4 Button
+  m_Name: Stage 4 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3416,16 +3421,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884638065}
-  m_LocalRotation: {x: -0, y: -0, z: -0.024510425, w: 0.99969953}
+  m_LocalRotation: {x: -0, y: -0, z: -0.039458852, w: 0.99922127}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1799221545}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -2.809}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -4.523}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 29.000046, y: -26.999996}
+  m_AnchoredPosition: {x: 30, y: -22}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1884638067
@@ -3448,7 +3453,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level  4
+  m_text: Stage 4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 785c2428696ab4b47964c7ceef96c277, type: 2}
   m_sharedMaterial: {fileID: 7462599495780046181, guid: 785c2428696ab4b47964c7ceef96c277,

@@ -79,6 +79,7 @@ public class CodingUIManager : MonoBehaviour
 
     [field: Header("클리어 메뉴 UI")]
     [field: SerializeField] public GameObject ClearPanel { get; private set; }
+    public Vector3 ClearPanelInitPos { get; private set; }
     [field: SerializeField] public Button ClearNextButton { get; private set; }
     [field: SerializeField] public Button ClearBackButton { get; private set; }
 
@@ -104,12 +105,17 @@ public class CodingUIManager : MonoBehaviour
             Destroy(this.gameObject);
         #endregion
 
-
-
+        MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
+        FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
+        LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
     }
+
 
     private void Start()
     {
+        // .. 게임 매니저에 CodingUIManager 등록
+        GameManager_Instance.Register_CodingUIManager(this.gameObject);
+
         // .. 버튼들의 클릭 이벤트 함수 등록
         #region Coding blocks onClickAddListener
         ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.BlockName = BlockCategory.Forward; InsertBlock(); });
@@ -152,22 +158,11 @@ public class CodingUIManager : MonoBehaviour
         ClearNextButton.onClick.AddListener(() => GameSceneManager.Instance.LoadNextScene());
         #endregion
 
-
-        MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
-        FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
-        LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
-
-        Time.timeScale = 1;
-
-        LoopCountText.text = GameManager_Instance.LoopReaptCount.ToString();
-
-        GameManager_Instance.Initialize_CodingMethod();
-
-        GameManager_Instance.Register_UIManager(Instance);
-
-        SelectMethod(ECurrentLayout.Main);
-
         // AudioManager.Instance.Play_Music("CityTheme");
+
+        ClearPanelInitPos = ClearPanel.transform.localPosition;
+
+        CodingUICanvas.SetActive(false);
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
@@ -357,9 +352,9 @@ public class CodingUIManager : MonoBehaviour
     {
         GameManager_Instance.Set_IsCompilerRunning(true);
 
-        CodingUIManager_Instance.ExecutionButton.gameObject.SetActive(false);
-        CodingUIManager_Instance.StopButton.gameObject.SetActive(true);
-        CodingUIManager_Instance.LockUIElements(true);
+        ExecutionButton.gameObject.SetActive(false);
+        StopButton.gameObject.SetActive(true);
+        LockUIElements(true);
 
         AudioManager.Instance.Play_UISFX("ExecutionButton");
     }
@@ -561,6 +556,18 @@ public class CodingUIManager : MonoBehaviour
                 UIAnimation.Animation_BlockShake(block.gameObject);
             }
         }
+    }
+
+    public void Initialize_CodingUIButtons()
+    {
+        // 실행 정지 버튼이 표시 상태
+        StopButton.gameObject.SetActive(false);
+        ExecutionButton.gameObject.SetActive(true);
+
+        // 시간 배속 버튼의 표시 상태
+        TimeControlButton.GetComponent<Image>().sprite = _timeControlOff;
+
+        SelectMethod(ECurrentLayout.Main);
     }
 
     public void ActiveStageClearUI()

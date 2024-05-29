@@ -22,11 +22,11 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
+        // .. 게임 매니저에 StageManager 등록
+        GameManager_Instance.Register_StageManager(this.gameObject);
+
         // .. 스테이지별 코인 갯수로 코인 정보를 갱신
         CoinCount = CoinObject.Length;
-
-        // .. 게임매니저에 해당 스크립트를 등록
-        GameManager_Instance.Register_StageManager(this.gameObject);
 
         // .. 카메라 팬 예외 처리
         if(_camPanMinValue == 0 || _camPanMaxValue == 0)
@@ -34,9 +34,7 @@ public class StageManager : MonoBehaviour
             Debug.Log("카메라 팬 Min, Max 값이 초기화되어 있지 않음!");
         }
 
-        // 코딩시티 씬이 시작될때 카메라 무빙을 시작
-        PlayerManager_Instance.CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
-        PlayerManager_Instance.CameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
+        CodingUIManager_Instance.CodingUICanvas.SetActive(true);
     }
 
     public void Update()
@@ -85,8 +83,6 @@ public class StageManager : MonoBehaviour
 
     public void StageClear()
     {
-        GameManager.CodingUIManager_Instance.StopButton.GetComponent<Button>().interactable = false;
-
         GameManager_Instance.Set_IsStageClear(true);
 
         UnlockNewLevel();

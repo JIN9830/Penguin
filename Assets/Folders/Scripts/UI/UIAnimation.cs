@@ -76,8 +76,11 @@ public class UIAnimation
 
     public void Animation_DelayPopUpButton(Button blockObj)
     {
-        blockObj.gameObject.SetActive(true);
+        blockObj.gameObject.SetActive(false);
+        blockObj.gameObject.transform.localScale = Vector3.zero;
+
         blockObj.interactable = false;
-        blockObj.gameObject.transform.DOScale(1, 1.5f).SetEase(Ease.OutExpo).OnComplete(() => blockObj.interactable = true);
+        blockObj.gameObject.SetActive(true);
+        blockObj.gameObject.transform.DOScale(1, 1.5f).SetEase(Ease.InOutElastic).OnComplete(() => blockObj.interactable = true);
     }
 }

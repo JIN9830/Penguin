@@ -27,16 +27,25 @@ public class PlayerManager : MonoBehaviour
     public Vector3 PlayerResetPos { get; private set; }
     public Quaternion PlayerResetRot { get; private set; }
 
+
     private void Awake()
     {
-        GameManager_Instance.Register_PlayerManager(this.gameObject);
-
         PlayerAnimator = PlayerObject.GetComponent<Animator>();
 
         PlayerResetPos = PlayerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
         PlayerResetRot = PlayerObject.transform.rotation;
 
         InitCameraTargetPosition = CameraTargetObject.transform.localPosition;
+    }
+
+    private void Start()
+    {
+        // .. 게임 매니저에 PlayerManager 등록
+        GameManager_Instance.Register_PlayerManager(this.gameObject);
+
+        // 코딩시티 씬이 시작될때 카메라 무빙을 시직 (테스트용 코드)
+        CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
+        CameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
     }
 
     public void InitPlayerMoveVector() // .. 현재 플레이어의 포지션, 전진 벡터 값을 갱신
