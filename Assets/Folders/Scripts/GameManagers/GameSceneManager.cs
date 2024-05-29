@@ -8,7 +8,8 @@ public class GameSceneManager : MonoBehaviour
 {
     public static GameSceneManager Instance { get; private set; }
 
-    [field: SerializeField] public GameObject CurtainObject { get; private set; }
+    [field: SerializeField] public GameObject UpperCurtainObject { get; private set; }
+    [field: SerializeField] public GameObject LowerCurtainObject { get; private set; }
 
     private void Awake()
     {
@@ -25,28 +26,38 @@ public class GameSceneManager : MonoBehaviour
 
     public void LoadIndexScene(int sceneIndex)
     {
-        if (SceneManager.GetActiveScene().buildIndex >= 1) // TODO: 인덱스 1번 씬에서도 DOTween을 사용한다면 코드의 조건문 수정이 필요함
-        {
+        if (SceneManager.GetActiveScene().buildIndex >= 1)
             DOTween.KillAll();
-        }
+
+        // ... 아래의 코드를 메서드로 묶어서 사용?
+        // 클리어 패널의 위치를 초기 위치로 돌려야함
+        // 정지 버튼이 비활성화 되어 있었고, 시작버튼 오브젝트로 바꿔야함
+        if (GameManager.CodingUIManager_Instance.OptionPanel.activeSelf)
+            GameManager.CodingUIManager_Instance.ActiveOption();
+
 
         GameManager.GameManager_Instance.Initialize_CodingMethod();
 
-        if(SceneManager.GetActiveScene().name == "Level Selection") // TODO: CodingUICanvas 게임 오브젝트의 On, Off를 변경하는 코드 (시티1에서 시티2로 넘어갈때 CodingUICanvas가 꺼질 수 있음 코드 수정이 필요함)
-        {
-            //GameManager.CodingUIManager_Instance.CodingUICanvas.SetActive(true);
-        }
-        else
-        {
-            GameManager.CodingUIManager_Instance.OpenOption();
-            //GameManager.CodingUIManager_Instance.CodingUICanvas.SetActive(false);
-        }
+
+        // 커튼이 닫히기 전 코딩 버튼 비활성화
+        // 커튼 이미지가 닫히고 난 뒤 씬 로드
+        // 씬 로드 후에 0.5초 ~ 1초 딜레이 후 커튼 열림
 
         SceneManager.LoadSceneAsync(sceneIndex);
     }
 
     public void LoadNextScene()
     {
+        // ... 아래의 코드를 메서드로 묶어서 사용?
+        // 클리어 패널의 위치를 초기 위치로 돌려야함
+        // 정지 버튼이 비활성화 되어 있었고, 시작버튼 오브젝트로 바꿔야함
+        if (GameManager.CodingUIManager_Instance.OptionPanel.activeSelf)
+            GameManager.CodingUIManager_Instance.ActiveOption();
+
+
+        GameManager.GameManager_Instance.Initialize_CodingMethod();
+
+
         // TODO: 테스트용 프로토타입 코드
         if (SceneManager.GetActiveScene().buildIndex < 9)
         {

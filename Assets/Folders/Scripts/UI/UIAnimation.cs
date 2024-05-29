@@ -78,6 +78,6 @@ public class UIAnimation
     {
         blockObj.gameObject.SetActive(true);
         blockObj.interactable = false;
-        blockObj.gameObject.transform.DOScale(1, 1.5f).SetEase(Ease.OutBack).OnComplete(() => blockObj.interactable = true);
+        blockObj.gameObject.transform.DOScale(1, 1.5f).SetEase(Ease.OutExpo).OnComplete(() => blockObj.interactable = true);
     }
 }

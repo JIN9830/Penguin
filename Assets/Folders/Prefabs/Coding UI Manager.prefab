@@ -1285,7 +1285,7 @@ MonoBehaviour:
   <TurnRightButton>k__BackingField: {fileID: 6056869496678990303}
   <FunctionButton>k__BackingField: {fileID: 3601418297876945051}
   <LoopButton>k__BackingField: {fileID: 8843582054262847703}
-  <OptionOpenButton>k__BackingField: {fileID: 3792768780833341935}
+  <OptionMenuOpenButton>k__BackingField: {fileID: 3792768780833341935}
   <OptionPanel>k__BackingField: {fileID: 1019068405105456801}
   <OptionMenuBackButton>k__BackingField: {fileID: 4215527638904583600}
   <OptionMenuExitButton>k__BackingField: {fileID: 8919731236695373178}

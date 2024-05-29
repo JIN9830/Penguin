@@ -69,8 +69,7 @@ public class CodingUIManager : MonoBehaviour
 
 
     [field: Header("옵션 UI")]
-    [field: SerializeField] public Button OptionOpenButton { get; private set; }
-    public bool IsOptionOpened { get; private set; } = false;
+    [field: SerializeField] public Button OptionMenuOpenButton { get; private set; }
 
     [field: SerializeField] public GameObject OptionPanel { get; private set; }
     [field: SerializeField] public Button OptionMenuBackButton { get; private set; }
@@ -106,6 +105,12 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
 
+
+    }
+
+    private void Start()
+    {
+        // .. 버튼들의 클릭 이벤트 함수 등록
         #region Coding blocks onClickAddListener
         ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.BlockName = BlockCategory.Forward; InsertBlock(); });
         TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.BlockName = BlockCategory.Left; InsertBlock(); });
@@ -138,19 +143,20 @@ public class CodingUIManager : MonoBehaviour
         LoopCountMinus.onClick.AddListener(() => LoopCounter(false));
         #endregion
 
-        OptionOpenButton.onClick.AddListener(() => OpenOption());
-        OptionMenuExitButton.onClick.AddListener(() => OpenOption());
-        OptionMenuBackButton.onClick.AddListener(() => { OpenOption(); GameSceneManager.Instance.LoadIndexScene(0); });
-        ClearBackButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(1));
+        #region Option & Clear OnClickAddListener
+        OptionMenuOpenButton.onClick.AddListener(() => ActiveOption());
+        OptionMenuExitButton.onClick.AddListener(() => ActiveOption());
+        OptionMenuBackButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(0));
+
+        ClearBackButton.onClick.AddListener(() => GameSceneManager.Instance.LoadIndexScene(0));
         ClearNextButton.onClick.AddListener(() => GameSceneManager.Instance.LoadNextScene());
+        #endregion
+
 
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
         LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
-    }
 
-    private void Start()
-    {
         Time.timeScale = 1;
 
         LoopCountText.text = GameManager_Instance.LoopReaptCount.ToString();
@@ -377,9 +383,6 @@ public class CodingUIManager : MonoBehaviour
 
     public void TimeScaleControl()
     {
-        AudioManager.Instance.Play_UISFX("TimeControl");
-        UIAnimation.Animation_ButtonDelay(TimeControlButton, 1);
-
         if (Time.timeScale == 1f)
         {
             TimeControlButton.GetComponent<Image>().sprite = _timeControlOn;
@@ -392,6 +395,9 @@ public class CodingUIManager : MonoBehaviour
             UIAnimation.Animation_BlockShake(TimeControlButton);
             Time.timeScale = 1f;
         }
+
+        AudioManager.Instance.Play_UISFX("TimeControl");
+        UIAnimation.Animation_ButtonDelay(TimeControlButton, 1);
     }
 
     public void LoopCounter(bool increase)
@@ -414,26 +420,28 @@ public class CodingUIManager : MonoBehaviour
     }
 
 
-    public void OpenOption()
+    public void ActiveOption()
     {
         AudioManager.Instance.Play_UISFX("OptionMenuOpen");
 
         switch (OptionPanel.activeSelf)
         {
             case true:
-                OptionOpenButton.interactable = false;
+                OptionMenuOpenButton.interactable = false;
+                //OptionMenuBackButton.interactable = false;
                 TuchBlockPanel.SetActive(false);
 
                 OptionPanel.transform.DOScale(0, 0.3f).SetEase(Ease.OutExpo).SetUpdate(true)
                     .OnComplete(() =>
                     {
                         OptionPanel.SetActive(false);
-                        OptionOpenButton.interactable = true;
+                        OptionMenuOpenButton.interactable = true;
                     });
                 break;
 
             case false:
-                OptionOpenButton.interactable = false;
+                OptionMenuOpenButton.interactable = false;
+                //OptionMenuBackButton.interactable = false;
                 OptionPanel.SetActive(true);
                 TuchBlockPanel.SetActive(true);
                 OptionPanel.transform.localScale = Vector3.zero;
@@ -441,7 +449,8 @@ public class CodingUIManager : MonoBehaviour
                 OptionPanel.transform.DOScale(1, 0.5f).SetEase(Ease.OutBack).SetUpdate(true)
                     .OnComplete(() =>
                     {
-                        OptionOpenButton.interactable = true;
+                        OptionMenuOpenButton.interactable = true;
+                        //OptionMenuBackButton.interactable = true;
                     });
                 break;
         }
@@ -474,7 +483,7 @@ public class CodingUIManager : MonoBehaviour
         LoopCountPlus.interactable = !enable;
         LoopCountMinus.interactable = !enable;
 
-        CodingUIManager_Instance.OptionOpenButton.enabled = !enable;
+        CodingUIManager_Instance.OptionMenuOpenButton.enabled = !enable;
         #endregion
     }
 
@@ -556,8 +565,6 @@ public class CodingUIManager : MonoBehaviour
 
     public void ActiveStageClearUI()
     {
-        GameManager_Instance.Set_IsCompilerRunning(false);
-
         UIAnimation.Animation_DelayPopUpButton(ClearBackButton);
         UIAnimation.Animation_DelayPopUpButton(ClearNextButton);
     }

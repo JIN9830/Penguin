@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public class GameManager : MonoBehaviour
 {
     public enum ECurrentMethod
@@ -21,7 +23,6 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> LoopMethod { get; private set; } = new List<CodingBlock>();
 
     [field: SerializeField] public int LoopReaptCount { get; set; } = 1;
-    private int _loopCountTemp;
 
     public bool IsCompilerRunning { get; private set; } = false;
     public bool IsStageClear { get; private set; } = false;
@@ -220,8 +221,6 @@ public class GameManager : MonoBehaviour
 
         IsCompilerRunning = false;
         IsStageClear = false;
-
-
     }
 
     public void Register_ObjectPoolManager(GameObject obj)

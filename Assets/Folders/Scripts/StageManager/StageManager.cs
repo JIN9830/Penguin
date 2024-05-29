@@ -12,6 +12,8 @@ public class StageManager : MonoBehaviour
     [field: SerializeField] public GameObject[] CoinObject { get; private set; }
     [field: SerializeField] public int CoinCount { get; private set; }
 
+    public Vector3 StageClearPanelInitPos { get; private set; }
+
     [Header("카메라 조작 범위값")]
     [SerializeField] private float _camPanMinValue;
     [SerializeField] private float _camPanMaxValue;
@@ -32,12 +34,9 @@ public class StageManager : MonoBehaviour
             Debug.Log("카메라 팬 Min, Max 값이 초기화되어 있지 않음!");
         }
 
-
         // 코딩시티 씬이 시작될때 카메라 무빙을 시작
         PlayerManager_Instance.CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
         PlayerManager_Instance.CameraTargetObject.transform.DOLocalMoveY(0, 0.8f);
-
-        CodingUIManager_Instance.CodingUICanvas.SetActive(true);
     }
 
     public void Update()
@@ -86,13 +85,13 @@ public class StageManager : MonoBehaviour
 
     public void StageClear()
     {
-        UnlockNewLevel();
-
-        Time.timeScale = 1;
-
         GameManager.CodingUIManager_Instance.StopButton.GetComponent<Button>().interactable = false;
 
         GameManager_Instance.Set_IsStageClear(true);
+
+        UnlockNewLevel();
+
+        Time.timeScale = 1;
 
         GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo).OnComplete(()=> CodingUIManager_Instance.ActiveStageClearUI());
         
