@@ -100,6 +100,7 @@ public class CodingUIManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
+
         }
         else
             Destroy(this.gameObject);
@@ -109,7 +110,6 @@ public class CodingUIManager : MonoBehaviour
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
         LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
     }
-
 
     private void Start()
     {
@@ -161,8 +161,6 @@ public class CodingUIManager : MonoBehaviour
         // AudioManager.Instance.Play_Music("CityTheme");
 
         ClearPanelInitPos = ClearPanel.transform.localPosition;
-
-        CodingUICanvas.SetActive(false);
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
@@ -414,7 +412,6 @@ public class CodingUIManager : MonoBehaviour
         LoopCountText.text = GameManager_Instance.LoopReaptCount.ToString();
     }
 
-
     public void ActiveOption()
     {
         AudioManager.Instance.Play_UISFX("OptionMenuOpen");
@@ -450,7 +447,6 @@ public class CodingUIManager : MonoBehaviour
                 break;
         }
     }
-
 
     public void LockUIElements(bool enable)
     {

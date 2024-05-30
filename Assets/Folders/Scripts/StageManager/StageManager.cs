@@ -29,12 +29,10 @@ public class StageManager : MonoBehaviour
         CoinCount = CoinObject.Length;
 
         // .. 카메라 팬 예외 처리
-        if(_camPanMinValue == 0 || _camPanMaxValue == 0)
+        if (_camPanMinValue == 0 || _camPanMaxValue == 0)
         {
             Debug.Log("카메라 팬 Min, Max 값이 초기화되어 있지 않음!");
         }
-
-        CodingUIManager_Instance.CodingUICanvas.SetActive(true);
     }
 
     public void Update()
@@ -89,8 +87,8 @@ public class StageManager : MonoBehaviour
 
         Time.timeScale = 1;
 
-        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo).OnComplete(()=> CodingUIManager_Instance.ActiveStageClearUI());
-        
+        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo).OnComplete(() => CodingUIManager_Instance.ActiveStageClearUI());
+
     }
 
     public void UnlockNewLevel()

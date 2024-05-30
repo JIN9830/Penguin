@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         WaitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
         WaitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
 
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 144;
     }
 
     private void Start()
