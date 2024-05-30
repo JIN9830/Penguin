@@ -87,7 +87,8 @@ public class StageManager : MonoBehaviour
 
         Time.timeScale = 1;
 
-        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo).OnComplete(() => CodingUIManager_Instance.ActiveStageClearUI());
+        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo);
+        GameManager.CodingUIManager_Instance.ActiveStageClearUI();
 
     }
 
