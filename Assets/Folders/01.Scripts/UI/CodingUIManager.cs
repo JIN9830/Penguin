@@ -163,8 +163,6 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         ClearPanelInitPos = ClearPanel.transform.localPosition;
-
-        CityNameObj.text = SceneManager.GetActiveScene().name;
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)

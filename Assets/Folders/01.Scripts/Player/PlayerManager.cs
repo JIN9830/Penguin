@@ -3,6 +3,7 @@ using DG.Tweening;
 using static GameManager;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class PlayerManager : MonoBehaviour
 
         // 코딩시티 씬이 시작될때 카메라 무빙을 시직 (테스트용 코드)
         CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
-        CameraTargetObject.transform.DOLocalMoveY(0, 0.8f).SetDelay(0.2f);
+        CameraTargetObject.transform.DOLocalMoveY(0, 0.8f).SetDelay(0.2f).OnComplete(()=> GameManager.CodingUIManager_Instance.CityNameObj.text = SceneManager.GetActiveScene().name);
     }
 
     public void InitPlayerMoveVector() // .. 현재 플레이어의 포지션, 전진 벡터 값을 갱신
