@@ -12,9 +12,9 @@ EditorBuildSettings:
     path: Assets/Folders/00.Scenes/City 1.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Folders/00.Scenes/City 2.unity
+    path: Assets/Folders/00.Scenes/City 5.unity
     guid: 620b6a2b1eb06dd438307a233b9c45c5
   - enabled: 1
-    path: Assets/Folders/00.Scenes/City 3.unity
+    path: Assets/Folders/00.Scenes/City 2.unity
     guid: 83c1b7d902130e845ac8ace9da0121d9
   m_configObjects: {}

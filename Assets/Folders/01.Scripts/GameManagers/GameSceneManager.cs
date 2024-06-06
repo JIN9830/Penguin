@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using static CodingUIManager;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -72,5 +73,6 @@ public class GameSceneManager : MonoBehaviour
         }
 
         GameManager.GameManager_Instance.Initialize_CodingMethod();
+        GameManager.CodingUIManager_Instance.SelectMethod(ECurrentLayout.Main);
     }
 }
