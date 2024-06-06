@@ -1,0 +1,125 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using DG.Tweening;
+using UnityEngine;
+using static GameManager;
+using UnityEngine.SceneManagement;
+using static CodingUIManager;
+
+public class StageManager : MonoBehaviour
+{
+    // => 해당 스크립트는 기본 베이스를 프리팹으로 만들고 내부 데이터를 각 스테이지별로 인스펙터에서 관리한다
+    [field: SerializeField] public GameObject[] CoinObject { get; private set; }
+    [field: SerializeField] public int CoinCount { get; private set; }
+
+    public Vector3 StageClearPanelInitPos { get; private set; }
+
+    [Header("카메라 조작 범위값")]
+    [SerializeField] private float _camPanMinValueX;
+    [SerializeField] private float _camPanMaxValueX;
+
+    [SerializeField] private float _camPanMinValueY;
+    [SerializeField] private float _camPanMaxValueY;
+
+    [field: SerializeField] public float CameraPanSpeed { get; private set; } = 0.35f;
+
+    private void Start()
+    {
+        // .. 게임 매니저에 StageManager 등록
+        GameManager_Instance.Register_StageManager(this.gameObject);
+
+        // .. 스테이지별 코인 갯수로 코인 정보를 갱신
+        CoinCount = CoinObject.Length;
+
+        // .. 카메라 팬 예외처리
+        if (_camPanMinValueX == 0 || _camPanMaxValueX == 0)
+        {
+            Debug.Log("카메라 팬 X축의 Min, Max 값이 초기화되어 있지 않음!");
+        }
+
+        if (_camPanMinValueY == 0 || _camPanMaxValueY == 0)
+        {
+            Debug.Log("카메라 팬 Y축의 Min, Max 값이 초기화되어 있지 않음!");
+        }
+
+        // AudioManager.Instance.Play_Music("CityTheme");
+        // .. 오디오 매니저 스크립트의 변수를 참조해서 조건문으로 스테이지 배경음을 재생  
+        // .. 이미 스테이지 배경음악이 재생중이라면 bool 변수를 통해서 스테이지 씬 일때만 이어서 재생
+        // .. 배경음악이 재생 중인 상태에서 다른 씬으로 넘어가면 배경음악 소리가 서서히 작아 졌다가 커지는 효과
+        // .. 스테이지 씬에서 레벨 셀렉션으로 넘어가면 다른 배경음악 재생 시작
+
+        CodingUIManager_Instance.SelectMethod(ECurrentLayout.Main);
+    }
+
+    public void Update()
+    {
+        if (GameManager_Instance.IsCompilerRunning || CodingUIManager_Instance.OptionPanel.activeSelf)
+            return;
+
+        CameraPan();
+    }
+
+    public void CameraPan() // CameraTarget을 화면 터치로 움직여서 카메라의 각도를 조절
+    {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+        {
+
+            Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
+            Vector3 newPosition = PlayerManager_Instance.CameraTargetObject.transform.localPosition + new Vector3(0, -TouchDeltaPosition.y, -TouchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
+
+            newPosition.z = Mathf.Clamp(newPosition.z, _camPanMinValueX, _camPanMaxValueX);
+            newPosition.y = Mathf.Clamp(newPosition.y, _camPanMinValueY, _camPanMaxValueY);
+            PlayerManager_Instance.CameraTargetObject.transform.localPosition = newPosition;
+
+        }
+    }
+
+    public void UpdateCoin() // Coin.cs에서 코인이 콜라이더에 닿아 비활성화 될때
+    {
+        if (CoinCount != 0)
+            CoinCount--;
+
+        if (CoinCount == 0)
+            StageClear();
+    }
+
+    public void ResetCoin()
+    {
+        if (CoinCount == CoinObject.Length)
+            return;
+
+        CoinCount = CoinObject.Length;
+
+        foreach (GameObject coin in CoinObject)
+        {
+            coin.gameObject.SetActive(true);
+        }
+    }
+
+    public void StageClear()
+    {
+        GameManager.CodingUIManager_Instance.StopButton.GetComponent<Button>().interactable = false; // TODO: 겟컴포넌트 함수 사용 말고 캐싱해서 코드 작성하기
+
+
+        GameManager_Instance.Set_IsStageClear(true);
+
+        UnlockNewLevel();
+
+        Time.timeScale = 1;
+
+        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo);
+        GameManager.CodingUIManager_Instance.ActiveStageClearUI();
+
+    }
+
+    public void UnlockNewLevel()
+    {
+        if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
+        {
+            PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
+            PlayerPrefs.Save();
+        }
+    }
+}
