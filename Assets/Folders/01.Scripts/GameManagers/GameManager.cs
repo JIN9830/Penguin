@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,14 +30,11 @@ public class GameManager : MonoBehaviour
     private Coroutine _blockCompiler;
     private Coroutine _subBlockCompiler;
 
-    public readonly WaitForSeconds WAIT_FOR_SECONDS = new(1.0f);
-    public readonly WaitForSeconds WAIT_FOR_HALF_SECONDS = new(0.5f);
-
     public WaitUntil WaitUntilExecutionTrigger { get; private set; }
     public WaitUntil WaitUntilSubMethodTrigger { get; private set; }
     public WaitUntil WaitUntilEndOfSubMethod { get; private set; }
 
-    
+    private Button _executionBtn;
 
     private void Awake()
     {
@@ -62,6 +59,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        CodingUIManager_Instance.ExecutionButton.TryGetComponent<Button>(out _executionBtn);
+
         _blockCompiler = StartCoroutine(BlockCompiler_Co());
         _subBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
     }
@@ -100,6 +99,7 @@ public class GameManager : MonoBehaviour
             CodingUIManager_Instance.DisableBlockHighlights();
             CodingUIManager_Instance.LockUIElements(false);
 
+            _executionBtn.interactable = true;
         }
     }
 

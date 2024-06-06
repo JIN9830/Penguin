@@ -23,6 +23,8 @@ public class LevelSelection : MonoBehaviour
         }
 
         saveClearButton.onClick.AddListener(() =>{ PlayerPrefs.DeleteAll(); StageStatus(); });
+
+        AudioManager.Instance.Play_Music("LevelSelectionTheme");
     }
 
     public void StageStatus() // 플레이어의 스테이지 진행도에 따라서 각 레벨씬으로 이동 버튼의 활성화 상태를 업데이트하는 코드

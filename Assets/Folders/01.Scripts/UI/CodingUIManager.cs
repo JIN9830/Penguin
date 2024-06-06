@@ -375,9 +375,8 @@ public class CodingUIManager : MonoBehaviour
         PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
         PlayerManager_Instance.ResetPlayerPosition();
 
-
         StopButton.gameObject.SetActive(false);
-        UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1f);
+        UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1);
         OptionMenuOpenButton.transform.DOScale(1, 0.5f).SetEase(Ease.InOutExpo);
     }
 

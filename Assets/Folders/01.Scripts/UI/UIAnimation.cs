@@ -64,7 +64,7 @@ public class UIAnimation
         blockObj.SetActive(true);
         blockObj.gameObject.GetComponent<Button>().interactable = false;
         blockObj.gameObject.transform.localScale = Vector3.zero;
-        blockObj.gameObject.transform.DOScale(1, delayTime).SetEase(Ease.OutExpo).OnComplete(() => blockObj.gameObject.GetComponent<Button>().interactable = true);
+        blockObj.gameObject.transform.DOScale(1, delayTime).SetEase(Ease.OutExpo);
     }
 
     public void Animation_UIShake(GameObject blockObj)
