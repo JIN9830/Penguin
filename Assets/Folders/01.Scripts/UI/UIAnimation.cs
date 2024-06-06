@@ -86,12 +86,13 @@ public class UIAnimation
     {
         if(enable)
         {
-            Upper.gameObject.transform.DOScaleY(21, 1.0f).SetEase(Ease.InOutExpo); Lower.gameObject.transform.DOScaleY(21, 1.0f).SetEase(Ease.InOutExpo);
+            Upper.gameObject.transform.DOScaleY(21, 1.0f).SetEase(Ease.InOutExpo); 
+            Lower.gameObject.transform.DOScaleY(21, 1.0f).SetEase(Ease.InOutExpo);
         }
         else
         {
-            Upper.gameObject.transform.DOScaleY(0, 1.0f).SetEase(Ease.InOutExpo).SetDelay(0.5f); Lower.gameObject.transform.DOScaleY(0, 1.0f).SetEase(Ease.InOutExpo).SetDelay(0.5f);
+            Upper.gameObject.transform.DOScaleY(0, 1.0f).SetEase(Ease.InOutExpo).SetDelay(0.4f); 
+            Lower.gameObject.transform.DOScaleY(0, 1.0f).SetEase(Ease.InOutExpo).SetDelay(0.4f);
         }
-        
     }
 }

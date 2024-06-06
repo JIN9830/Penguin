@@ -64,6 +64,8 @@ public class GameSceneManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().buildIndex >= 1)
         {
+            Time.timeScale = 1.0f;
+
             DOTween.KillAll();
 
             GameManager.CodingUIManager_Instance.Initialize_CodingUIButtonState();

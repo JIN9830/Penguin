@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using static GameManager;
 using static ObjectPoolManager;
+using UnityEngine.SceneManagement;
 
 public class CodingUIManager : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public Button OptionMenuBackButton { get; private set; }
     [field: SerializeField] public Button OptionMenuExitButton { get; private set; }
     [field: SerializeField] public GameObject TuchBlockPanel { get; private set; }
+    [field: SerializeField] public TextMeshProUGUI CityNameObj { get; private set; }
 
 
     [field: Header("클리어 메뉴 UI")]
@@ -161,6 +163,8 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         ClearPanelInitPos = ClearPanel.transform.localPosition;
+
+        CityNameObj.text = SceneManager.GetActiveScene().name;
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
@@ -356,6 +360,8 @@ public class CodingUIManager : MonoBehaviour
         StopButton.gameObject.SetActive(true);
         LockUIElements(true);
 
+        OptionMenuOpenButton.transform.DOScale(0, 0.5f).SetEase(Ease.InOutExpo);
+
         AudioManager.Instance.Play_UISFX("ExecutionButton");
     }
 
@@ -374,6 +380,7 @@ public class CodingUIManager : MonoBehaviour
 
         StopButton.gameObject.SetActive(false);
         UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1f);
+        OptionMenuOpenButton.transform.DOScale(1, 0.5f).SetEase(Ease.InOutExpo);
     }
 
     public void TimeScaleControl()
@@ -566,6 +573,8 @@ public class CodingUIManager : MonoBehaviour
         TimeControlButton.GetComponent<Image>().sprite = _timeControlOff;
 
         ClearPanel.transform.localPosition = ClearPanelInitPos;
+
+        OptionMenuOpenButton.transform.DOScale(1, 0.5f).SetEase(Ease.InOutExpo);
     }
 
     public void ActiveStageClearUI()
