@@ -8,7 +8,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     private Animator _playerAnimator;
     private float _timer = 0;
 
-    private bool _isCry = false;
+    private bool _isHit = false;
     private bool _isSad = false;
 
     private void Awake()
@@ -18,10 +18,10 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     private void Update()
     {
-        if (_isCry)
+        if (_isHit)
         {
-            _isCry = AnimationTimer(1.6f);
-            _playerAnimator.SetBool("IsCry", _isCry);
+            _isHit = AnimationTimer(1.0f);
+            _playerAnimator.SetBool("IsHit", _isHit);
         }
         else if (_isSad)
         {
@@ -33,7 +33,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     public void HitTheWallEvent() // Event called (Death 0:04)
     {
-        _isCry = true;
+        _isHit = true;
     }
 
     public void ReachTheEdgeEvent() // Event called (Idle B 0:01)
