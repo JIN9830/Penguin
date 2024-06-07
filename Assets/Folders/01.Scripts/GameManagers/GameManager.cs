@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
             executionBtn.interactable = false; // 블록 코딩을 시작하면 코드 실행 버튼을 비활성화 합니다.
 
-            PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.StartCameraTargetPosition; // 블록 실행을 누르면 카메라타겟이 플레이어 위치로 고정
+            PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition; // 블록 실행을 누르면 카메라타겟이 플레이어 위치로 고정
 
             foreach (CodingBlock block in MainMethod)
             {

@@ -20,7 +20,9 @@ public class PlayerManager : MonoBehaviour
     [field: SerializeField] public GameObject PlayerObject { get; private set; }
 
     [field: SerializeField] public GameObject CameraTargetObject { get; private set; } // TODO: 테스트용 코드 (플레이어가 카메라를 조작할때 움직이는 오브젝트)
-    public Vector3 StartCameraTargetPosition { get; private set; }
+    public Vector3 CamTargetStartPosition { get; private set; }
+    public Vector3 CamTargetStartWorldPosition { get; private set; }
+
 
     public Animator PlayerAnimator { get; private set; }
     public Vector3 PlayerStartPos { get; private set; }
@@ -36,7 +38,8 @@ public class PlayerManager : MonoBehaviour
         PlayerResetPos = PlayerObject.transform.position; // 플레이어 위치 초기화 코드 상황에 맞게 초기화 하는 함수로 이동
         PlayerResetRot = PlayerObject.transform.rotation;
 
-        StartCameraTargetPosition = CameraTargetObject.transform.localPosition;
+        CamTargetStartPosition = CameraTargetObject.transform.localPosition;
+        CamTargetStartWorldPosition = CameraTargetObject.transform.position;
     }
 
     private void Start()

@@ -59,22 +59,24 @@ public class StageManager : MonoBehaviour
         CameraPan();
     }
 
+    // PlayerManager_Instance.CamTargetStartPosition
+
     public void CameraPan() // CameraTarget을 화면 터치로 움직여서 카메라의 각도를 조절
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
 
             Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            Vector3 newPosition = PlayerManager_Instance.CameraTargetObject.transform.localPosition + new Vector3(0, -TouchDeltaPosition.y, -TouchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
+            Vector3 newPosition = PlayerManager_Instance.CameraTargetObject.transform.position + new Vector3(0, -TouchDeltaPosition.y, -TouchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
 
-            newPosition.z = Mathf.Clamp(newPosition.z, _camPanMinValueX, _camPanMaxValueX);
-            newPosition.y = Mathf.Clamp(newPosition.y, _camPanMinValueY, _camPanMaxValueY);
-            PlayerManager_Instance.CameraTargetObject.transform.localPosition = newPosition;
+            newPosition.z = Mathf.Clamp(newPosition.z, PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMinValueX, PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMaxValueX);
+            newPosition.y = Mathf.Clamp(newPosition.y, PlayerManager_Instance.CamTargetStartWorldPosition.y + _camPanMinValueY, PlayerManager_Instance.CamTargetStartWorldPosition.y + _camPanMaxValueY);
 
+            PlayerManager_Instance.CameraTargetObject.transform.position = newPosition;
         }
     }
 
-    public void UpdateCoin() // Coin.cs에서 코인이 콜라이더에 닿아 비활성화 될때
+    public void UpdateCoin() // Coin.cs에서 코인이 플레이어 콜라이더에 닿아 코인 오브젝트가 비활성화 될 때 호출
     {
         if (CoinCount != 0)
             CoinCount--;

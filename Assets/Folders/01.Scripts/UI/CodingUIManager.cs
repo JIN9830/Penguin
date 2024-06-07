@@ -370,7 +370,7 @@ public class CodingUIManager : MonoBehaviour
     {
         GameManager_Instance.Set_IsCompilerRunning(false);
 
-        PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.StartCameraTargetPosition;
+        PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition;
 
         AudioManager.Instance.Play_UISFX("StopButton");
 
