@@ -24,6 +24,7 @@ public class StageManager : MonoBehaviour
 
     [field: SerializeField] public float CameraPanSpeed { get; private set; } = 0.35f;
 
+
     private void Start()
     {
         // .. 게임 매니저에 StageManager 등록
@@ -97,8 +98,7 @@ public class StageManager : MonoBehaviour
 
     public void StageClear()
     {
-        GameManager.CodingUIManager_Instance.StopButton.GetComponent<Button>().interactable = false; // TODO: 겟컴포넌트 함수 사용 말고 캐싱해서 코드 작성하기
-
+        GameManager.CodingUIManager_Instance.StopButton.GetComponent<Button>().interactable = false; // TODO: GetComponent 메서드 사용 말고 캐싱해서 코드 작성하기
 
         GameManager_Instance.Set_IsStageClear(true);
 

@@ -62,7 +62,6 @@ public class UIAnimation
     public void Animation_PlayButtonDelay(GameObject blockObj, float delayTime)
     {
         blockObj.SetActive(true);
-        blockObj.gameObject.GetComponent<Button>().interactable = false;
         blockObj.gameObject.transform.localScale = Vector3.zero;
         blockObj.gameObject.transform.DOScale(1, delayTime).SetEase(Ease.OutExpo);
     }

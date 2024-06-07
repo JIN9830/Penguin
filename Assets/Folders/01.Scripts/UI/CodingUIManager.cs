@@ -163,6 +163,8 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         ClearPanelInitPos = ClearPanel.transform.localPosition;
+
+        ExecutionButton.TryGetComponent<Button>(out GameManager_Instance.executionBtn);
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
@@ -358,6 +360,7 @@ public class CodingUIManager : MonoBehaviour
         StopButton.gameObject.SetActive(true);
         LockUIElements(true);
 
+        OptionMenuOpenButton.GetComponent<Button>().interactable= false; // 캐싱해서 사용하기
         OptionMenuOpenButton.transform.DOScale(0, 0.5f).SetEase(Ease.InOutExpo);
 
         AudioManager.Instance.Play_UISFX("ExecutionButton");
@@ -377,7 +380,9 @@ public class CodingUIManager : MonoBehaviour
 
         StopButton.gameObject.SetActive(false);
         UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1);
+
         OptionMenuOpenButton.transform.DOScale(1, 0.5f).SetEase(Ease.InOutExpo);
+        OptionMenuOpenButton.GetComponent<Button>().interactable = true; // 캐싱해서 사용하기
     }
 
     public void TimeScaleControl()
