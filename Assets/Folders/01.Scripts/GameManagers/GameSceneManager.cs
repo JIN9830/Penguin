@@ -29,6 +29,14 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        //CurtainUpper.transform.localScale = new Vector3(0, 21, 0);
+        //CurtainLower.transform.localScale = new Vector3(0, 21, 0);
+    }
+
+
+
     public IEnumerator LoadIndexScene(int sceneIndex)
     {
         SetUp_NextCodingScene();

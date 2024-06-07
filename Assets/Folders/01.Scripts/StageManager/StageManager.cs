@@ -16,8 +16,8 @@ public class StageManager : MonoBehaviour
     public Vector3 StageClearPanelInitPos { get; private set; }
 
     [Header("카메라 조작 범위값")]
-    [SerializeField] private float _camPanMinValueX;
-    [SerializeField] private float _camPanMaxValueX;
+    [SerializeField] private float _camPanMinValueZ;
+    [SerializeField] private float _camPanMaxValueZ;
 
     [SerializeField] private float _camPanMinValueY;
     [SerializeField] private float _camPanMaxValueY;
@@ -34,7 +34,7 @@ public class StageManager : MonoBehaviour
         CoinCount = CoinObject.Length;
 
         // .. 카메라 팬 예외처리
-        if (_camPanMinValueX == 0 || _camPanMaxValueX == 0)
+        if (_camPanMinValueZ == 0 || _camPanMaxValueZ == 0)
         {
             Debug.Log("카메라 팬 X축의 Min, Max 값이 초기화되어 있지 않음!");
         }
@@ -69,7 +69,7 @@ public class StageManager : MonoBehaviour
             Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
             Vector3 newPosition = PlayerManager_Instance.CameraTargetObject.transform.position + new Vector3(0, -TouchDeltaPosition.y, -TouchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
 
-            newPosition.z = Mathf.Clamp(newPosition.z, PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMinValueX, PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMaxValueX);
+            newPosition.z = Mathf.Clamp(newPosition.z, PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMinValueZ, PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMaxValueZ);
             newPosition.y = Mathf.Clamp(newPosition.y, PlayerManager_Instance.CamTargetStartWorldPosition.y + _camPanMinValueY, PlayerManager_Instance.CamTargetStartWorldPosition.y + _camPanMaxValueY);
 
             PlayerManager_Instance.CameraTargetObject.transform.position = newPosition;
