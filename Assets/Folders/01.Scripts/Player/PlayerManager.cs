@@ -30,6 +30,9 @@ public class PlayerManager : MonoBehaviour
     public Vector3 PlayerResetPos { get; private set; }
     public Quaternion PlayerResetRot { get; private set; }
 
+    [field: SerializeField] public ParticleSystem FootStepDust { get; private set; }
+    [field: SerializeField] public ParticleSystem LandingDust { get; private set; }
+
 
     private void Awake()
     {

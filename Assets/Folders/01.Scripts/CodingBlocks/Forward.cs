@@ -54,6 +54,7 @@ public class Forward : CodingBlock
         {
             BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
             PlayerManager_Instance.playerState = PlayerManager.PlayerState.Forwarding;
+            PlayerManager_Instance.FootStepDust.Play();
         }
     }
 

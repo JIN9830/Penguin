@@ -51,6 +51,12 @@ public class PlayerAnimationEvent : MonoBehaviour
         AudioManager.Instance.Play_PlayerSFX("Turning");
     }
 
+
+    public void LandingDustParticle()
+    {
+        GameManager.PlayerManager_Instance.LandingDust.Play();
+    }
+
     private bool AnimationTimer(float limitTime)
     {
         _timer += Time.deltaTime;
