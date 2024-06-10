@@ -113,12 +113,6 @@ public class CodingUIManager : MonoBehaviour
         MainLayout.TryGetComponent<Image>(out _mainLayoutImage);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImage);
         LoopLayout.TryGetComponent<Image>(out _loopLayoutImage);
-    }
-
-    private void Start()
-    {
-        // .. 게임 매니저에 CodingUIManager 등록
-        GameManager_Instance.Register_CodingUIManager(this.gameObject);
 
         // .. 버튼들의 클릭 이벤트 함수 등록
         #region Coding blocks onClickAddListener
@@ -161,6 +155,13 @@ public class CodingUIManager : MonoBehaviour
         ClearBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene(0)));
         ClearNextButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadNextScene()));
         #endregion
+
+    }
+
+    private void Start()
+    {
+        // .. 게임 매니저에 CodingUIManager 등록
+        GameManager_Instance.Register_CodingUIManager(this.gameObject);
 
         ClearPanelInitPos = ClearPanel.transform.localPosition;
     }
@@ -247,7 +248,6 @@ public class CodingUIManager : MonoBehaviour
                 break;
                 #endregion
         }
-
     }
 
     public void InsertCodingBlock()
@@ -353,7 +353,7 @@ public class CodingUIManager : MonoBehaviour
 
     public void ExecuteCodingBlock()
     {
-        GameManager_Instance.Set_IsCompilerRunning(true);
+        GameManager_Instance.IsCompilerRunning = true;
 
         ExecuteButton.gameObject.SetActive(false);
         AbortButton.gameObject.SetActive(true);
@@ -367,7 +367,7 @@ public class CodingUIManager : MonoBehaviour
 
     public void AbortCodingBlock()
     {
-        GameManager_Instance.Set_IsCompilerRunning(false);
+        GameManager_Instance.IsCompilerRunning = false;
 
         PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition;
 

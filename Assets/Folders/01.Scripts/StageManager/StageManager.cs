@@ -113,7 +113,7 @@ public class StageManager : MonoBehaviour
 
         GameManager.CodingUIManager_Instance.OptionMenuOpenButton.interactable = true;
 
-        GameManager.GameManager_Instance.Set_IsStageClear(true);
+        GameManager.GameManager_Instance.IsStageClear = true;
 
         UnlockNewLevel();
 

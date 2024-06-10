@@ -5970,6 +5970,46 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 165977267968361446, guid: 4dfe654e020636d4896bf0870d0be1af,
+        type: 3}
+      propertyPath: ShapeModule.type
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 165977267968361446, guid: 4dfe654e020636d4896bf0870d0be1af,
+        type: 3}
+      propertyPath: ShapeModule.donutRadius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 165977267968361446, guid: 4dfe654e020636d4896bf0870d0be1af,
+        type: 3}
+      propertyPath: InitialModule.rotation3D
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 165977267968361446, guid: 4dfe654e020636d4896bf0870d0be1af,
+        type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 165977267968361446, guid: 4dfe654e020636d4896bf0870d0be1af,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 165977267968361446, guid: 4dfe654e020636d4896bf0870d0be1af,
+        type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 165977267968361446, guid: 4dfe654e020636d4896bf0870d0be1af,
+        type: 3}
+      propertyPath: InitialModule.startRotation.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 165977267968361446, guid: 4dfe654e020636d4896bf0870d0be1af,
+        type: 3}
+      propertyPath: InitialModule.randomizeRotationDirection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1169349061216153514, guid: 4dfe654e020636d4896bf0870d0be1af,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.a
@@ -6572,6 +6612,13 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2945888527652234797}
+  - {fileID: 5342355076474053389}
+  - {fileID: 4790145621610146005}
+  - {fileID: 635202813}
+  - {fileID: 3209202506747992512}
+  - {fileID: 7496196995299647719}
+  - {fileID: 1975833348612678352}
   - {fileID: 1075641808}
   - {fileID: 2008061639}
   - {fileID: 330585546}
@@ -6579,10 +6626,3 @@ SceneRoots:
   - {fileID: 1742261787}
   - {fileID: 832575519}
   - {fileID: 1242008428}
-  - {fileID: 1975833348612678352}
-  - {fileID: 7496196995299647719}
-  - {fileID: 3209202506747992512}
-  - {fileID: 635202813}
-  - {fileID: 4790145621610146005}
-  - {fileID: 2945888527652234797}
-  - {fileID: 5342355076474053389}

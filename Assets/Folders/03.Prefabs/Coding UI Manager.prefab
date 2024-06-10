@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5518868, g: 0.75592333, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1276,9 +1276,9 @@ MonoBehaviour:
   <LoopCountPlus>k__BackingField: {fileID: 1885856411490237922}
   <LoopCountMinus>k__BackingField: {fileID: 5714528822134099340}
   <LoopCountText>k__BackingField: {fileID: 5015756665741117307}
-  <ExecuteButton>k__BackingField: {fileID: 1757599564106947708}
-  <AbortButton>k__BackingField: {fileID: 5009085510720880610}
-  <TimeControlButton>k__BackingField: {fileID: 885306322098082874}
+  <ExecuteButton>k__BackingField: {fileID: 5645428400550862726}
+  <AbortButton>k__BackingField: {fileID: 1692357242309523426}
+  <TimeControlButton>k__BackingField: {fileID: 5303494147033144057}
   _timeControlOn: {fileID: 21300000, guid: 9134174b68cc7cb4f8ebc0e03b36f8fd, type: 3}
   _timeControlOff: {fileID: 21300000, guid: 23426918fb203c04c809c6d48dea3022, type: 3}
   <ForwardButton>k__BackingField: {fileID: 2533370107757038444}
@@ -2342,7 +2342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.815178, b: 0.6745283, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2710,7 +2710,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 2
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4189,7 +4189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.512227, b: 0.3254717, a: 1}
+  m_Color: {r: 0.35769412, g: 1, b: 0.2971698, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4859,7 +4859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2971698, g: 0.65513146, b: 1, a: 1}
+  m_Color: {r: 0.11792451, g: 0.566354, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5631,7 +5631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.71475476, g: 1, b: 0.6839622, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6945,7 +6945,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7120934665453725836}
   m_Layer: 5
-  m_Name: === Play Buttons ===
+  m_Name: === Playable Buttons ===
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7689,7 +7689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.91253376, g: 0.990566, b: 0.023362402, a: 1}
+  m_Color: {r: 1, g: 0.48226368, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

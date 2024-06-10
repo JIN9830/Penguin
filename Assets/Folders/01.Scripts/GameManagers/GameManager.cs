@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour
 
     [field: SerializeField] public int LoopReaptCount { get; set; } = 1;
 
-    public bool IsCompilerRunning { get; private set; } = false;
-    public bool IsStageClear { get; private set; } = false;
+    public bool IsCompilerRunning { get; set; } = false;
+    public bool IsStageClear { get; set; } = false;
 
     private Coroutine _blockCompiler;
     private Coroutine _subBlockCompiler;
@@ -247,19 +247,5 @@ public class GameManager : MonoBehaviour
     {
         obj.TryGetComponent(out StageManager instance);
         StageManager_Instance = instance;
-    }
-
-    /// <summary>
-    /// 해당 프로퍼티의 수정은 게임플레이(블록 실행 / 정지) 부분에서 오류가 발생할수있습니다.
-    /// </summary>
-    /// <param name="enable"></param>
-    public void Set_IsCompilerRunning(bool enable)
-    {
-        IsCompilerRunning = enable;
-    }
-
-    public void Set_IsStageClear(bool enable)
-    {
-        IsStageClear = enable;
     }
 }
