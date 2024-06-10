@@ -34,8 +34,6 @@ public class GameManager : MonoBehaviour
     public WaitUntil WaitUntilSubMethodTrigger { get; private set; }
     public WaitUntil WaitUntilEndOfSubMethod { get; private set; }
 
-    public Button executionBtn;
-
     private void Awake()
     {
         #region Singleton Code
@@ -73,7 +71,7 @@ public class GameManager : MonoBehaviour
             // .. 플레이어가 블록 실행 버튼을 누르기 전까지 해당 부분에서 대기하다가 블록 실행 버튼을 누르면 아래의 코드들이 진행되며 블록들이 실행됩니다.
             yield return WaitUntilExecutionTrigger;
 
-            executionBtn.interactable = false; // 블록 코딩을 시작하면 코드 실행 버튼을 비활성화 합니다.
+            CodingUIManager_Instance.ExecuteButton.interactable = false; // 블록 코딩을 시작하면 코드 실행 버튼을 비활성화 합니다.
 
             PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition; // 블록 실행을 누르면 카메라타겟이 플레이어 위치로 고정
 
@@ -99,7 +97,7 @@ public class GameManager : MonoBehaviour
             CodingUIManager_Instance.DisableBlockHighlights();
             CodingUIManager_Instance.LockUIElements(false);
 
-            executionBtn.interactable = true; // 블록 코딩이 끝나면 코드 실행 버튼을 활성화 합니다.
+            CodingUIManager_Instance.ExecuteButton.interactable = true; // 블록 코딩이 끝나면 코드 실행 버튼을 활성화 합니다.
         }
     }
 

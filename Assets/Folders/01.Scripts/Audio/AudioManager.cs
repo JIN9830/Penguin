@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class AudioManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -21,6 +22,8 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        LoadVolume();
     }
 
     public void Play_Music(string name)
@@ -28,7 +31,7 @@ public class AudioManager : MonoBehaviour
         _music = null;
         _music = Array.Find(musicSounds, x => x.name == name);
 
-        if(_music == null)
+        if (_music == null)
         {
             Debug.Log("Sound Not Found");
         }
@@ -91,13 +94,29 @@ public class AudioManager : MonoBehaviour
     public void MusicVolume(float volume)
     {
         musicSource.volume = volume;
+        PlayerPrefs.SetFloat("musicVolume", volume);
     }
     public void UISFXVolume(float volume)
     {
         uiSfxSource.volume = volume;
+        PlayerPrefs.SetFloat("uiSFXVolume", volume);
     }
     public void PlayerSFXVolume(float volume)
     {
         playerSfxSource.volume = volume;
+        PlayerPrefs.SetFloat("playerSFXVolume", volume);
+    }
+
+
+    public void LoadVolume()
+    {
+        if (PlayerPrefs.HasKey("musicVolume"))
+            musicSource.volume = PlayerPrefs.GetFloat("musicVolume");
+
+        if (PlayerPrefs.HasKey("uiSFXVolume"))
+            uiSfxSource.volume = PlayerPrefs.GetFloat("uiSFXVolume");
+
+        if (PlayerPrefs.HasKey("playerSFXVolume"))
+            playerSfxSource.volume = PlayerPrefs.GetFloat("playerSFXVolume");
     }
 }

@@ -49,7 +49,6 @@ public class GameSceneManager : MonoBehaviour
         SceneManager.LoadSceneAsync(sceneIndex);
 
         LoadingTouchBlockPanel.SetActive(false);
-
         GameManager.CodingUIManager_Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, false);
     }
 
@@ -68,7 +67,6 @@ public class GameSceneManager : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
 
         LoadingTouchBlockPanel.SetActive(false);
-
         GameManager.CodingUIManager_Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, false);
     }
 

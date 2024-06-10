@@ -35,7 +35,7 @@ public class UIAnimation
         return blockTweener;
     }
 
-    public void Animation_TimeControl(GameObject blockObj)
+    public void Animation_TimeControl(Button blockObj)
     {
         blockObj.gameObject.transform.DORotate(new Vector3(0, 0, -20), 1f).SetEase(Ease.OutElastic)
             .OnComplete(() => blockObj.gameObject.transform.DORotate(new Vector3(0, 0, 0), 1f).SetEase(Ease.OutElastic));
@@ -53,15 +53,15 @@ public class UIAnimation
             .OnComplete(()=> { blockObj.gameObject.transform.DOScale(0.75f, 0.1f).SetEase(Ease.OutCirc); });
     }
 
-    public void Animation_ButtonDelay(GameObject blockObj, float delayTime)
+    public void Animation_ButtonDelay(Button blockObj, float delayTime)
     {
-        blockObj.gameObject.GetComponent<Button>().interactable = false;
+        blockObj.interactable = false;
         blockObj.gameObject.transform.DOScale(1, 0).SetDelay(delayTime).OnComplete(() => blockObj.gameObject.GetComponent<Button>().interactable = true);
     }
 
-    public void Animation_PlayButtonDelay(GameObject blockObj, float delayTime)
+    public void Animation_PlayButtonDelay(Button blockObj, float delayTime)
     {
-        blockObj.SetActive(true);
+        blockObj.gameObject.SetActive(true);
         blockObj.gameObject.transform.localScale = Vector3.zero;
         blockObj.gameObject.transform.DOScale(1, delayTime).SetEase(Ease.OutExpo);
     }

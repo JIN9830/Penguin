@@ -54,9 +54,9 @@ public class CodingUIManager : MonoBehaviour
 
 
     [field: Header("플레이 & 정지, 스피드업 버튼")]
-    [field: SerializeField] public GameObject ExecutionButton { get; private set; }
-    [field: SerializeField] public GameObject StopButton { get; private set; }
-    [field: SerializeField] public GameObject TimeControlButton { get; private set; }
+    [field: SerializeField] public Button ExecuteButton { get; private set; }
+    [field: SerializeField] public Button AbortButton { get; private set; }
+    [field: SerializeField] public Button TimeControlButton { get; private set; }
     [SerializeField] private Sprite _timeControlOn;
     [SerializeField] private Sprite _timeControlOff;
 
@@ -122,11 +122,11 @@ public class CodingUIManager : MonoBehaviour
 
         // .. 버튼들의 클릭 이벤트 함수 등록
         #region Coding blocks onClickAddListener
-        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Forward; InsertBlock(); });
-        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Left; InsertBlock(); });
-        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Right; InsertBlock(); });
-        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Function; InsertBlock(); });
-        LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Loop; InsertBlock(); });
+        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Forward; InsertCodingBlock(); });
+        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Left; InsertCodingBlock(); });
+        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Right; InsertCodingBlock(); });
+        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Function; InsertCodingBlock(); });
+        LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager_Instance.blockCategory = BlockCategory.Loop; InsertCodingBlock(); });
         #endregion
 
         #region Layout activate onClickAddListener
@@ -140,17 +140,17 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         #region block delete OnClickAddListener
-        MainDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Main); DeleteBlock(currentLayout); });
-        FunctionDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Function); DeleteBlock(currentLayout); });
-        LoopDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Loop); DeleteBlock(currentLayout); });
+        MainDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Main); DeleteCodingBlock(currentLayout); });
+        FunctionDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Function); DeleteCodingBlock(currentLayout); });
+        LoopDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Loop); DeleteCodingBlock(currentLayout); });
         #endregion
 
         #region Execution, Stop & TimeControl & Loop Count Plus, Minus OnClickAddListener
-        ExecutionButton.GetComponent<Button>().onClick.AddListener(() => ExecutionBlock());
-        StopButton.GetComponent<Button>().onClick.AddListener(() => StopBlock());
-        TimeControlButton.GetComponent<Button>().onClick.AddListener(() => TimeScaleControl());
-        LoopCountPlus.onClick.AddListener(() => LoopCounter(true));
-        LoopCountMinus.onClick.AddListener(() => LoopCounter(false));
+        ExecuteButton.onClick.AddListener(() => ExecuteCodingBlock());
+        AbortButton.onClick.AddListener(() => AbortCodingBlock());
+        TimeControlButton.onClick.AddListener(() => ControlTimeScale());
+        LoopCountPlus.onClick.AddListener(() => ControlLoopCount(true));
+        LoopCountMinus.onClick.AddListener(() => ControlLoopCount(false));
         #endregion
 
         #region Option & Clear OnClickAddListener
@@ -163,8 +163,6 @@ public class CodingUIManager : MonoBehaviour
         #endregion
 
         ClearPanelInitPos = ClearPanel.transform.localPosition;
-
-        ExecutionButton.TryGetComponent<Button>(out GameManager_Instance.executionBtn);
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
@@ -252,7 +250,7 @@ public class CodingUIManager : MonoBehaviour
 
     }
 
-    public void InsertBlock()
+    public void InsertCodingBlock()
     {
         AudioManager.Instance.Play_UISFX("InsertCodingBlock");
 
@@ -317,7 +315,7 @@ public class CodingUIManager : MonoBehaviour
         }
     }
 
-    public void DeleteBlock(ECurrentLayout currentLayout)
+    public void DeleteCodingBlock(ECurrentLayout currentLayout)
     {
         switch (currentLayout)
         {
@@ -352,40 +350,41 @@ public class CodingUIManager : MonoBehaviour
                 break;
         }
     }
-    public void ExecutionBlock()
+
+    public void ExecuteCodingBlock()
     {
         GameManager_Instance.Set_IsCompilerRunning(true);
 
-        ExecutionButton.gameObject.SetActive(false);
-        StopButton.gameObject.SetActive(true);
+        ExecuteButton.gameObject.SetActive(false);
+        AbortButton.gameObject.SetActive(true);
         LockUIElements(true);
 
-        OptionMenuOpenButton.GetComponent<Button>().interactable= false; // 캐싱해서 사용하기
+        OptionMenuOpenButton.interactable= false;
         OptionMenuOpenButton.transform.DOScale(0, 0.5f).SetEase(Ease.InOutExpo);
 
-        AudioManager.Instance.Play_UISFX("ExecutionButton");
+        AudioManager.Instance.Play_UISFX("ExecuteButton");
     }
 
-    public void StopBlock()
+    public void AbortCodingBlock()
     {
         GameManager_Instance.Set_IsCompilerRunning(false);
 
         PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition;
 
-        AudioManager.Instance.Play_UISFX("StopButton");
+        AudioManager.Instance.Play_UISFX("AbortButton");
 
-        RestartBlockAnimation();
+        AbortCodingBlocksAnimation();
         PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
         PlayerManager_Instance.ResetPlayerPosition();
 
-        StopButton.gameObject.SetActive(false);
-        UIAnimation.Animation_PlayButtonDelay(ExecutionButton, 1);
+        AbortButton.gameObject.SetActive(false);
+        UIAnimation.Animation_PlayButtonDelay(ExecuteButton, 1);
 
         OptionMenuOpenButton.transform.DOScale(1, 0.5f).SetEase(Ease.InOutExpo);
-        OptionMenuOpenButton.GetComponent<Button>().interactable = true; // 캐싱해서 사용하기
+        OptionMenuOpenButton.interactable = true;
     }
 
-    public void TimeScaleControl()
+    public void ControlTimeScale()
     {
         if (Time.timeScale == 1f)
         {
@@ -396,7 +395,7 @@ public class CodingUIManager : MonoBehaviour
         else
         {
             TimeControlButton.GetComponent<Image>().sprite = _timeControlOff;
-            UIAnimation.Animation_BlockShake(TimeControlButton);
+            UIAnimation.Animation_BlockShake(TimeControlButton.gameObject);
             Time.timeScale = 1f;
         }
 
@@ -404,7 +403,7 @@ public class CodingUIManager : MonoBehaviour
         UIAnimation.Animation_ButtonDelay(TimeControlButton, 1);
     }
 
-    public void LoopCounter(bool increase)
+    public void ControlLoopCount(bool increase)
     {
         int MinLoopCount = 1;
         int MaxLoopCount = 9;
@@ -458,7 +457,7 @@ public class CodingUIManager : MonoBehaviour
         }
     }
 
-    public void LockUIElements(bool enable)
+    public void LockUIElements(bool enable) // GetComponent 메서드 사용 수정하기
     {
         #region Blocks Lock
         ForwardButton.GetComponent<Button>().enabled = !enable;
@@ -537,7 +536,7 @@ public class CodingUIManager : MonoBehaviour
 
     }
 
-    public void RestartBlockAnimation()
+    public void AbortCodingBlocksAnimation()
     {
         if (GameManager_Instance.MainMethod.Count > 0)
         {
@@ -567,9 +566,9 @@ public class CodingUIManager : MonoBehaviour
     public void Initialize_CodingUIButtonState()
     {
         // 실행 정지 버튼이 표시 상태
-        StopButton.GetComponent<Button>().interactable = true;
-        StopButton.gameObject.SetActive(false);
-        ExecutionButton.gameObject.SetActive(true);
+        AbortButton.GetComponent<Button>().interactable = true;
+        AbortButton.gameObject.SetActive(false);
+        ExecuteButton.gameObject.SetActive(true);
 
         // 시간 배속 버튼의 표시 상태
         TimeControlButton.GetComponent<Image>().sprite = _timeControlOff;

@@ -315,9 +315,9 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: cbc4ae4ca6b5a9a4cab60a8a85a5dfc3, type: 3}
   - name: DeleteCodingBlock
     clip: {fileID: 8300000, guid: dad427bd0012ee844a0334fcc88828fd, type: 3}
-  - name: ExecutionButton
+  - name: ExecuteButton
     clip: {fileID: 8300000, guid: 1519d3f63ff6a0549b0d69a9e1d466c7, type: 3}
-  - name: StopButton
+  - name: AbortButton
     clip: {fileID: 8300000, guid: 5120f07db37d6e14bac92f09519a45b9, type: 3}
   - name: SelectMethod
     clip: {fileID: 8300000, guid: 63071481f2a6a1e45855faa3565c46a1, type: 3}
@@ -326,7 +326,7 @@ MonoBehaviour:
   - name: OptionMenuOpen
     clip: {fileID: 8300000, guid: 8ba9d35968e25554e9c2d34ef95911bd, type: 3}
   - name: TimeControl
-    clip: {fileID: 8300000, guid: 208c908e64b093f45bed5675ddae84d8, type: 3}
+    clip: {fileID: 8300000, guid: 8ba9d35968e25554e9c2d34ef95911bd, type: 3}
   - name: null
     clip: {fileID: 0}
   playerSfxSounds:

@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine;
-using static GameManager;
 using UnityEngine.SceneManagement;
-using static CodingUIManager;
 
 public class StageManager : MonoBehaviour
 {
@@ -16,11 +12,15 @@ public class StageManager : MonoBehaviour
     public Vector3 StageClearPanelInitPos { get; private set; }
 
     [Header("카메라 조작 범위값")]
-    [SerializeField] private float _camPanMinValueZ;
-    [SerializeField] private float _camPanMaxValueZ;
+
+    [SerializeField] private float _camPanMinValueX;
+    [SerializeField] private float _camPanMaxValueX;
 
     [SerializeField] private float _camPanMinValueY;
     [SerializeField] private float _camPanMaxValueY;
+
+    [SerializeField] private float _camPanMinValueZ;
+    [SerializeField] private float _camPanMaxValueZ;
 
     [field: SerializeField] public float CameraPanSpeed { get; private set; } = 0.35f;
 
@@ -28,7 +28,7 @@ public class StageManager : MonoBehaviour
     private void Start()
     {
         // .. 게임 매니저에 StageManager 등록
-        GameManager_Instance.Register_StageManager(this.gameObject);
+        GameManager.GameManager_Instance.Register_StageManager(this.gameObject);
 
         // .. 스테이지별 코인 갯수로 코인 정보를 갱신
         CoinCount = CoinObject.Length;
@@ -49,11 +49,14 @@ public class StageManager : MonoBehaviour
         // .. 이미 스테이지 배경음악이 재생중이라면 bool 변수를 통해서 스테이지 씬 일때만 이어서 재생
         // .. 배경음악이 재생 중인 상태에서 다른 씬으로 넘어가면 배경음악 소리가 서서히 작아 졌다가 커지는 효과
         // .. 스테이지 씬에서 레벨 셀렉션으로 넘어가면 다른 배경음악 재생 시작
+
+
+        
     }
 
     public void Update()
     {
-        if (GameManager_Instance.IsCompilerRunning || CodingUIManager_Instance.OptionPanel.activeSelf)
+        if (GameManager.GameManager_Instance.IsCompilerRunning || GameManager.CodingUIManager_Instance.OptionPanel.activeSelf)
             return;
 
         CameraPan();
@@ -67,12 +70,18 @@ public class StageManager : MonoBehaviour
         {
 
             Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            Vector3 newPosition = PlayerManager_Instance.CameraTargetObject.transform.position + new Vector3(0, -TouchDeltaPosition.y, -TouchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
+            Vector3 newPosition = GameManager.PlayerManager_Instance.CameraTargetObject.transform.position + new Vector3(TouchDeltaPosition.x, -TouchDeltaPosition.y, -TouchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
 
-            newPosition.z = Mathf.Clamp(newPosition.z, PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMinValueZ, PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMaxValueZ);
-            newPosition.y = Mathf.Clamp(newPosition.y, PlayerManager_Instance.CamTargetStartWorldPosition.y + _camPanMinValueY, PlayerManager_Instance.CamTargetStartWorldPosition.y + _camPanMaxValueY);
+            newPosition.x = Mathf.Clamp(newPosition.x, GameManager.PlayerManager_Instance.CamTargetStartWorldPosition.x + _camPanMinValueX, 
+                GameManager.PlayerManager_Instance.CamTargetStartWorldPosition.x + _camPanMaxValueX);
 
-            PlayerManager_Instance.CameraTargetObject.transform.position = newPosition;
+            newPosition.y = Mathf.Clamp(newPosition.y, GameManager.PlayerManager_Instance.CamTargetStartWorldPosition.y + _camPanMinValueY,
+                GameManager.PlayerManager_Instance.CamTargetStartWorldPosition.y + _camPanMaxValueY);
+
+            newPosition.z = Mathf.Clamp(newPosition.z, GameManager.PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMinValueZ,
+                GameManager.PlayerManager_Instance.CamTargetStartWorldPosition.z + _camPanMaxValueZ);
+
+            GameManager.PlayerManager_Instance.CameraTargetObject.transform.position = newPosition;
         }
     }
 
@@ -100,9 +109,11 @@ public class StageManager : MonoBehaviour
 
     public void StageClear()
     {
-        GameManager.CodingUIManager_Instance.StopButton.GetComponent<Button>().interactable = false; // TODO: GetComponent 메서드 사용 말고 캐싱해서 코드 작성하기
+        GameManager.CodingUIManager_Instance.AbortButton.GetComponent<Button>().interactable = false; // TODO: GetComponent 메서드 사용 말고 캐싱해서 코드 작성하기
 
-        GameManager_Instance.Set_IsStageClear(true);
+        GameManager.CodingUIManager_Instance.OptionMenuOpenButton.interactable = true;
+
+        GameManager.GameManager_Instance.Set_IsStageClear(true);
 
         UnlockNewLevel();
 
