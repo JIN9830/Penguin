@@ -10,7 +10,10 @@ public class GameManager : MonoBehaviour
         Main,
         Function,
         Loop,
-    } public ECurrentMethod currentMethod = ECurrentMethod.Main;
+    } 
+    
+    public ECurrentMethod currentMethod = ECurrentMethod.Main;
+    
 
     public static GameManager GameManager_Instance { get; private set; }
     public static ObjectPoolManager ObjectPoolManager_Instance { get; private set; }
@@ -18,9 +21,9 @@ public class GameManager : MonoBehaviour
     public static CodingUIManager CodingUIManager_Instance { get; private set; }
     public static StageManager StageManager_Instance { get; private set; }
 
-    public List<CodingBlock> MainMethod { get; private set; } = new List<CodingBlock>();
-    public List<CodingBlock> FunctionMethod { get; private set; } = new List<CodingBlock>();
-    public List<CodingBlock> LoopMethod { get; private set; } = new List<CodingBlock>();
+    public List<CodingBlock> MainMethodList { get; private set; } = new List<CodingBlock>();
+    public List<CodingBlock> FunctionMethodList { get; private set; } = new List<CodingBlock>();
+    public List<CodingBlock> LoopMethodList { get; private set; } = new List<CodingBlock>();
 
     [field: SerializeField] public int LoopReaptCount { get; set; } = 1;
 
@@ -75,7 +78,7 @@ public class GameManager : MonoBehaviour
 
             PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition; // 블록 실행을 누르면 카메라타겟이 플레이어 위치로 고정
 
-            foreach (CodingBlock block in MainMethod)
+            foreach (CodingBlock block in MainMethodList)
             {
                 yield return Util.WaitForSecond(1.0f);
 
@@ -117,7 +120,7 @@ public class GameManager : MonoBehaviour
                 #region ======================== Function Compiler Code ===========================================
                 case ECurrentMethod.Function:
 
-                    foreach (CodingBlock block in FunctionMethod)
+                    foreach (CodingBlock block in FunctionMethodList)
                     {
                         yield return Util.WaitForSecond(1.0f);
 
@@ -132,7 +135,7 @@ public class GameManager : MonoBehaviour
 
                     if (IsCompilerRunning || !IsStageClear) yield return Util.WaitForSecond(1.0f);
 
-                    foreach (CodingBlock block in FunctionMethod)
+                    foreach (CodingBlock block in FunctionMethodList)
                     {
                         block.ToggleHighLight(false);
                     }
@@ -153,7 +156,7 @@ public class GameManager : MonoBehaviour
                     for (int i = 0; i < LoopReaptCountTemp; i++)
                     {
                         // .. Loop 메서드의 내부의 블록들을 순차적으로 실행합니다.
-                        foreach (CodingBlock block in LoopMethod)
+                        foreach (CodingBlock block in LoopMethodList)
                         {
                             yield return Util.WaitForSecond(1.0f);
 
@@ -172,7 +175,7 @@ public class GameManager : MonoBehaviour
                         {
                             yield return Util.WaitForSecond(1.0f);
 
-                            foreach (CodingBlock block in LoopMethod)
+                            foreach (CodingBlock block in LoopMethodList)
                             {
                                 block.ToggleHighLight(false);
                             }
@@ -201,23 +204,23 @@ public class GameManager : MonoBehaviour
     public void Initialize_CodingMethod()
     {
         // .. 레이아웃에 있는 블록 오브젝트들을 오브젝트 풀에 전부 반환
-        foreach (CodingBlock blockObj in MainMethod)
+        foreach (CodingBlock blockObj in MainMethodList)
         {
             blockObj.ReleaseBlock();
         }
-        foreach (CodingBlock blockObj in FunctionMethod)
+        foreach (CodingBlock blockObj in FunctionMethodList)
         {
             blockObj.ReleaseBlock();
         }
-        foreach (CodingBlock blockObj in LoopMethod)
+        foreach (CodingBlock blockObj in LoopMethodList)
         {
             blockObj.ReleaseBlock();
         }
 
         // .. 각 리스트 내부의 코딩블럭 데이터를 전부 삭제
-        MainMethod.Clear();
-        FunctionMethod.Clear();   
-        LoopMethod.Clear();
+        MainMethodList.Clear();
+        FunctionMethodList.Clear();   
+        LoopMethodList.Clear();
 
         // .. 코딩블럭 컴파일의 실행 상태 변수와 & 게임 클리어 상태 변수를 디폴드 값인 거짓으로 변경
         IsCompilerRunning = false;

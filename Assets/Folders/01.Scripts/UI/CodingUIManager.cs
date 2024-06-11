@@ -14,10 +14,12 @@ public class CodingUIManager : MonoBehaviour
         Main,
         Function,
         Loop,
-    } public ECurrentLayout currentLayout;
+    } 
+    
+    public ECurrentLayout currentLayout;
 
 
-    public static CodingUIManager Instance { get; private set; }
+    public CodingUIManager Instance { get; private set; }
 
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
@@ -156,14 +158,14 @@ public class CodingUIManager : MonoBehaviour
         ClearNextButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadNextScene()));
         #endregion
 
+        ClearPanelInitPos = ClearPanel.transform.localPosition;
+
     }
 
     private void Start()
     {
         // .. 게임 매니저에 CodingUIManager 등록
-        GameManager_Instance.Register_CodingUIManager(this.gameObject);
-
-        ClearPanelInitPos = ClearPanel.transform.localPosition;
+        GameManager_Instance.Register_CodingUIManager(Instance.gameObject);
     }
 
     public void SelectMethod(ECurrentLayout selectMethod)
@@ -256,7 +258,7 @@ public class CodingUIManager : MonoBehaviour
 
         if (ObjectPoolManager_Instance.blockCategory == BlockCategory.Function || ObjectPoolManager_Instance.blockCategory == BlockCategory.Loop)
         {
-            if (GameManager_Instance.MainMethod.Count < 10)
+            if (GameManager_Instance.MainMethodList.Count < 10)
             {
                 SelectMethod(ECurrentLayout.Main);
 
@@ -264,9 +266,9 @@ public class CodingUIManager : MonoBehaviour
                 CodingBlock block = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.blockCategory);
                 block.transform.SetParent(MainLayout.transform);
 
-                GameManager_Instance.MainMethod.Add(block);
+                GameManager_Instance.MainMethodList.Add(block);
                 block.GetComponent<CodingBlock>().enabled = false;
-                UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
+                UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethodList.Last().gameObject);
             }
         }
         else
@@ -274,41 +276,41 @@ public class CodingUIManager : MonoBehaviour
             switch (currentLayout)
             {
                 case ECurrentLayout.Main:
-                    if (GameManager_Instance.MainMethod.Count < 10)
+                    if (GameManager_Instance.MainMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
                         CodingBlock block = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.blockCategory);
                         block.transform.SetParent(MainLayout.transform);
 
-                        GameManager_Instance.MainMethod.Add(block);
+                        GameManager_Instance.MainMethodList.Add(block);
                         block.GetComponent<CodingBlock>().enabled = false;
-                        UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethod.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(GameManager_Instance.MainMethodList.Last().gameObject);
                     }
                     break;
 
                 case ECurrentLayout.Function:
-                    if (GameManager_Instance.FunctionMethod.Count < 10)
+                    if (GameManager_Instance.FunctionMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 FunctionLayout에 블록을 넣어줍니다.
                         CodingBlock block = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.blockCategory);
                         block.transform.SetParent(FunctionLayout.transform);
 
-                        GameManager_Instance.FunctionMethod.Add(block);
+                        GameManager_Instance.FunctionMethodList.Add(block);
                         block.GetComponent<CodingBlock>().enabled = false;
-                        UIAnimation.Animation_BlockPop(GameManager_Instance.FunctionMethod.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(GameManager_Instance.FunctionMethodList.Last().gameObject);
                     }
                     break;
 
                 case ECurrentLayout.Loop:
-                    if (GameManager_Instance.LoopMethod.Count < 10)
+                    if (GameManager_Instance.LoopMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 LoopLayout에 블록을 넣어줍니다.
                         CodingBlock block = ObjectPoolManager_Instance.SelectBlockFromPool(ObjectPoolManager_Instance.blockCategory);
                         block.transform.SetParent(LoopLayout.transform);
 
-                        GameManager_Instance.LoopMethod.Add(block);
+                        GameManager_Instance.LoopMethodList.Add(block);
                         block.GetComponent<CodingBlock>().enabled = false;
-                        UIAnimation.Animation_BlockPop(GameManager_Instance.LoopMethod.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(GameManager_Instance.LoopMethodList.Last().gameObject);
                     }
                     break;
             }
@@ -320,31 +322,31 @@ public class CodingUIManager : MonoBehaviour
         switch (currentLayout)
         {
             case ECurrentLayout.Main:
-                if (GameManager_Instance.MainMethod.Count > 0)
+                if (GameManager_Instance.MainMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
-                    CodingBlock lastblock = GameManager_Instance.MainMethod.Last();
-                    GameManager_Instance.MainMethod.Remove(lastblock);
+                    CodingBlock lastblock = GameManager_Instance.MainMethodList.Last();
+                    GameManager_Instance.MainMethodList.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
                 }
                 break;
 
             case ECurrentLayout.Function:
-                if (GameManager_Instance.FunctionMethod.Count > 0)
+                if (GameManager_Instance.FunctionMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
-                    CodingBlock lastblock = GameManager_Instance.FunctionMethod.Last();
-                    GameManager_Instance.FunctionMethod.Remove(lastblock);
+                    CodingBlock lastblock = GameManager_Instance.FunctionMethodList.Last();
+                    GameManager_Instance.FunctionMethodList.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
                 }
                 break;
 
             case ECurrentLayout.Loop:
-                if (GameManager_Instance.LoopMethod.Count > 0)
+                if (GameManager_Instance.LoopMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
-                    CodingBlock lastblock = GameManager_Instance.LoopMethod.Last();
-                    GameManager_Instance.LoopMethod.Remove(lastblock);
+                    CodingBlock lastblock = GameManager_Instance.LoopMethodList.Last();
+                    GameManager_Instance.LoopMethodList.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
                 }
                 break;
@@ -509,26 +511,26 @@ public class CodingUIManager : MonoBehaviour
 
     public void DisableBlockHighlights()
     {
-        if (GameManager_Instance.MainMethod.Count > 0)
+        if (GameManager_Instance.MainMethodList.Count > 0)
         {
-            foreach (CodingBlock block in GameManager_Instance.MainMethod)
+            foreach (CodingBlock block in GameManager_Instance.MainMethodList)
             {
                 block.ToggleHighLight(false);
             }
 
         }
 
-        if (GameManager_Instance.FunctionMethod.Count > 0)
+        if (GameManager_Instance.FunctionMethodList.Count > 0)
         {
-            foreach (CodingBlock block in GameManager_Instance.FunctionMethod)
+            foreach (CodingBlock block in GameManager_Instance.FunctionMethodList)
             {
                 block.ToggleHighLight(false);
             }
         }
 
-        if (GameManager_Instance.LoopMethod.Count > 0)
+        if (GameManager_Instance.LoopMethodList.Count > 0)
         {
-            foreach (CodingBlock block in GameManager_Instance.LoopMethod)
+            foreach (CodingBlock block in GameManager_Instance.LoopMethodList)
             {
                 block.ToggleHighLight(false);
             }
@@ -538,25 +540,25 @@ public class CodingUIManager : MonoBehaviour
 
     public void AbortCodingBlocksAnimation()
     {
-        if (GameManager_Instance.MainMethod.Count > 0)
+        if (GameManager_Instance.MainMethodList.Count > 0)
         {
-            foreach (CodingBlock block in GameManager_Instance.MainMethod)
+            foreach (CodingBlock block in GameManager_Instance.MainMethodList)
             {
                 UIAnimation.Animation_BlockShake(block.gameObject);
             }
         }
 
-        if (GameManager_Instance.FunctionMethod.Count > 0)
+        if (GameManager_Instance.FunctionMethodList.Count > 0)
         {
-            foreach (CodingBlock block in GameManager_Instance.FunctionMethod)
+            foreach (CodingBlock block in GameManager_Instance.FunctionMethodList)
             {
                 UIAnimation.Animation_BlockShake(block.gameObject);
             }
         }
 
-        if (GameManager_Instance.LoopMethod.Count > 0)
+        if (GameManager_Instance.LoopMethodList.Count > 0)
         {
-            foreach (CodingBlock block in GameManager_Instance.LoopMethod)
+            foreach (CodingBlock block in GameManager_Instance.LoopMethodList)
             {
                 UIAnimation.Animation_BlockShake(block.gameObject);
             }
