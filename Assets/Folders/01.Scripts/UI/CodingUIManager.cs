@@ -25,9 +25,9 @@ public class CodingUIManager : MonoBehaviour
 
 
     [field: Header("그리드 레이아웃 오브젝트")]
-    [field: SerializeField] public GameObject MainLayout { get; private set; }
-    [field: SerializeField] public GameObject FunctionLayout { get; private set; }
-    [field: SerializeField] public GameObject LoopLayout { get; private set; }
+    [field: SerializeField] public Button MainLayout { get; private set; }
+    [field: SerializeField] public Button FunctionLayout { get; private set; }
+    [field: SerializeField] public Button LoopLayout { get; private set; }
 
     private Image _mainLayoutImageComponent, _functionLayoutImageComponent, _loopLayoutImageComponent;
     private readonly Color _GREY_LAYOUT_COLOR = new Color32(135, 135, 135, 125);
@@ -37,15 +37,15 @@ public class CodingUIManager : MonoBehaviour
 
 
     [field: Header("블럭 삭제 버튼")]
-    [field: SerializeField] public GameObject MainDelete { get; private set; }
-    [field: SerializeField] public GameObject FunctionDelete { get; private set; }
-    [field: SerializeField] public GameObject LoopDelete { get; private set; }
+    [field: SerializeField] public Button MainDelete { get; private set; }
+    [field: SerializeField] public Button FunctionDelete { get; private set; }
+    [field: SerializeField] public Button LoopDelete { get; private set; }
 
 
     [field: Header("북마크 오브젝트")]
-    [field: SerializeField] public GameObject MainBookmark { get; private set; }
-    [field: SerializeField] public GameObject FunctionBookmark { get; private set; }
-    [field: SerializeField] public GameObject LoopBookmark { get; private set; }
+    [field: SerializeField] public Button MainBookmark { get; private set; }
+    [field: SerializeField] public Button FunctionBookmark { get; private set; }
+    [field: SerializeField] public Button LoopBookmark { get; private set; }
     [field: SerializeField] public Button LoopCountPlus { get; private set; }
     [field: SerializeField] public Button LoopCountMinus { get; private set; }
     [field: SerializeField] public TextMeshProUGUI LoopCountText { get; private set; }
@@ -60,11 +60,11 @@ public class CodingUIManager : MonoBehaviour
 
 
     [field: Header("코딩블럭 버튼 오브젝트")]
-    [field: SerializeField] public GameObject ForwardButton { get; private set; }
-    [field: SerializeField] public GameObject TurnLeftButton { get; private set; }
-    [field: SerializeField] public GameObject TurnRightButton { get; private set; }
-    [field: SerializeField] public GameObject FunctionButton { get; private set; }
-    [field: SerializeField] public GameObject LoopButton { get; private set; }
+    [field: SerializeField] public Button ForwardButton { get; private set; }
+    [field: SerializeField] public Button TurnLeftButton { get; private set; }
+    [field: SerializeField] public Button TurnRightButton { get; private set; }
+    [field: SerializeField] public Button FunctionButton { get; private set; }
+    [field: SerializeField] public Button LoopButton { get; private set; }
 
 
     [field: Header("옵션 UI")]
@@ -94,7 +94,6 @@ public class CodingUIManager : MonoBehaviour
     private Vector3 functargetScale = new Vector3(0.75f, 0.75f, 0.75f);
 
     
-
     private void Awake()
     {
         #region Singleton Code
@@ -108,10 +107,6 @@ public class CodingUIManager : MonoBehaviour
             Destroy(this.gameObject);
         #endregion
 
-        MainLayout.TryGetComponent<Image>(out _mainLayoutImageComponent);
-        FunctionLayout.TryGetComponent<Image>(out _functionLayoutImageComponent);
-        LoopLayout.TryGetComponent<Image>(out _loopLayoutImageComponent);
-
         // .. 버튼들의 클릭 이벤트 함수 등록
         #region Coding blocks onClickAddListener
         // 유저가 블록을 클릭하면, ObjectPoolManager의 blockCategory가 해당 블록으로 설정되고 InsertCodingBlock 메서드가 실행됩니다.
@@ -122,7 +117,7 @@ public class CodingUIManager : MonoBehaviour
         LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager.Instance.blockCategory = ObjectPoolManager.BlockCategory.Loop; InsertCodingBlock(); });
         #endregion
 
-        #region Layout activate onClickAddListener
+        #region Layout activate onClickAddListener & Layout ImageComponent _variable
         MainLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Main));
         FunctionLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Function));
         LoopLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Loop));
@@ -130,6 +125,10 @@ public class CodingUIManager : MonoBehaviour
         MainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Main));
         FunctionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Loop));
         LoopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Function));
+
+        MainLayout.TryGetComponent<Image>(out _mainLayoutImageComponent);
+        FunctionLayout.TryGetComponent<Image>(out _functionLayoutImageComponent);
+        LoopLayout.TryGetComponent<Image>(out _loopLayoutImageComponent);
         #endregion
 
         #region block delete OnClickAddListener
@@ -423,10 +422,11 @@ public class CodingUIManager : MonoBehaviour
     {
         AudioManager.Instance.Play_UISFX("OptionMenuOpen");
 
+        // .. OptionPanel의 현재 활성화 상태를 확인하여 조건을 분기합니다.
         switch (OptionPanel.activeSelf)
         {
-            // .. 옵션 UI가 켜져 있으면 옵션 UI를 끈다.
-            case true:
+
+            case true:  // OptionPanel이 현재 활성화된 경우 OptionPanel을 비활성화
                 OptionMenuOpenButton.interactable = false;
                 TuchBlockPanel.SetActive(false);
 
@@ -438,8 +438,8 @@ public class CodingUIManager : MonoBehaviour
                     });
                 break;
 
-            // .. 옵션 UI가 꺼져 있으면 옵션 UI를 킨다.
-            case false:
+
+            case false:  // OptionPanel이 현재 비활성화된 경우 OptionPanel을 활성화
                 OptionMenuOpenButton.interactable = false;
                 OptionPanel.SetActive(true);
                 TuchBlockPanel.SetActive(true);
@@ -457,25 +457,25 @@ public class CodingUIManager : MonoBehaviour
     public void LockUIElements(bool enable) // GetComponent 메서드 사용 수정하기
     {
         #region Blocks Lock
-        ForwardButton.GetComponent<Button>().enabled = !enable;
-        TurnLeftButton.GetComponent<Button>().enabled = !enable;
-        TurnRightButton.GetComponent<Button>().enabled = !enable;
-        FunctionButton.GetComponent<Button>().enabled = !enable;
-        LoopButton.GetComponent<Button>().enabled = !enable;
+        ForwardButton.enabled = !enable;
+        TurnLeftButton.enabled = !enable;
+        TurnRightButton.enabled = !enable;
+        FunctionButton.enabled = !enable;
+        LoopButton.enabled = !enable;
         #endregion
 
         #region Layout & Bookmark & Delete Lock
-        MainLayout.GetComponent<Button>().interactable = !enable;
-        FunctionLayout.GetComponent<Button>().interactable = !enable;
-        LoopLayout.GetComponent<Button>().interactable = !enable;
+        MainLayout.interactable = !enable;
+        FunctionLayout.interactable = !enable;
+        LoopLayout.interactable = !enable;
 
-        MainBookmark.GetComponent<Button>().interactable = !enable;
-        FunctionBookmark.GetComponent<Button>().interactable = !enable;
-        LoopBookmark.GetComponent<Button>().interactable = !enable;
+        MainBookmark.interactable = !enable;
+        FunctionBookmark.interactable = !enable;
+        LoopBookmark.interactable = !enable;
 
-        MainDelete.GetComponent<Button>().interactable = !enable;
-        FunctionDelete.GetComponent<Button>().interactable = !enable;
-        LoopDelete.GetComponent<Button>().interactable = !enable;
+        MainDelete.interactable = !enable;
+        FunctionDelete.interactable = !enable;
+        LoopDelete.interactable = !enable;
 
         LoopCountPlus.interactable = !enable;
         LoopCountMinus.interactable = !enable;
@@ -486,22 +486,22 @@ public class CodingUIManager : MonoBehaviour
 
     public void ShakeUIElements()
     {
-        UIAnimation.Animation_UIShake(MainLayout);
-        UIAnimation.Animation_UIShake(MainDelete);
-        UIAnimation.Animation_UIShake(MainBookmark);
+        UIAnimation.Animation_UIShake(MainLayout.gameObject);
+        UIAnimation.Animation_UIShake(MainDelete.gameObject);
+        UIAnimation.Animation_UIShake(MainBookmark.gameObject);
 
-        UIAnimation.Animation_UIShake(FunctionLayout);
-        UIAnimation.Animation_UIShake(FunctionDelete);
-        UIAnimation.Animation_UIShake(FunctionBookmark);
+        UIAnimation.Animation_UIShake(FunctionLayout.gameObject);
+        UIAnimation.Animation_UIShake(FunctionDelete.gameObject);
+        UIAnimation.Animation_UIShake(FunctionBookmark.gameObject);
 
-        UIAnimation.Animation_UIShake(LoopLayout);
-        UIAnimation.Animation_UIShake(LoopDelete);
-        UIAnimation.Animation_UIShake(LoopBookmark);
+        UIAnimation.Animation_UIShake(LoopLayout.gameObject);
+        UIAnimation.Animation_UIShake(LoopDelete.gameObject);
+        UIAnimation.Animation_UIShake(LoopBookmark.gameObject);
 
-        UIAnimation.Animation_UIShake(ForwardButton);
-        UIAnimation.Animation_UIShake(TurnLeftButton);
-        UIAnimation.Animation_UIShake(TurnRightButton);
-        UIAnimation.Animation_UIShake(FunctionButton);
+        UIAnimation.Animation_UIShake(ForwardButton.gameObject);
+        UIAnimation.Animation_UIShake(TurnLeftButton.gameObject);
+        UIAnimation.Animation_UIShake(TurnRightButton.gameObject);
+        UIAnimation.Animation_UIShake(FunctionButton.gameObject);
     }
 
     public void DisableBlockHighlights()
@@ -563,7 +563,7 @@ public class CodingUIManager : MonoBehaviour
     public void Initialize_CodingUIButtonState()
     {
         // 실행 정지 버튼이 표시 상태
-        AbortButton.GetComponent<Button>().interactable = true;
+        AbortButton.interactable = true;
         AbortButton.gameObject.SetActive(false);
         ExecuteButton.gameObject.SetActive(true);
 

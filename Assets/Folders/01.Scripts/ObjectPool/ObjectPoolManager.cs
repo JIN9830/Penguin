@@ -25,7 +25,6 @@ public class ObjectPoolManager : MonoBehaviour
     }
     public BlockCategory blockCategory { get; set; }
 
-
     public static ObjectPoolManager Instance { get; private set; }
 
     public Dictionary<BlockCategory, IObjectPool<CodingBlock>> PoolManagementDic { get; private set; } = new Dictionary<BlockCategory, IObjectPool<CodingBlock>>();

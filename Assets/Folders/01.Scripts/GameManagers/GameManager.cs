@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
     public bool IsStageClear { get; set; } = false;
 
 
-
     private Coroutine _blockCompiler;
     private Coroutine _subBlockCompiler;
 
@@ -79,7 +78,6 @@ public class GameManager : MonoBehaviour
             // .. 사용자가 코딩 블록 실행 버튼을 누를 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
             yield return WaitUntilExecutionTrigger;
 
-            // .. 블록 코딩을 시작하면 코드 실행 버튼을 비활성화 합니다.
             CodingUIManager.Instance.ExecuteButton.interactable = false;
 
             // .. 블록 실행을 누르면 카메라 타겟이 플레이어 위치로 고정
@@ -89,7 +87,6 @@ public class GameManager : MonoBehaviour
             {
                 yield return Util.WaitForSecond(1.0f);
 
-                // .. 플레이어가 블록 정지 버튼을 누르거나 스테이지를 클리어하면 IsCompilerRunning = false로 바뀌어 블록 순차 실행 코드를 탈출합니다.
                 if (!IsCompilerRunning || IsStageClear) 
                     break;
 
@@ -109,14 +106,13 @@ public class GameManager : MonoBehaviour
             CodingUIManager.Instance.DisableBlockHighlights();
             CodingUIManager.Instance.LockUIElements(false);
 
-            // .. 블록 코딩이 끝나면 코드 실행 버튼을 활성화 합니다.
             CodingUIManager.Instance.ExecuteButton.interactable = true; 
         }
     }
 
     /// <summary>
-    /// 함수(func), 반복문(Loop) 블록이 실행 될 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
-    /// 함수, 반복문 블록이 실행되면 MainLayout에 있는 Func, Loop 블록의 내부에 있는 블록들을 순차적으로 실행합니다.
+    /// 함수[Func], 반복문[Loop] 블록이 실행 될 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
+    /// 블록이 실행되면 함수[Func], 반복문[Loop] 블록의 내부에 있는 코딩블록을 순차적으로 실행합니다.
     /// </summary>
     public IEnumerator SubBlockCompiler_Co()
     {
