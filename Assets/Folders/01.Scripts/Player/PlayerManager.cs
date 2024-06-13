@@ -48,11 +48,11 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         // .. 게임 매니저에 PlayerManager 등록
-        GameManager_Instance.Register_PlayerManager(this.gameObject);
+        Instance.Register_PlayerManager(this.gameObject);
 
         // 코딩시티 씬이 시작될때 카메라 무빙을 시직 (테스트용 코드)
         CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
-        CameraTargetObject.transform.DOLocalMoveY(0, 0.8f).SetDelay(0.2f).OnComplete(()=> GameManager.CodingUIManager_Instance.CityNameObj.text = SceneManager.GetActiveScene().name);
+        CameraTargetObject.transform.DOLocalMoveY(0, 0.8f).SetDelay(0.2f).OnComplete(()=> CodingUIManager.Instance.CityNameObj.text = SceneManager.GetActiveScene().name);
     }
 
     public void InitPlayerMoveVector() // .. 현재 플레이어의 포지션, 전진 벡터 값을 갱신

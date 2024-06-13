@@ -32,27 +32,27 @@ public class Forward : CodingBlock
         // 1.. 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
         if (Physics.Raycast(PlayerManager_Instance.PlayerObject.transform.localPosition, PlayerManager_Instance.PlayerObject.transform.forward, out _hit, _DISTANCE))
         {
-            BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_BlockShake(this.gameObject);
+            BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (_hit.collider.CompareTag("Wall"))
             {
                 AudioManager.Instance.Play_PlayerSFX("HitTheWall");
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("HitTheWall");
-                CodingUIManager_Instance.ShakeUIElements();
-                this.GetComponent<CodingBlock>().enabled = false;
+                CodingUIManager.Instance.ShakeUIElements();
+                this.enabled = false;
             }
             else if (_hit.collider.CompareTag("Edge"))
             {
                 AudioManager.Instance.Play_PlayerSFX("ReachTheEdge");
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("ReachTheEdge");
-                this.GetComponent<CodingBlock>().enabled = false;
+                this.enabled = false;
             }
 
         }
         // 2... 장애물이 없다면 Update에서 앞으로 전진하는 PlayerMove 메서드를 호출하도록 PlayerState를 Forwarding로 변경
         else
         {
-            BlockTweener = CodingUIManager_Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
+            BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
             PlayerManager_Instance.playerState = PlayerManager.PlayerState.Forwarding;
             PlayerManager_Instance.FootStepDust.Play();
         }
@@ -68,18 +68,17 @@ public class Forward : CodingBlock
 
         if (_deltaTimeCount > 1)
         {
-            this.GetComponent<CodingBlock>().enabled = false;
+            this.enabled = false;
         }
 
     }
 
     private void Update()
     {
-        // ..플레이어가 정지 버튼을 누르면 블록의 애니메이션을 종료하고 블록 스크립트를 비활성화
-        if (GameManager_Instance.IsCompilerRunning == false)
+        if (Instance.IsCompilerRunning == false)
         {
             BlockTweener.Kill();
-            this.GetComponent<CodingBlock>().enabled = false;
+            this.enabled = false;
         }
         else if (PlayerManager_Instance.playerState == PlayerManager.PlayerState.Forwarding)
         {

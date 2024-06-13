@@ -1105,7 +1105,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
@@ -1261,7 +1261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b828f64aef53f34ebd1d6a0ecb071d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLayout: 0
   <ReleasedBlocks>k__BackingField: {fileID: 4023877729973766819}
   <CodingUICanvas>k__BackingField: {fileID: 373343611639230003}
   <MainLayout>k__BackingField: {fileID: 5079957943747705782}

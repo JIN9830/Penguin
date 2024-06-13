@@ -42,14 +42,14 @@ public class GameSceneManager : MonoBehaviour
         SetUp_NextCodingScene();
 
         LoadingTouchBlockPanel.SetActive(true);
-        GameManager.CodingUIManager_Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, true);
+        CodingUIManager.Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, true);
 
         yield return Util.WaitForSecond(1.0f);
 
         SceneManager.LoadSceneAsync(sceneIndex);
 
         LoadingTouchBlockPanel.SetActive(false);
-        GameManager.CodingUIManager_Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, false);
+        CodingUIManager.Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, false);
     }
 
     public IEnumerator LoadNextScene()
@@ -57,7 +57,7 @@ public class GameSceneManager : MonoBehaviour
         SetUp_NextCodingScene();
 
         LoadingTouchBlockPanel.SetActive(true);
-        GameManager.CodingUIManager_Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, true);
+        CodingUIManager.Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, true);
 
         yield return Util.WaitForSecond(1.0f);
 
@@ -67,7 +67,7 @@ public class GameSceneManager : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
 
         LoadingTouchBlockPanel.SetActive(false);
-        GameManager.CodingUIManager_Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, false);
+        CodingUIManager.Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, false);
     }
 
     public void SetUp_NextCodingScene()
@@ -78,13 +78,13 @@ public class GameSceneManager : MonoBehaviour
 
             DOTween.KillAll();
 
-            GameManager.CodingUIManager_Instance.Initialize_CodingUIButtonState();
+            CodingUIManager.Instance.Initialize_CodingUIButtonState();
 
-            if (GameManager.CodingUIManager_Instance.OptionPanel.activeSelf)
-                GameManager.CodingUIManager_Instance.ActiveOption();
+            if (CodingUIManager.Instance.OptionPanel.activeSelf)
+                CodingUIManager.Instance.ActiveOption();
         }
 
-        GameManager.GameManager_Instance.Initialize_CodingMethod();
-        GameManager.CodingUIManager_Instance.SelectMethod(ECurrentLayout.Main);
+        GameManager.Instance.Initialize_CodingMethod();
+        CodingUIManager.Instance.SelectMethod(ECurrentLayout.Main);
     }
 }

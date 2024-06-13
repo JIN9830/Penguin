@@ -5,7 +5,6 @@ using UnityEngine;
 public class Util
 {
     public static readonly Dictionary<float, WaitForSeconds> m_WaitForSecondsDic = new Dictionary<float, WaitForSeconds>();
-
     public static WaitForSeconds WaitForSecond(float waitTime)
     {
         WaitForSeconds wfs;

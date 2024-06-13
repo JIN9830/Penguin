@@ -5,44 +5,48 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public enum ECurrentMethod
+    public enum CurrentMethod
     {
         Main,
         Function,
         Loop,
-    } 
-    
-    public ECurrentMethod currentMethod = ECurrentMethod.Main;
-    
+    }
+    public CurrentMethod currentMethod { get; set; } = CurrentMethod.Main;
 
-    public static GameManager GameManager_Instance { get; private set; }
-    public static ObjectPoolManager ObjectPoolManager_Instance { get; private set; }
+
+    public static GameManager Instance { get; private set; }
+
     public static PlayerManager PlayerManager_Instance { get; private set; }
-    public static CodingUIManager CodingUIManager_Instance { get; private set; }
     public static StageManager StageManager_Instance { get; private set; }
+
 
     public List<CodingBlock> MainMethodList { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> FunctionMethodList { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> LoopMethodList { get; private set; } = new List<CodingBlock>();
-
     [field: SerializeField] public int LoopReaptCount { get; set; } = 1;
+
 
     public bool IsCompilerRunning { get; set; } = false;
     public bool IsStageClear { get; set; } = false;
 
+
+
     private Coroutine _blockCompiler;
     private Coroutine _subBlockCompiler;
+
 
     public WaitUntil WaitUntilExecutionTrigger { get; private set; }
     public WaitUntil WaitUntilSubMethodTrigger { get; private set; }
     public WaitUntil WaitUntilEndOfSubMethod { get; private set; }
 
+
+
     private void Awake()
     {
         #region Singleton Code
-        if (GameManager_Instance == null)
+        if (Instance == null)
         {
-            GameManager_Instance = this;
+            Instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
         else
@@ -52,8 +56,8 @@ public class GameManager : MonoBehaviour
         #endregion
 
         WaitUntilExecutionTrigger = new WaitUntil(() => IsCompilerRunning == true);
-        WaitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != ECurrentMethod.Main);
-        WaitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == ECurrentMethod.Main);
+        WaitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != CurrentMethod.Main);
+        WaitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == CurrentMethod.Main);
 
         Application.targetFrameRate = 144;
     }
@@ -65,31 +69,36 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// GameManager 스크립트에서 무한 루프를 돌고 있는 메서드이며, MainLayout에 있는 블록들을 순차적으로 실행합니다.
+    /// 사용자가 코딩 블록 실행 버튼을 누를 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
+    /// 사용자가 실행 버튼을 누르면, MainLayout에 있는 블록들이 순차적으로 실행됩니다.
     /// </summary>
     public IEnumerator BlockCompiler_Co()
     {
         while (true)
         {
-            // .. 플레이어가 블록 실행 버튼을 누르기 전까지 해당 부분에서 대기하다가 블록 실행 버튼을 누르면 아래의 코드들이 진행되며 블록들이 실행됩니다.
+            // .. 사용자가 코딩 블록 실행 버튼을 누를 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
             yield return WaitUntilExecutionTrigger;
 
-            CodingUIManager_Instance.ExecuteButton.interactable = false; // 블록 코딩을 시작하면 코드 실행 버튼을 비활성화 합니다.
+            // .. 블록 코딩을 시작하면 코드 실행 버튼을 비활성화 합니다.
+            CodingUIManager.Instance.ExecuteButton.interactable = false;
 
-            PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition; // 블록 실행을 누르면 카메라타겟이 플레이어 위치로 고정
+            // .. 블록 실행을 누르면 카메라 타겟이 플레이어 위치로 고정
+            PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition; 
 
             foreach (CodingBlock block in MainMethodList)
             {
                 yield return Util.WaitForSecond(1.0f);
 
-                if (!IsCompilerRunning || IsStageClear) // .. 플레이어가 블록 정지 버튼을 누르거나 스테이지를 클리어하면 IsCompilerRunning가 false로 바뀌어 블록 순차 실행 코드를 탈출하여 블록 실행을 중단합니다.
+                // .. 플레이어가 블록 정지 버튼을 누르거나 스테이지를 클리어하면 IsCompilerRunning = false로 바뀌어 블록 순차 실행 코드를 탈출합니다.
+                if (!IsCompilerRunning || IsStageClear) 
                     break;
 
                 AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                 PlayerManager_Instance.InitPlayerMoveVector();
-                block.GetComponent<CodingBlock>().enabled = true;
+                block.enabled = true;
                 block.MoveOrder();
-                yield return WaitUntilEndOfSubMethod; // .. Func, Loop 메서드 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
+                // .. Func, Loop 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
+                yield return WaitUntilEndOfSubMethod; 
             }
 
             if (IsCompilerRunning && !IsStageClear) yield return Util.WaitForSecond(1.0f);
@@ -97,28 +106,30 @@ public class GameManager : MonoBehaviour
             PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", IsCompilerRunning);
 
             IsCompilerRunning = false;
-            CodingUIManager_Instance.DisableBlockHighlights();
-            CodingUIManager_Instance.LockUIElements(false);
+            CodingUIManager.Instance.DisableBlockHighlights();
+            CodingUIManager.Instance.LockUIElements(false);
 
-            CodingUIManager_Instance.ExecuteButton.interactable = true; // 블록 코딩이 끝나면 코드 실행 버튼을 활성화 합니다.
+            // .. 블록 코딩이 끝나면 코드 실행 버튼을 활성화 합니다.
+            CodingUIManager.Instance.ExecuteButton.interactable = true; 
         }
     }
 
     /// <summary>
-    /// GameManager 스크립트에서 무한 루프를 돌고 있는 메서드이며, MainLayout에 있는 Func, Loop 블록의 내부에 있는 블록들을 순차적으로 실행합니다.
+    /// 함수(func), 반복문(Loop) 블록이 실행 될 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
+    /// 함수, 반복문 블록이 실행되면 MainLayout에 있는 Func, Loop 블록의 내부에 있는 블록들을 순차적으로 실행합니다.
     /// </summary>
     public IEnumerator SubBlockCompiler_Co()
     {
         while (true)
         {
-            // .. MainLayout에서 [Func, Loop] 블록이 실행되었다면 아래의 코드를 진행합니다. 그렇지 않다면 대기합니다.
+            // .. MainLayout에서 [Func], [Loop] 블록이 실행될때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
             yield return WaitUntilSubMethodTrigger;
 
             switch (currentMethod)
             {
 
-                #region ======================== Function Compiler Code ===========================================
-                case ECurrentMethod.Function:
+                #region ======================== * Function Compiler Start * ================
+                case CurrentMethod.Function:
 
                     foreach (CodingBlock block in FunctionMethodList)
                     {
@@ -129,7 +140,7 @@ public class GameManager : MonoBehaviour
 
                         AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                         PlayerManager_Instance.InitPlayerMoveVector();
-                        block.GetComponent<CodingBlock>().enabled = true;
+                        block.enabled = true;
                         block.MoveOrder();
                     }
 
@@ -140,22 +151,24 @@ public class GameManager : MonoBehaviour
                         block.ToggleHighLight(false);
                     }
 
-                    CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
-                    currentMethod = ECurrentMethod.Main;
                     break;
 
-                #endregion ========================================================================================
+                #endregion ====================== Function Compiler End ======================
 
 
 
-                #region ======================== Loop Compiler Code ===============================================
-                case ECurrentMethod.Loop:
 
-                    int LoopReaptCountTemp = LoopReaptCount;
 
-                    for (int i = 0; i < LoopReaptCountTemp; i++)
+                #region ======================== * Loop Compiler Start * =====================
+                case CurrentMethod.Loop:
+
+                    int loopReaptCountTemp = LoopReaptCount;
+
+                    for (int i = 0; i < loopReaptCountTemp; i++)
                     {
-                        // .. Loop 메서드의 내부의 블록들을 순차적으로 실행합니다.
+                        if (!IsCompilerRunning || IsStageClear)
+                            break;
+
                         foreach (CodingBlock block in LoopMethodList)
                         {
                             yield return Util.WaitForSecond(1.0f);
@@ -165,12 +178,12 @@ public class GameManager : MonoBehaviour
 
                             AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
                             PlayerManager_Instance.InitPlayerMoveVector();
-                            block.GetComponent<CodingBlock>().enabled = true;
+                            block.enabled = true;
                             block.MoveOrder();
                         }
 
-                        // .. Loop 메서드 실행 도중에 중지버튼을 누르지 않았다면 다음 루프를 반복 실행할 준비를 합니다.
-                        // ... 1초 딜레이 후 실행했던 블록들의 하이라이트를 제거 하고 Loop 메서드의 카운트 만큼 반복합니다.
+                        // .. 블록 실행 중지 버튼이 눌리지 않았다면, 다음 루프를 반복 실행할 준비를 합니다. 1초 딜레이 후,
+                        // .. 실행했던 블록들의 하이라이트를 제거하고 LoopReaptCount 만큼 반복합니다.
                         if (IsCompilerRunning || !IsStageClear)
                         {
                             yield return Util.WaitForSecond(1.0f);
@@ -180,24 +193,21 @@ public class GameManager : MonoBehaviour
                                 block.ToggleHighLight(false);
                             }
                         }
-
+                        
                         LoopReaptCount--;
-                        CodingUIManager_Instance.LoopCountText.text= LoopReaptCount.ToString();
+                        CodingUIManager.Instance.LoopCountText.text= LoopReaptCount.ToString();
                     }
 
-                    LoopReaptCount = LoopReaptCountTemp;
-                    CodingUIManager_Instance.LoopCountText.text = LoopReaptCount.ToString();
+                    LoopReaptCount = loopReaptCountTemp;
+                    CodingUIManager.Instance.LoopCountText.text = LoopReaptCount.ToString();
 
-                    CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
-                    currentMethod = ECurrentMethod.Main;
                     break;
 
-                    #endregion ===================================================================================
-
+                    #endregion ======================== Loop Compiler End ====================
             }
 
-            CodingUIManager_Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
-            currentMethod = ECurrentMethod.Main;
+            CodingUIManager.Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
+            currentMethod = CurrentMethod.Main;
         }
     }
 
@@ -228,19 +238,9 @@ public class GameManager : MonoBehaviour
 
         // .. 루프 반속 횟수를 기본값인 1로 변경
         LoopReaptCount = 1;
-        CodingUIManager_Instance.LoopCountText.text = GameManager_Instance.LoopReaptCount.ToString();
+        CodingUIManager.Instance.LoopCountText.text = Instance.LoopReaptCount.ToString();
     }
 
-    public void Register_ObjectPoolManager(GameObject obj)
-    {
-        obj.TryGetComponent(out ObjectPoolManager instance);
-        ObjectPoolManager_Instance = instance;
-    }
-    public void Register_CodingUIManager(GameObject obj)
-    {
-        obj.TryGetComponent(out CodingUIManager instance);
-        CodingUIManager_Instance = instance;
-    }
     public void Register_PlayerManager(GameObject obj)
     {
         obj.TryGetComponent(out PlayerManager instance);

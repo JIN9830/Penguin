@@ -28,7 +28,7 @@ public class StageManager : MonoBehaviour
     private void Start()
     {
         // .. 게임 매니저에 StageManager 등록
-        GameManager.GameManager_Instance.Register_StageManager(this.gameObject);
+        GameManager.Instance.Register_StageManager(this.gameObject);
 
         // .. 스테이지별 코인 갯수로 코인 정보를 갱신
         CoinCount = CoinObject.Length;
@@ -56,7 +56,7 @@ public class StageManager : MonoBehaviour
 
     public void Update()
     {
-        if (GameManager.GameManager_Instance.IsCompilerRunning || GameManager.CodingUIManager_Instance.OptionPanel.activeSelf)
+        if (GameManager.Instance.IsCompilerRunning || CodingUIManager.Instance.OptionPanel.activeSelf)
             return;
 
         CameraPan();
@@ -109,18 +109,18 @@ public class StageManager : MonoBehaviour
 
     public void StageClear()
     {
-        GameManager.CodingUIManager_Instance.AbortButton.GetComponent<Button>().interactable = false; // TODO: GetComponent 메서드 사용 말고 캐싱해서 코드 작성하기
+        CodingUIManager.Instance.AbortButton.interactable = false;
 
-        GameManager.CodingUIManager_Instance.OptionMenuOpenButton.interactable = true;
+        CodingUIManager.Instance.OptionMenuOpenButton.interactable = true;
 
-        GameManager.GameManager_Instance.IsStageClear = true;
+        GameManager.Instance.IsStageClear = true;
 
         UnlockNewLevel();
 
         Time.timeScale = 1;
 
-        GameManager.CodingUIManager_Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo);
-        GameManager.CodingUIManager_Instance.ActiveStageClearUI();
+        CodingUIManager.Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo);
+        CodingUIManager.Instance.ActiveStageClearUI();
 
     }
 
