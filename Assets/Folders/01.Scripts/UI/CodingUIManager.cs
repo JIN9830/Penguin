@@ -69,7 +69,7 @@ public class CodingUIManager : MonoBehaviour
 
     [field: Header("옵션 UI")]
     [field: SerializeField] public Button OptionMenuOpenButton { get; private set; }
-
+    public bool IsOptionMenuOpen { get; private set; } = false;
     [field: SerializeField] public GameObject OptionPanel { get; private set; }
     [field: SerializeField] public Button OptionMenuBackButton { get; private set; }
     [field: SerializeField] public Button OptionMenuExitButton { get; private set; }
@@ -107,10 +107,7 @@ public class CodingUIManager : MonoBehaviour
             Destroy(this.gameObject);
         #endregion
 
-
-
-        // .. 버튼들의 클릭 이벤트 함수 등록
-        #region =============================== Coding blocks onClickAddListener 
+        #region =============================== Coding blocks onClickAddListener
         // 유저가 블록을 클릭하면, ObjectPoolManager의 blockCategory가 해당 블록으로 설정되고 InsertCodingBlock 메서드가 실행됩니다.
         ForwardButton.onClick.AddListener(() => { ObjectPoolManager.Instance.EBlockCategory = ObjectPoolManager.BlockCategory.Forward; InsertCodingBlock(); });
         TurnLeftButton.onClick.AddListener(() => { ObjectPoolManager.Instance.EBlockCategory = ObjectPoolManager.BlockCategory.Left; InsertCodingBlock(); });
@@ -156,8 +153,9 @@ public class CodingUIManager : MonoBehaviour
         ClearNextButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadNextScene()));
         #endregion ==============================================================
 
+        #region =============================== Transform, Vectors Inits
         ClearPanelInitPos = ClearPanel.transform.localPosition;
-
+        #endregion
     }
 
     public void SelectMethod(CurrentLayout selectMethod)
@@ -437,6 +435,7 @@ public class CodingUIManager : MonoBehaviour
                     {
                         OptionPanel.SetActive(false);
                         OptionMenuOpenButton.interactable = true;
+                        IsOptionMenuOpen = false;
                     });
                 break;
 
@@ -451,6 +450,7 @@ public class CodingUIManager : MonoBehaviour
                     .OnComplete(() =>
                     {
                         OptionMenuOpenButton.interactable = true;
+                        IsOptionMenuOpen = true;
                     });
                 break;
         }

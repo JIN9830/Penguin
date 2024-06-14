@@ -62,7 +62,7 @@ public class StageManager : MonoBehaviour
 
     public void Update()
     {
-        if (_gameManager.IsCompilerRunning || _codingUIManager.OptionPanel.activeSelf)
+        if (_gameManager.IsCompilerRunning || _codingUIManager.IsOptionMenuOpen)
             return;
 
         CameraPan();

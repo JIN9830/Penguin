@@ -152,7 +152,6 @@ public class GameManager : MonoBehaviour
 
 
 
-
                 #region ======================== * Loop Compiler Start * =====================
                 case CurrentMethod.Loop:
 
