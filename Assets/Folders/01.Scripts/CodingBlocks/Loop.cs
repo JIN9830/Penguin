@@ -9,8 +9,8 @@ public class Loop : CodingBlock
         ToggleHighLight(true);
         BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
 
-        GameManager.Instance.currentMethod = GameManager.CurrentMethod.Loop;
-        CodingUIManager.Instance.SelectMethod(CodingUIManager.ECurrentLayout.Loop);
+        GameManager.Instance.ECurrentMethod = GameManager.CurrentMethod.Loop;
+        CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Loop);
         
     }
     private void Update()

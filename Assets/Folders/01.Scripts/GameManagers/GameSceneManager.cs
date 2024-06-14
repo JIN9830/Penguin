@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using static CodingUIManager;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -28,14 +27,6 @@ public class GameSceneManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    private void Start()
-    {
-        //CurtainUpper.transform.localScale = new Vector3(0, 21, 0);
-        //CurtainLower.transform.localScale = new Vector3(0, 21, 0);
-    }
-
-
 
     public IEnumerator LoadIndexScene(int sceneIndex)
     {
@@ -85,6 +76,6 @@ public class GameSceneManager : MonoBehaviour
         }
 
         GameManager.Instance.Initialize_CodingMethod();
-        CodingUIManager.Instance.SelectMethod(ECurrentLayout.Main);
+        CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Main);
     }
 }

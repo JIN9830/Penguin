@@ -14,7 +14,7 @@ public class PlayerManager : MonoBehaviour
         TurnLeft,
         TurnRight,
     }
-    public PlayerState playerState = PlayerState.None;
+    public PlayerState EPlayerState = PlayerState.None;
 
     [field: Header("플레이어 오브젝트")]
     [field: SerializeField] public GameObject PlayerObject { get; private set; }
@@ -55,7 +55,7 @@ public class PlayerManager : MonoBehaviour
         CameraTargetObject.transform.DOLocalMoveY(0, 0.8f).SetDelay(0.2f).OnComplete(()=> CodingUIManager.Instance.CityNameObj.text = SceneManager.GetActiveScene().name);
     }
 
-    public void InitPlayerMoveVector() // .. 현재 플레이어의 포지션, 전진 벡터 값을 갱신
+    public void Initialize_PlayerForwardVector() // .. 현재 플레이어의 포지션 값을 이용하여 앞으로 전진 좌표값을 갱신
     {
         PlayerStartPos = PlayerObject.transform.localPosition;
         PlayerNewPos = PlayerStartPos + PlayerObject.transform.forward;

@@ -9,27 +9,11 @@ public class Forward : CodingBlock
 
     private RaycastHit _hit;
     private float _deltaTimeCount = 0;
-
-    private void OnEnable()
-    {
-        _deltaTimeCount = 0;
-    }
-
-    private void OnDisable() // 전진 블록 실행이 종료될 때 초기화해야 할 작업들
-    {
-        transform.localScale = Vector3.one;
-        PlayerManager_Instance.playerState = PlayerManager.PlayerState.None;
-
-        // .. 앞으로 전진하는 애니메이션의 발 움직임 싱크를 맞추기위한 설정
-       _deltaTimeCount = 0.70f;
-        PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
-    }
-
     public override void MoveOrder()
     {
         ToggleHighLight(true);
 
-        // 1.. 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
+        // .. 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
         if (Physics.Raycast(PlayerManager_Instance.PlayerObject.transform.localPosition, PlayerManager_Instance.PlayerObject.transform.forward, out _hit, _DISTANCE))
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_BlockShake(this.gameObject);
@@ -49,15 +33,44 @@ public class Forward : CodingBlock
             }
 
         }
-        // 2... 장애물이 없다면 Update에서 앞으로 전진하는 PlayerMove 메서드를 호출하도록 PlayerState를 Forwarding로 변경
+        // ... 장애물이 없다면 Update에서 앞으로 전진하는 PlayerMove 메서드를 호출하도록 PlayerState를 Forwarding로 변경
         else
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-            PlayerManager_Instance.playerState = PlayerManager.PlayerState.Forwarding;
+            PlayerManager_Instance.EPlayerState = PlayerManager.PlayerState.Forwarding;
             PlayerManager_Instance.FootStepDust.Play();
         }
     }
 
+    private void OnEnable()
+    {
+        _deltaTimeCount = 0;
+
+        PlayerManager_Instance.Initialize_PlayerForwardVector();
+    }
+
+    private void OnDisable() // 전진 블록 실행이 종료될 때 초기화해야 할 작업들
+    {
+        transform.localScale = Vector3.one;
+        PlayerManager_Instance.EPlayerState = PlayerManager.PlayerState.None;
+
+        // .. 앞으로 전진하는 애니메이션의 발 움직임 싱크를 맞추기위한 설정
+       _deltaTimeCount = 0.70f;
+        PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
+    }
+
+    private void Update()
+    {
+        if (Instance.IsCompilerRunning == false)
+        {
+            BlockTweener.Kill();
+            this.enabled = false;
+        }
+        else if (PlayerManager_Instance.EPlayerState == PlayerManager.PlayerState.Forwarding)
+        {
+            PlayerMove();
+        }
+    }
     private void PlayerMove()
     {
         PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
@@ -73,16 +86,4 @@ public class Forward : CodingBlock
 
     }
 
-    private void Update()
-    {
-        if (Instance.IsCompilerRunning == false)
-        {
-            BlockTweener.Kill();
-            this.enabled = false;
-        }
-        else if (PlayerManager_Instance.playerState == PlayerManager.PlayerState.Forwarding)
-        {
-            PlayerMove();
-        }
-    }
 }

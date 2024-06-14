@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Pool;
-using static GameManager;
 
 public class ObjectPoolManager : MonoBehaviour
 {
@@ -23,7 +20,7 @@ public class ObjectPoolManager : MonoBehaviour
         Function,
         Loop,
     }
-    public BlockCategory blockCategory { get; set; }
+    public BlockCategory EBlockCategory { get; set; }
 
     public static ObjectPoolManager Instance { get; private set; }
 
@@ -68,15 +65,15 @@ public class ObjectPoolManager : MonoBehaviour
 
     public CodingBlock SelectBlockFromPool(BlockCategory selectBlockName)
     {
-        blockCategory = selectBlockName;
+        EBlockCategory = selectBlockName;
 
         return PoolManagementDic[selectBlockName].Get();
     }
 
     public CodingBlock CreateBlockObject()
     {
-        CodingBlock newBlock = Instantiate(PoolObjectDic[blockCategory]).GetComponent<CodingBlock>();
-        newBlock.GetComponent<CodingBlock>().Pool = PoolManagementDic[blockCategory];
+        CodingBlock newBlock = Instantiate(PoolObjectDic[EBlockCategory]).GetComponent<CodingBlock>();
+        newBlock.Pool = PoolManagementDic[EBlockCategory];
         return newBlock;
     }
     public void OnBlockGet(CodingBlock block)
@@ -85,7 +82,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
     public void OnBlockRelease(CodingBlock block)
     {
-        // .. 오브젝트를 풀에 반환하기 전에 다른 오브젝트의 자식으로 이동합니다. (Layout 내부의 오브젝트 순서가 섞이는것을 방지)
+        // .. 오브젝트를 풀에 반환하기 전에 다른 오브젝트의 자식으로 이동합니다. (Grid Layout Group 내부의 오브젝트 순서가 섞이는것을 방지)
         block.transform.SetParent(CodingUIManager.Instance.ReleasedBlocks.transform);
         block.gameObject.SetActive(false);
     }

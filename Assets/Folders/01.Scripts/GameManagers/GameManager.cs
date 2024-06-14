@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
         Function,
         Loop,
     }
-    public CurrentMethod currentMethod { get; set; } = CurrentMethod.Main;
+    public CurrentMethod ECurrentMethod { get; set; } = CurrentMethod.Main;
 
 
     public static GameManager Instance { get; private set; }
@@ -55,8 +55,8 @@ public class GameManager : MonoBehaviour
         #endregion
 
         WaitUntilExecutionTrigger = new WaitUntil(() => IsCompilerRunning == true);
-        WaitUntilSubMethodTrigger = new WaitUntil(() => currentMethod != CurrentMethod.Main);
-        WaitUntilEndOfSubMethod = new WaitUntil(() => currentMethod == CurrentMethod.Main);
+        WaitUntilSubMethodTrigger = new WaitUntil(() => ECurrentMethod != CurrentMethod.Main);
+        WaitUntilEndOfSubMethod = new WaitUntil(() => ECurrentMethod == CurrentMethod.Main);
 
         Application.targetFrameRate = 144;
     }
@@ -68,14 +68,14 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 사용자가 코딩 블록 실행 버튼을 누를 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
-    /// 사용자가 실행 버튼을 누르면, MainLayout에 있는 블록들이 순차적으로 실행됩니다.
+    /// 사용자가 코딩블록 실행 버튼을 누를 때까지 코드 제어권을 Unity 이벤트 함수에 넘기면서 대기합니다. 
+    /// 사용자가 코딩블록 실행 버튼을 누르면, MainLayout에 있는 블록들이 순차적으로 실행됩니다.
     /// </summary>
     public IEnumerator BlockCompiler_Co()
     {
         while (true)
         {
-            // .. 사용자가 코딩 블록 실행 버튼을 누를 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
+            // .. 사용자가 코딩블록 실행 버튼을 누를 때까지 여기서 대기하며 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
             yield return WaitUntilExecutionTrigger;
 
             CodingUIManager.Instance.ExecuteButton.interactable = false;
@@ -91,7 +91,6 @@ public class GameManager : MonoBehaviour
                     break;
 
                 AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
-                PlayerManager_Instance.InitPlayerMoveVector();
                 block.enabled = true;
                 block.MoveOrder();
                 // .. Func, Loop 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
@@ -111,23 +110,23 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 함수[Func], 반복문[Loop] 블록이 실행 될 때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
+    /// 함수[Func], 반복문[Loop] 블록이 실행 될 때까지 코드 제어권을 Unity 이벤트 함수에 넘기면서 대기합니다.
     /// 블록이 실행되면 함수[Func], 반복문[Loop] 블록의 내부에 있는 코딩블록을 순차적으로 실행합니다.
     /// </summary>
     public IEnumerator SubBlockCompiler_Co()
     {
         while (true)
         {
-            // .. MainLayout에서 [Func], [Loop] 블록이 실행될때까지 대기하며 이 기간 동안 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
+            // .. MainLayout에서 [Func], [Loop] 블록이 실행될때까지 여기서 대기하며 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
             yield return WaitUntilSubMethodTrigger;
 
-            switch (currentMethod)
+            switch (ECurrentMethod)
             {
 
                 #region ======================== * Function Compiler Start * ================
                 case CurrentMethod.Function:
 
-                    foreach (CodingBlock block in FunctionMethodList)
+                    foreach (CodingBlock codingBlock in FunctionMethodList)
                     {
                         yield return Util.WaitForSecond(1.0f);
 
@@ -135,9 +134,8 @@ public class GameManager : MonoBehaviour
                             break;
 
                         AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
-                        PlayerManager_Instance.InitPlayerMoveVector();
-                        block.enabled = true;
-                        block.MoveOrder();
+                        codingBlock.enabled = true;
+                        codingBlock.MoveOrder();
                     }
 
                     if (IsCompilerRunning || !IsStageClear) yield return Util.WaitForSecond(1.0f);
@@ -165,7 +163,7 @@ public class GameManager : MonoBehaviour
                         if (!IsCompilerRunning || IsStageClear)
                             break;
 
-                        foreach (CodingBlock block in LoopMethodList)
+                        foreach (CodingBlock codingBlock in LoopMethodList)
                         {
                             yield return Util.WaitForSecond(1.0f);
 
@@ -173,9 +171,8 @@ public class GameManager : MonoBehaviour
                                 break;
 
                             AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
-                            PlayerManager_Instance.InitPlayerMoveVector();
-                            block.enabled = true;
-                            block.MoveOrder();
+                            codingBlock.enabled = true;
+                            codingBlock.MoveOrder();
                         }
 
                         // .. 블록 실행 중지 버튼이 눌리지 않았다면, 다음 루프를 반복 실행할 준비를 합니다. 1초 딜레이 후,
@@ -202,8 +199,8 @@ public class GameManager : MonoBehaviour
                     #endregion ======================== Loop Compiler End ====================
             }
 
-            CodingUIManager.Instance.SelectMethod(CodingUIManager.ECurrentLayout.Main);
-            currentMethod = CurrentMethod.Main;
+            CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Main);
+            ECurrentMethod = CurrentMethod.Main;
         }
     }
 
@@ -225,7 +222,7 @@ public class GameManager : MonoBehaviour
 
         // .. 각 리스트 내부의 코딩블럭 데이터를 전부 삭제
         MainMethodList.Clear();
-        FunctionMethodList.Clear();   
+        FunctionMethodList.Clear();
         LoopMethodList.Clear();
 
         // .. 코딩블럭 컴파일의 실행 상태 변수와 & 게임 클리어 상태 변수를 디폴드 값인 거짓으로 변경

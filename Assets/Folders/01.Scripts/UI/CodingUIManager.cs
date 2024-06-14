@@ -6,13 +6,13 @@ using TMPro;
 
 public class CodingUIManager : MonoBehaviour
 {
-    public enum ECurrentLayout
+    public enum CurrentLayout
     {
         Main,
         Function,
         Loop,
     } 
-    public ECurrentLayout currentLayout { get; private set; }
+    public CurrentLayout ECurrentLayout { get; private set; }
 
 
     public static CodingUIManager Instance { get; private set; }
@@ -107,60 +107,62 @@ public class CodingUIManager : MonoBehaviour
             Destroy(this.gameObject);
         #endregion
 
+
+
         // .. 버튼들의 클릭 이벤트 함수 등록
-        #region Coding blocks onClickAddListener
+        #region =============================== Coding blocks onClickAddListener 
         // 유저가 블록을 클릭하면, ObjectPoolManager의 blockCategory가 해당 블록으로 설정되고 InsertCodingBlock 메서드가 실행됩니다.
-        ForwardButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager.Instance.blockCategory = ObjectPoolManager.BlockCategory.Forward; InsertCodingBlock(); });
-        TurnLeftButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager.Instance.blockCategory = ObjectPoolManager.BlockCategory.Left; InsertCodingBlock(); });
-        TurnRightButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager.Instance.blockCategory = ObjectPoolManager.BlockCategory.Right; InsertCodingBlock(); });
-        FunctionButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager.Instance.blockCategory = ObjectPoolManager.BlockCategory.Function; InsertCodingBlock(); });
-        LoopButton.GetComponent<Button>().onClick.AddListener(() => { ObjectPoolManager.Instance.blockCategory = ObjectPoolManager.BlockCategory.Loop; InsertCodingBlock(); });
-        #endregion
+        ForwardButton.onClick.AddListener(() => { ObjectPoolManager.Instance.EBlockCategory = ObjectPoolManager.BlockCategory.Forward; InsertCodingBlock(); });
+        TurnLeftButton.onClick.AddListener(() => { ObjectPoolManager.Instance.EBlockCategory = ObjectPoolManager.BlockCategory.Left; InsertCodingBlock(); });
+        TurnRightButton.onClick.AddListener(() => { ObjectPoolManager.Instance.EBlockCategory = ObjectPoolManager.BlockCategory.Right; InsertCodingBlock(); });
+        FunctionButton.onClick.AddListener(() => { ObjectPoolManager.Instance.EBlockCategory = ObjectPoolManager.BlockCategory.Function; InsertCodingBlock(); });
+        LoopButton.onClick.AddListener(() => { ObjectPoolManager.Instance.EBlockCategory = ObjectPoolManager.BlockCategory.Loop; InsertCodingBlock(); });
+        #endregion =============================================================
 
-        #region Layout activate onClickAddListener & Layout ImageComponent _variable
-        MainLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Main));
-        FunctionLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Function));
-        LoopLayout.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Loop));
+        #region =============================== Layout activate onClickAddListener & Layout ImageComponent _variable
+        MainLayout.onClick.AddListener(() => SelectMethod(CurrentLayout.Main));
+        FunctionLayout.onClick.AddListener(() => SelectMethod(CurrentLayout.Function));
+        LoopLayout.onClick.AddListener(() => SelectMethod(CurrentLayout.Loop));
 
-        MainBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Main));
-        FunctionBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Loop));
-        LoopBookmark.GetComponent<Button>().onClick.AddListener(() => SelectMethod(ECurrentLayout.Function));
+        MainBookmark.onClick.AddListener(() => SelectMethod(CurrentLayout.Main));
+        FunctionBookmark.onClick.AddListener(() => SelectMethod(CurrentLayout.Loop));
+        LoopBookmark.onClick.AddListener(() => SelectMethod(CurrentLayout.Function));
 
         MainLayout.TryGetComponent<Image>(out _mainLayoutImageComponent);
         FunctionLayout.TryGetComponent<Image>(out _functionLayoutImageComponent);
         LoopLayout.TryGetComponent<Image>(out _loopLayoutImageComponent);
-        #endregion
+        #endregion =================================================================================================
 
-        #region block delete OnClickAddListener
-        MainDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Main); DeleteCodingBlock(currentLayout); });
-        FunctionDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Function); DeleteCodingBlock(currentLayout); });
-        LoopDelete.GetComponent<Button>().onClick.AddListener(() => { SelectMethod(ECurrentLayout.Loop); DeleteCodingBlock(currentLayout); });
-        #endregion
+        #region =============================== block delete OnClickAddListener 
+        MainDelete.onClick.AddListener(() => { SelectMethod(CurrentLayout.Main); DeleteCodingBlock(ECurrentLayout); });
+        FunctionDelete.onClick.AddListener(() => { SelectMethod(CurrentLayout.Function); DeleteCodingBlock(ECurrentLayout); });
+        LoopDelete.onClick.AddListener(() => { SelectMethod(CurrentLayout.Loop); DeleteCodingBlock(ECurrentLayout); });
+        #endregion =============================================================================================
 
-        #region Execution, Stop & TimeControl & Loop Count Plus, Minus OnClickAddListener
+        #region =============================== Execution, Stop & TimeControl & Loop Count Plus, Minus OnClickAddListener
         ExecuteButton.onClick.AddListener(() => ExecuteCodingBlock());
         AbortButton.onClick.AddListener(() => AbortCodingBlock());
         TimeControlButton.onClick.AddListener(() => ControlTimeScale());
         LoopCountPlus.onClick.AddListener(() => ControlLoopCount(true));
         LoopCountMinus.onClick.AddListener(() => ControlLoopCount(false));
-        #endregion
+        #endregion ======================================================================================================
 
-        #region Option & Clear OnClickAddListener
+        #region =============================== Option & Clear OnClickAddListener 
         OptionMenuOpenButton.onClick.AddListener(() => ActiveOption());
         OptionMenuExitButton.onClick.AddListener(() => ActiveOption());
         OptionMenuBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene(0)));
 
         ClearBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene(0)));
         ClearNextButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadNextScene()));
-        #endregion
+        #endregion ==============================================================
 
         ClearPanelInitPos = ClearPanel.transform.localPosition;
 
     }
 
-    public void SelectMethod(ECurrentLayout selectMethod)
+    public void SelectMethod(CurrentLayout selectMethod)
     {
-        if(selectMethod == currentLayout)
+        if(selectMethod == ECurrentLayout)
             return;
 
         AudioManager.Instance.Play_UISFX("SelectMethod");
@@ -168,16 +170,16 @@ public class CodingUIManager : MonoBehaviour
         switch (selectMethod)
         {
             #region MainLayout Select Code
-            case ECurrentLayout.Main:
+            case CurrentLayout.Main:
 
-                if (currentLayout != ECurrentLayout.Main)
+                if (ECurrentLayout != CurrentLayout.Main)
                 {
                     // .. MainLayout 활성화 애니메이션
                     MainLayout.transform.parent.transform.localScale = initScale;
                     MainLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 }
 
-                currentLayout = ECurrentLayout.Main;
+                ECurrentLayout = CurrentLayout.Main;
 
                 // .. MainLayout 컬러 변경
                 _mainLayoutImageComponent.color = _GREEN_LAYOUT_COLOR;
@@ -187,9 +189,9 @@ public class CodingUIManager : MonoBehaviour
             #endregion
 
             #region FunctionLayout Select Code
-            case ECurrentLayout.Function:
+            case CurrentLayout.Function:
 
-                if (currentLayout != ECurrentLayout.Function)
+                if (ECurrentLayout != CurrentLayout.Function)
                 {
                     // .. Function 버튼 활성화 & 애니메이션
                     FunctionButton.gameObject.SetActive(true);
@@ -204,7 +206,7 @@ public class CodingUIManager : MonoBehaviour
                     FunctionLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 }
 
-                currentLayout = ECurrentLayout.Function;
+                ECurrentLayout = CurrentLayout.Function;
 
                 // .. FunctionLayout 컬러 변경
                 _functionLayoutImageComponent.color = _PURPLE_LAYOUT_COLOR;
@@ -214,9 +216,9 @@ public class CodingUIManager : MonoBehaviour
             #endregion
 
             #region LoopLayout Select Code
-            case ECurrentLayout.Loop:
+            case CurrentLayout.Loop:
 
-                if (currentLayout != ECurrentLayout.Loop)
+                if (ECurrentLayout != CurrentLayout.Loop)
                 {
                     // .. Loop 버튼 활성화 & 애니메이션
                     LoopButton.gameObject.SetActive(true);
@@ -231,7 +233,7 @@ public class CodingUIManager : MonoBehaviour
                     LoopLayout.transform.parent.DOScale(targetScale, 0.3f).SetEase(Ease.OutBack);
                 }
 
-                currentLayout = ECurrentLayout.Loop;
+                ECurrentLayout = CurrentLayout.Loop;
 
                 // .. LoopLayout 컬러 변경
                 _loopLayoutImageComponent.color = _ORANGE_LAYOUT_COLOR;
@@ -247,15 +249,15 @@ public class CodingUIManager : MonoBehaviour
         AudioManager.Instance.Play_UISFX("InsertCodingBlock");
 
         // 유저가 클릭한 블록이 함수(Function) 또는 반복문(Loop) 블록인 경우, 이를 MainLayout에 추가합니다.
-        if (ObjectPoolManager.Instance.blockCategory == ObjectPoolManager.BlockCategory.Function ||  
-            ObjectPoolManager.Instance.blockCategory == ObjectPoolManager.BlockCategory.Loop) 
+        if (ObjectPoolManager.Instance.EBlockCategory == ObjectPoolManager.BlockCategory.Function ||  
+            ObjectPoolManager.Instance.EBlockCategory == ObjectPoolManager.BlockCategory.Loop) 
         {
             
             if (GameManager.Instance.MainMethodList.Count < 10)
             {
-                SelectMethod(ECurrentLayout.Main);
+                SelectMethod(CurrentLayout.Main);
 
-                CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.blockCategory);
+                CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.EBlockCategory);
                 block.transform.SetParent(MainLayout.transform);
 
                 GameManager.Instance.MainMethodList.Add(block);
@@ -267,13 +269,13 @@ public class CodingUIManager : MonoBehaviour
         else
         {
             // 유저가 클릭한 블록을 오브젝트 풀에서 꺼내어 현재 선택된 레이아웃에 추가합니다.
-            switch (currentLayout)
+            switch (ECurrentLayout)
             {
-                case ECurrentLayout.Main:
+                case CurrentLayout.Main:
                     if (GameManager.Instance.MainMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
-                        CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.blockCategory);
+                        CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.EBlockCategory);
                         block.transform.SetParent(MainLayout.transform);
 
                         GameManager.Instance.MainMethodList.Add(block);
@@ -282,11 +284,11 @@ public class CodingUIManager : MonoBehaviour
                     }
                     break;
 
-                case ECurrentLayout.Function:
+                case CurrentLayout.Function:
                     if (GameManager.Instance.FunctionMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 FunctionLayout에 블록을 넣어줍니다.
-                        CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.blockCategory);
+                        CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.EBlockCategory);
                         block.transform.SetParent(FunctionLayout.transform);
 
                         GameManager.Instance.FunctionMethodList.Add(block);
@@ -295,11 +297,11 @@ public class CodingUIManager : MonoBehaviour
                     }
                     break;
 
-                case ECurrentLayout.Loop:
+                case CurrentLayout.Loop:
                     if (GameManager.Instance.LoopMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 LoopLayout에 블록을 넣어줍니다.
-                        CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.blockCategory);
+                        CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.EBlockCategory);
                         block.transform.SetParent(LoopLayout.transform);
 
                         GameManager.Instance.LoopMethodList.Add(block);
@@ -311,11 +313,11 @@ public class CodingUIManager : MonoBehaviour
         }
     }
 
-    public void DeleteCodingBlock(ECurrentLayout currentLayout)
+    public void DeleteCodingBlock(CurrentLayout currentLayout)
     {
         switch (currentLayout)
         {
-            case ECurrentLayout.Main:
+            case CurrentLayout.Main:
                 if (GameManager.Instance.MainMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
@@ -325,7 +327,7 @@ public class CodingUIManager : MonoBehaviour
                 }
                 break;
 
-            case ECurrentLayout.Function:
+            case CurrentLayout.Function:
                 if (GameManager.Instance.FunctionMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
@@ -335,7 +337,7 @@ public class CodingUIManager : MonoBehaviour
                 }
                 break;
 
-            case ECurrentLayout.Loop:
+            case CurrentLayout.Loop:
                 if (GameManager.Instance.LoopMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
@@ -454,7 +456,7 @@ public class CodingUIManager : MonoBehaviour
         }
     }
 
-    public void LockUIElements(bool enable) // GetComponent 메서드 사용 수정하기
+    public void LockUIElements(bool enable)
     {
         #region Blocks Lock
         ForwardButton.enabled = !enable;
@@ -480,7 +482,7 @@ public class CodingUIManager : MonoBehaviour
         LoopCountPlus.interactable = !enable;
         LoopCountMinus.interactable = !enable;
 
-        CodingUIManager.Instance.OptionMenuOpenButton.enabled = !enable;
+        OptionMenuOpenButton.enabled = !enable;
         #endregion
     }
 
