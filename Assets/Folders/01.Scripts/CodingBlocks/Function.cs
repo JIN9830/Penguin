@@ -10,12 +10,12 @@ public class Function : CodingBlock
         ToggleHighLight(true);
         BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
 
-        GameManager.Instance.ECurrentMethod = GameManager.CurrentMethod.Function;
+        BlockCodingManager.Instance.ECurrentMethod = BlockCodingManager.CurrentMethod.Function;
         CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Function);
     }
     private void Update()
     {
-        if (GameManager.Instance.IsCompilerRunning == false)
+        if (BlockCodingManager.Instance.IsCompilerRunning == false)
         {
             BlockTweener.Kill();
             transform.localScale = Vector3.one;

@@ -1,6 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
-using static GameManager;
+using static BlockCodingManager;
 
 public class TurnLeft : CodingBlock
 {
@@ -22,7 +22,7 @@ public class TurnLeft : CodingBlock
     }
     private void Update()
     {
-        if (GameManager.Instance.IsCompilerRunning == false)
+        if (BlockCodingManager.Instance.IsCompilerRunning == false)
         {
             BlockTweener.Kill();
             PlayerTweener.Kill();

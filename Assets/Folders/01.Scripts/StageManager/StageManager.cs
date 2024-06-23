@@ -23,16 +23,16 @@ public class StageManager : MonoBehaviour
 
     [field: SerializeField] public float CameraPanSpeed { get; private set; } = 0.35f;
 
-    private GameManager _gameManager;
+    private BlockCodingManager _gameManager;
     private CodingUIManager _codingUIManager;
 
     private void Start()
     {
-        _gameManager = GameManager.Instance;
+        _gameManager = BlockCodingManager.Instance;
         _codingUIManager= CodingUIManager.Instance;
 
         // .. 게임 매니저에 StageManager 등록
-        GameManager.Instance.Register_StageManager(this.gameObject);
+        BlockCodingManager.Instance.Register_StageManager(this.gameObject);
 
         // .. 스테이지별 코인 갯수로 코인 정보를 갱신
         CoinCount = CoinObject.Length;
@@ -73,7 +73,7 @@ public class StageManager : MonoBehaviour
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            var playerManager = GameManager.PlayerManager_Instance;
+            var playerManager = BlockCodingManager.PlayerManager_Instance;
 
             Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
             Vector3 newPosition = playerManager.CameraTargetObject.transform.position + new Vector3(TouchDeltaPosition.x, -TouchDeltaPosition.y, -TouchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
@@ -119,7 +119,7 @@ public class StageManager : MonoBehaviour
 
         CodingUIManager.Instance.OptionMenuOpenButton.interactable = true;
 
-        GameManager.Instance.IsStageClear = true;
+        BlockCodingManager.Instance.IsStageClear = true;
 
         UnlockNewLevel();
 

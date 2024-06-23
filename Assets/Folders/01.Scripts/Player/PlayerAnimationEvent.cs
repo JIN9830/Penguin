@@ -54,7 +54,7 @@ public class PlayerAnimationEvent : MonoBehaviour
 
     public void LandingDustParticle()
     {
-        GameManager.PlayerManager_Instance.LandingDust.Play();
+        BlockCodingManager.PlayerManager_Instance.LandingDust.Play();
     }
 
     private bool AnimationTimer(float limitTime)

@@ -21,7 +21,7 @@ public class Coin : MonoBehaviour
         // .. 플레이어와 코인의 상호작용 코드
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager.StageManager_Instance.UpdateCoin();
+            BlockCodingManager.StageManager_Instance.UpdateCoin();
             AudioManager.Instance.Play_PlayerSFX("EatCoin");
             this.gameObject.SetActive(false);
         }

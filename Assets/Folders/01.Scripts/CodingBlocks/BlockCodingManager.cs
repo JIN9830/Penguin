@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class BlockCodingManager : MonoBehaviour
 {
     public enum CurrentMethod
     {
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     public CurrentMethod ECurrentMethod { get; set; } = CurrentMethod.Main;
 
 
-    public static GameManager Instance { get; private set; }
+    public static BlockCodingManager Instance { get; private set; }
 
     public static PlayerManager PlayerManager_Instance { get; private set; }
     public static StageManager StageManager_Instance { get; private set; }
@@ -23,8 +24,19 @@ public class GameManager : MonoBehaviour
     public List<CodingBlock> MainMethodList { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> FunctionMethodList { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> LoopMethodList { get; private set; } = new List<CodingBlock>();
-    [field: SerializeField] public int LoopReaptCount { get; set; } = 1;
+    public int LoopReaptCount { get; set; } = 1;
 
+    //public Action<bool> changeCompilerRunning;
+    //private bool IsCompilerRunning = false;
+    //public bool IsCompilerRunning
+    //{
+    //    get { return IsCompilerRunning; }
+    //    set
+    //    {
+    //        IsCompilerRunning = value;
+    //        changeCompilerRunning?.Invoke(value);
+    //    }
+    //}
 
     public bool IsCompilerRunning { get; set; } = false;
     public bool IsStageClear { get; set; } = false;
@@ -37,7 +49,6 @@ public class GameManager : MonoBehaviour
     public WaitUntil WaitUntilExecutionTrigger { get; private set; }
     public WaitUntil WaitUntilSubMethodTrigger { get; private set; }
     public WaitUntil WaitUntilEndOfSubMethod { get; private set; }
-
 
 
     private void Awake()
@@ -81,7 +92,7 @@ public class GameManager : MonoBehaviour
             CodingUIManager.Instance.ExecuteButton.interactable = false;
 
             // .. 블록 실행을 누르면 카메라 타겟이 플레이어 위치로 고정
-            PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition; 
+            PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition;
 
             foreach (CodingBlock block in MainMethodList)
             {
@@ -94,7 +105,7 @@ public class GameManager : MonoBehaviour
                 block.enabled = true;
                 block.MoveOrder();
                 // .. Func, Loop 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
-                yield return WaitUntilEndOfSubMethod; 
+                yield return WaitUntilEndOfSubMethod;
             }
 
             if (IsCompilerRunning && !IsStageClear) yield return Util.WaitForSecond(1.0f);
@@ -142,7 +153,7 @@ public class GameManager : MonoBehaviour
 
                     foreach (CodingBlock block in FunctionMethodList)
                     {
-                        block.ToggleHighLight(false);
+                        block.ToggleHighLight(false); 
                     }
 
                     break;

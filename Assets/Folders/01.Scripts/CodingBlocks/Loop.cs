@@ -9,13 +9,13 @@ public class Loop : CodingBlock
         ToggleHighLight(true);
         BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
 
-        GameManager.Instance.ECurrentMethod = GameManager.CurrentMethod.Loop;
+        BlockCodingManager.Instance.ECurrentMethod = BlockCodingManager.CurrentMethod.Loop;
         CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Loop);
         
     }
     private void Update()
     {
-        if (GameManager.Instance.IsCompilerRunning == false)
+        if (BlockCodingManager.Instance.IsCompilerRunning == false)
         {
             BlockTweener.Kill();
             transform.localScale = Vector3.one;

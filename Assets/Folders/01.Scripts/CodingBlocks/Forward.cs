@@ -1,6 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
-using static GameManager;
+using static BlockCodingManager;
 
 public class Forward : CodingBlock
 {

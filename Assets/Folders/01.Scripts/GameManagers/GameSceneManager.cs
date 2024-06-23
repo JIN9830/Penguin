@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -52,10 +53,10 @@ public class GameSceneManager : MonoBehaviour
 
         yield return Util.WaitForSecond(1.0f);
 
-        if(SceneManager.GetActiveScene().buildIndex >= SceneManager.sceneCountInBuildSettings + 1)
+        if (SceneManager.GetActiveScene().buildIndex >= SceneManager.sceneCountInBuildSettings + 1)
             SceneManager.LoadSceneAsync(0);
         else
-        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
 
         LoadingTouchBlockPanel.SetActive(false);
         CodingUIManager.Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, false);
@@ -75,7 +76,7 @@ public class GameSceneManager : MonoBehaviour
                 CodingUIManager.Instance.ActiveOption();
         }
 
-        GameManager.Instance.Initialize_CodingMethod();
+        BlockCodingManager.Instance.Initialize_CodingMethod();
         CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Main);
     }
 }

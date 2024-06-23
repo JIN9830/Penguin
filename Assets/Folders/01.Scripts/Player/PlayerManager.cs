@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
-using static GameManager;
+using static BlockCodingManager;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
