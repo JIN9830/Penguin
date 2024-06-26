@@ -149,10 +149,10 @@ public class CodingUIManager : MonoBehaviour
         #region =============================== Option & Clear OnClickAddListener 
         OptionMenuOpenButton.onClick.AddListener(() => ActiveOption());
         OptionMenuExitButton.onClick.AddListener(() => ActiveOption());
-        OptionMenuBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene(0)));
+        OptionMenuBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene_Co(0)));
 
-        ClearBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene(0)));
-        ClearNextButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadNextScene()));
+        ClearBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene_Co(0)));
+        ClearNextButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadNextScene_Co()));
         #endregion ==============================================================
 
         #region =============================== Transform, Vectors Inits
@@ -355,6 +355,8 @@ public class CodingUIManager : MonoBehaviour
         //    return;
 
         BlockCodingManager.Instance.IsCompilerRunning = true;
+
+        BlockCodingManager.Instance.BlockCompiler = StartCoroutine(BlockCodingManager.Instance.BlockCompiler_Co());
 
         ExecuteButton.gameObject.SetActive(false);
         AbortButton.gameObject.SetActive(true);

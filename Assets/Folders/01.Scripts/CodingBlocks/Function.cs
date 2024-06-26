@@ -12,6 +12,8 @@ public class Function : CodingBlock
 
         BlockCodingManager.Instance.ECurrentMethod = BlockCodingManager.CurrentMethod.Function;
         CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Function);
+
+        BlockCodingManager.Instance.SubBlockCompiler = StartCoroutine(BlockCodingManager.Instance.SubBlockCompiler_Co());
     }
     private void Update()
     {

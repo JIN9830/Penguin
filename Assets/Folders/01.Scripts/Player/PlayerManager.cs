@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
     [field: Header("플레이어 오브젝트")]
     [field: SerializeField] public GameObject PlayerObject { get; private set; }
 
-    [field: SerializeField] public GameObject CameraTargetObject { get; private set; } // TODO: 테스트용 코드 (플레이어가 카메라를 조작할때 움직이는 오브젝트)
+    [field: SerializeField] public GameObject CameraTargetObject { get; private set; }
     public Vector3 CamTargetStartPosition { get; private set; }
     public Vector3 CamTargetStartWorldPosition { get; private set; }
 

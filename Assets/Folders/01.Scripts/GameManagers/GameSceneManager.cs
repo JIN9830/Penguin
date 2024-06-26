@@ -29,7 +29,7 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
-    public IEnumerator LoadIndexScene(int sceneIndex)
+    public IEnumerator LoadIndexScene_Co(int sceneIndex)
     {
         SetUp_NextCodingScene();
 
@@ -44,7 +44,7 @@ public class GameSceneManager : MonoBehaviour
         CodingUIManager.Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, false);
     }
 
-    public IEnumerator LoadNextScene()
+    public IEnumerator LoadNextScene_Co()
     {
         SetUp_NextCodingScene();
 

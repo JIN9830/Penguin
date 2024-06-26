@@ -25,6 +25,7 @@ public class StageManager : MonoBehaviour
 
     private BlockCodingManager _gameManager;
     private CodingUIManager _codingUIManager;
+    private PlayerManager _playerManager;
 
     private void Start()
     {
@@ -71,23 +72,25 @@ public class StageManager : MonoBehaviour
 
     public void CameraPan() // CameraTarget을 화면 터치로 움직여서 카메라의 각도를 조절
     {
+        if (_playerManager == null) 
+            _playerManager = BlockCodingManager.PlayerManager_Instance;
+
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            var playerManager = BlockCodingManager.PlayerManager_Instance;
+            // .. Vector2의 화면 터치값을 참조하여 계산함으로 타겟의 움직임도 Vector2 처럼 2개의 좌표로만 움직여야 한다.
+            Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+            Vector3 newPosition = _playerManager.CameraTargetObject.transform.position + new Vector3(touchDeltaPosition.x, -touchDeltaPosition.y, -touchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
 
-            Vector2 TouchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            Vector3 newPosition = playerManager.CameraTargetObject.transform.position + new Vector3(TouchDeltaPosition.x, -TouchDeltaPosition.y, -TouchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
+            newPosition.x = Mathf.Clamp(newPosition.x, _playerManager.CamTargetStartWorldPosition.x + _camPanMinValueX,
+                _playerManager.CamTargetStartWorldPosition.x + _camPanMaxValueX);
 
-            newPosition.x = Mathf.Clamp(newPosition.x, playerManager.CamTargetStartWorldPosition.x + _camPanMinValueX, 
-                playerManager.CamTargetStartWorldPosition.x + _camPanMaxValueX);
+            newPosition.y = Mathf.Clamp(newPosition.y, _playerManager.CamTargetStartWorldPosition.y + _camPanMinValueY,
+                _playerManager.CamTargetStartWorldPosition.y + _camPanMaxValueY);
 
-            newPosition.y = Mathf.Clamp(newPosition.y, playerManager.CamTargetStartWorldPosition.y + _camPanMinValueY,
-                playerManager.CamTargetStartWorldPosition.y + _camPanMaxValueY);
+            newPosition.z = Mathf.Clamp(newPosition.z, _playerManager.CamTargetStartWorldPosition.z + _camPanMinValueZ,
+                _playerManager.CamTargetStartWorldPosition.z + _camPanMaxValueZ);
 
-            newPosition.z = Mathf.Clamp(newPosition.z, playerManager.CamTargetStartWorldPosition.z + _camPanMinValueZ,
-                playerManager.CamTargetStartWorldPosition.z + _camPanMaxValueZ);
-
-            playerManager.CameraTargetObject.transform.position = newPosition;
+            _playerManager.CameraTargetObject.transform.position = newPosition;
         }
     }
 

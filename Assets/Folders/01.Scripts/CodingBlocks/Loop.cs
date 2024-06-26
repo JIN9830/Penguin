@@ -11,7 +11,8 @@ public class Loop : CodingBlock
 
         BlockCodingManager.Instance.ECurrentMethod = BlockCodingManager.CurrentMethod.Loop;
         CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Loop);
-        
+
+        BlockCodingManager.Instance.SubBlockCompiler = StartCoroutine(BlockCodingManager.Instance.SubBlockCompiler_Co());
     }
     private void Update()
     {

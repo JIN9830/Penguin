@@ -42,8 +42,8 @@ public class BlockCodingManager : MonoBehaviour
     public bool IsStageClear { get; set; } = false;
 
 
-    private Coroutine _blockCompiler;
-    private Coroutine _subBlockCompiler;
+    public Coroutine BlockCompiler { get; set; } = null;
+    public Coroutine SubBlockCompiler { get; set; } = null;
 
 
     public WaitUntil WaitUntilExecutionTrigger { get; private set; }
@@ -74,8 +74,8 @@ public class BlockCodingManager : MonoBehaviour
 
     private void Start()
     {
-        _blockCompiler = StartCoroutine(BlockCompiler_Co());
-        _subBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
+        //BlockCompiler = StartCoroutine(BlockCompiler_Co());
+        //SubBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
     }
 
     /// <summary>
@@ -84,40 +84,37 @@ public class BlockCodingManager : MonoBehaviour
     /// </summary>
     public IEnumerator BlockCompiler_Co()
     {
-        while (true)
+        //// .. 사용자가 코딩블록 실행 버튼을 누를 때까지 여기서 대기하며 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
+        //yield return WaitUntilExecutionTrigger;
+
+        CodingUIManager.Instance.ExecuteButton.interactable = false;
+
+        // .. 블록 실행을 누르면 카메라 타겟이 플레이어 위치로 고정
+        PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition;
+
+        foreach (CodingBlock block in MainMethodList)
         {
-            // .. 사용자가 코딩블록 실행 버튼을 누를 때까지 여기서 대기하며 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
-            yield return WaitUntilExecutionTrigger;
+            yield return Util.WaitForSecond(1.0f);
 
-            CodingUIManager.Instance.ExecuteButton.interactable = false;
+            if (!IsCompilerRunning || IsStageClear)
+                break;
 
-            // .. 블록 실행을 누르면 카메라 타겟이 플레이어 위치로 고정
-            PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition;
-
-            foreach (CodingBlock block in MainMethodList)
-            {
-                yield return Util.WaitForSecond(1.0f);
-
-                if (!IsCompilerRunning || IsStageClear) 
-                    break;
-
-                AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
-                block.enabled = true;
-                block.MoveOrder();
-                // .. Func, Loop 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
-                yield return WaitUntilEndOfSubMethod;
-            }
-
-            if (IsCompilerRunning && !IsStageClear) yield return Util.WaitForSecond(1.0f);
-
-            PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", IsCompilerRunning);
-
-            IsCompilerRunning = false;
-            CodingUIManager.Instance.DisableBlockHighlights();
-            CodingUIManager.Instance.LockUIElements(false);
-
-            CodingUIManager.Instance.ExecuteButton.interactable = true; 
+            AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
+            block.enabled = true;
+            block.MoveOrder();
+            // .. Func, Loop 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
+            yield return WaitUntilEndOfSubMethod;
         }
+
+        if (IsCompilerRunning && !IsStageClear) yield return Util.WaitForSecond(1.0f);
+
+        PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", IsCompilerRunning);
+
+        IsCompilerRunning = false;
+        CodingUIManager.Instance.DisableBlockHighlights();
+        CodingUIManager.Instance.LockUIElements(false);
+
+        CodingUIManager.Instance.ExecuteButton.interactable = true;
     }
 
     /// <summary>
@@ -126,18 +123,53 @@ public class BlockCodingManager : MonoBehaviour
     /// </summary>
     public IEnumerator SubBlockCompiler_Co()
     {
-        while (true)
+
+        //// .. MainLayout에서 [Func], [Loop] 블록이 실행될때까지 여기서 대기하며 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
+        //yield return WaitUntilSubMethodTrigger;
+
+        switch (ECurrentMethod)
         {
-            // .. MainLayout에서 [Func], [Loop] 블록이 실행될때까지 여기서 대기하며 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
-            yield return WaitUntilSubMethodTrigger;
 
-            switch (ECurrentMethod)
-            {
+            #region ======================== * Function Compiler Start * ================
+            case CurrentMethod.Function:
 
-                #region ======================== * Function Compiler Start * ================
-                case CurrentMethod.Function:
+                foreach (CodingBlock codingBlock in FunctionMethodList)
+                {
+                    yield return Util.WaitForSecond(1.0f);
 
-                    foreach (CodingBlock codingBlock in FunctionMethodList)
+                    if (!IsCompilerRunning || IsStageClear)
+                        break;
+
+                    AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
+                    codingBlock.enabled = true;
+                    codingBlock.MoveOrder();
+                }
+
+                if (IsCompilerRunning || !IsStageClear) yield return Util.WaitForSecond(1.0f);
+
+                foreach (CodingBlock block in FunctionMethodList)
+                {
+                    block.ToggleHighLight(false);
+                }
+
+                break;
+
+            #endregion ====================== Function Compiler End ======================
+
+
+
+
+            #region ======================== * Loop Compiler Start * =====================
+            case CurrentMethod.Loop:
+
+                int loopReaptCountTemp = LoopReaptCount;
+
+                for (int i = 0; i < loopReaptCountTemp; i++)
+                {
+                    if (!IsCompilerRunning || IsStageClear)
+                        break;
+
+                    foreach (CodingBlock codingBlock in LoopMethodList)
                     {
                         yield return Util.WaitForSecond(1.0f);
 
@@ -149,69 +181,32 @@ public class BlockCodingManager : MonoBehaviour
                         codingBlock.MoveOrder();
                     }
 
-                    if (IsCompilerRunning || !IsStageClear) yield return Util.WaitForSecond(1.0f);
-
-                    foreach (CodingBlock block in FunctionMethodList)
+                    // .. 블록 실행 중지 버튼이 눌리지 않았다면, 다음 루프를 반복 실행할 준비를 합니다. 1초 딜레이 후,
+                    // .. 실행했던 블록들의 하이라이트를 제거하고 LoopReaptCount 만큼 반복합니다.
+                    if (IsCompilerRunning || !IsStageClear)
                     {
-                        block.ToggleHighLight(false); 
+                        yield return Util.WaitForSecond(1.0f);
+
+                        foreach (CodingBlock block in LoopMethodList)
+                        {
+                            block.ToggleHighLight(false);
+                        }
                     }
 
-                    break;
-
-                #endregion ====================== Function Compiler End ======================
-
-
-
-
-                #region ======================== * Loop Compiler Start * =====================
-                case CurrentMethod.Loop:
-
-                    int loopReaptCountTemp = LoopReaptCount;
-
-                    for (int i = 0; i < loopReaptCountTemp; i++)
-                    {
-                        if (!IsCompilerRunning || IsStageClear)
-                            break;
-
-                        foreach (CodingBlock codingBlock in LoopMethodList)
-                        {
-                            yield return Util.WaitForSecond(1.0f);
-
-                            if (!IsCompilerRunning || IsStageClear)
-                                break;
-
-                            AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
-                            codingBlock.enabled = true;
-                            codingBlock.MoveOrder();
-                        }
-
-                        // .. 블록 실행 중지 버튼이 눌리지 않았다면, 다음 루프를 반복 실행할 준비를 합니다. 1초 딜레이 후,
-                        // .. 실행했던 블록들의 하이라이트를 제거하고 LoopReaptCount 만큼 반복합니다.
-                        if (IsCompilerRunning || !IsStageClear)
-                        {
-                            yield return Util.WaitForSecond(1.0f);
-
-                            foreach (CodingBlock block in LoopMethodList)
-                            {
-                                block.ToggleHighLight(false);
-                            }
-                        }
-                        
-                        LoopReaptCount--;
-                        CodingUIManager.Instance.LoopCountText.text= LoopReaptCount.ToString();
-                    }
-
-                    LoopReaptCount = loopReaptCountTemp;
+                    LoopReaptCount--;
                     CodingUIManager.Instance.LoopCountText.text = LoopReaptCount.ToString();
+                }
 
-                    break;
+                LoopReaptCount = loopReaptCountTemp;
+                CodingUIManager.Instance.LoopCountText.text = LoopReaptCount.ToString();
 
-                    #endregion ======================== Loop Compiler End ====================
-            }
+                break;
 
-            CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Main);
-            ECurrentMethod = CurrentMethod.Main;
+                #endregion ======================== Loop Compiler End ====================
         }
+
+        CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Main);
+        ECurrentMethod = CurrentMethod.Main;
     }
 
     public void Initialize_CodingMethod()

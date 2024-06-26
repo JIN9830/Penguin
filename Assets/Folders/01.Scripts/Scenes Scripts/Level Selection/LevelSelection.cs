@@ -19,7 +19,7 @@ public class LevelSelection : MonoBehaviour
         for (int i = 0; i < levelsButton.Length; i++)
         {
             int index = i;
-            levelsButton[index].onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene(index + 1)));
+            levelsButton[index].onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene_Co(index + 1)));
         }
 
         saveClearButton.onClick.AddListener(() =>{ PlayerPrefs.DeleteAll(); StageStatus(); });
