@@ -14,7 +14,6 @@ public class BlockCodingManager : MonoBehaviour
     }
     public CurrentMethod ECurrentMethod { get; set; } = CurrentMethod.Main;
 
-
     public static BlockCodingManager Instance { get; private set; }
 
     public static PlayerManager PlayerManager_Instance { get; private set; }
