@@ -161,6 +161,9 @@ public class BlockCodingManager : MonoBehaviour
             #region ======================== * Loop Compiler Start * =====================
             case CurrentMethod.Loop:
 
+                // LoopReaptCount: UI에 표시되는 Loop 반복 횟수 변수
+                // loopReaptCountTemp: 코드 내부적으로 Loop가 동작하는 반복 횟수를 저장하는 변수 
+
                 int loopReaptCountTemp = LoopReaptCount;
 
                 for (int i = 0; i < loopReaptCountTemp; i++)
@@ -180,8 +183,7 @@ public class BlockCodingManager : MonoBehaviour
                         codingBlock.MoveOrder();
                     }
 
-                    // .. 블록 실행 중지 버튼이 눌리지 않았다면, 다음 루프를 반복 실행할 준비를 합니다. 1초 딜레이 후,
-                    // .. 실행했던 블록들의 하이라이트를 제거하고 LoopReaptCount 만큼 반복합니다.
+                    // 블록 실행 중지 버튼이 눌리지 않으면, 1초 딜레이 후 Loop 내부의 블록 하이라이트를 전부 제거합니다.
                     if (IsCompilerRunning || !IsStageClear)
                     {
                         yield return Util.WaitForSecond(1.0f);
@@ -191,14 +193,14 @@ public class BlockCodingManager : MonoBehaviour
                             block.ToggleHighLight(false);
                         }
                     }
-
+                    // Loop의 한 사이클이 끝나면 UI의 표시되는 Loop의 반복횟수(LoopReaptCount)를 -1 감소시키고, for 문으로 돌아가서 Loop를 반복합니다.
                     LoopReaptCount--;
                     CodingUIManager.Instance.LoopCountText.text = LoopReaptCount.ToString();
                 }
 
+                // Loop가 완료되면 UI에서 표시되는 Loop의 반복횟수(LoopReaptCount)를 초기값(loopReaptCountTemp)으로 리셋합니다.
                 LoopReaptCount = loopReaptCountTemp;
                 CodingUIManager.Instance.LoopCountText.text = LoopReaptCount.ToString();
-
                 break;
 
                 #endregion ======================== Loop Compiler End ====================
@@ -210,7 +212,7 @@ public class BlockCodingManager : MonoBehaviour
 
     public void Initialize_CodingMethod()
     {
-        // .. 레이아웃에 있는 블록 오브젝트들을 오브젝트 풀에 전부 반환
+        // .. 레이아웃에 있는 블록 오브젝트들을 오브젝트 풀에 전부 반환.
         foreach (CodingBlock blockObj in MainMethodList)
         {
             blockObj.ReleaseBlock();
@@ -224,16 +226,16 @@ public class BlockCodingManager : MonoBehaviour
             blockObj.ReleaseBlock();
         }
 
-        // .. 각 리스트 내부의 코딩블럭 데이터를 전부 삭제
+        // .. 각 리스트 내부의 코딩블럭 데이터를 전부 삭제.
         MainMethodList.Clear();
         FunctionMethodList.Clear();
         LoopMethodList.Clear();
 
-        // .. 코딩블럭 컴파일의 실행 상태 변수와 & 게임 클리어 상태 변수를 디폴드 값인 거짓으로 변경
+        // .. 블럭 컴파일러의 실행 상태 & 게임 클리어 상태를 저장하는 변수를 변수의 기본 값인 false로 초기화.
         IsCompilerRunning = false;
         IsStageClear = false;
 
-        // .. 루프 반속 횟수를 기본값인 1로 변경
+        // .. 루프문의 반복 횟수를 기본 값인 1로 초기화.
         LoopReaptCount = 1;
         CodingUIManager.Instance.LoopCountText.text = Instance.LoopReaptCount.ToString();
     }
