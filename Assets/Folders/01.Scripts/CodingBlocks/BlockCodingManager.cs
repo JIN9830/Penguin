@@ -162,11 +162,11 @@ public class BlockCodingManager : MonoBehaviour
             case CurrentMethod.Loop:
 
                 // LoopReaptCount: UI에 표시되는 Loop 반복 횟수 변수
-                // loopReaptCountTemp: 코드 내부적으로 Loop가 동작하는 반복 횟수를 저장하는 변수 
+                // tempLoopReaptCount: 코드 내부적으로 Loop가 동작하는 반복 횟수를 저장하는 변수 
 
-                int loopReaptCountTemp = LoopReaptCount;
+                int tempLoopReaptCount = LoopReaptCount;
 
-                for (int i = 0; i < loopReaptCountTemp; i++)
+                for (int i = 0; i < tempLoopReaptCount; i++)
                 {
                     if (!IsCompilerRunning || IsStageClear)
                         break;
@@ -198,8 +198,8 @@ public class BlockCodingManager : MonoBehaviour
                     CodingUIManager.Instance.LoopCountText.text = LoopReaptCount.ToString();
                 }
 
-                // Loop가 완료되면 UI에서 표시되는 Loop의 반복횟수(LoopReaptCount)를 초기값(loopReaptCountTemp)으로 리셋합니다.
-                LoopReaptCount = loopReaptCountTemp;
+                // Loop가 완료되면 UI에서 표시되는 Loop의 반복횟수(LoopReaptCount)를 초기값(tempLoopReaptCount)으로 리셋합니다.
+                LoopReaptCount = tempLoopReaptCount;
                 CodingUIManager.Instance.LoopCountText.text = LoopReaptCount.ToString();
                 break;
 
