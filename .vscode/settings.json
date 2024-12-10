@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Penguin.sln"
+    "dotnet.defaultSolution": "Penguin.sln",
+    "dotnet.preferCSharpExtension": true
 }
