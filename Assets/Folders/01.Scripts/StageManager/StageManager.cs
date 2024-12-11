@@ -118,7 +118,7 @@ public class StageManager : MonoBehaviour
 
     public void StageClear()
     {
-        CodingUIManager.Instance.AbortButton.interactable = false;
+        CodingUIManager.Instance.StopButton.interactable = false;
 
         CodingUIManager.Instance.OptionMenuOpenButton.interactable = true;
 

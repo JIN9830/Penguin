@@ -1275,8 +1275,8 @@ MonoBehaviour:
   <LoopCountPlus>k__BackingField: {fileID: 1885856411490237922}
   <LoopCountMinus>k__BackingField: {fileID: 5714528822134099340}
   <LoopCountText>k__BackingField: {fileID: 5015756665741117307}
-  <ExecuteButton>k__BackingField: {fileID: 5645428400550862726}
-  <AbortButton>k__BackingField: {fileID: 1692357242309523426}
+  <PlayButton>k__BackingField: {fileID: 5645428400550862726}
+  <StopButton>k__BackingField: {fileID: 1692357242309523426}
   <TimeControlButton>k__BackingField: {fileID: 5303494147033144057}
   _timeControlOn: {fileID: 21300000, guid: 9134174b68cc7cb4f8ebc0e03b36f8fd, type: 3}
   _timeControlOff: {fileID: 21300000, guid: 23426918fb203c04c809c6d48dea3022, type: 3}
@@ -1454,7 +1454,7 @@ GameObject:
   - component: {fileID: 5645428400550862726}
   - component: {fileID: 4975581189108168489}
   m_Layer: 5
-  m_Name: Execution Button
+  m_Name: Play Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4889,7 +4889,7 @@ GameObject:
   - component: {fileID: 2800849390917821368}
   - component: {fileID: 225632223677184238}
   m_Layer: 5
-  m_Name: Abort Button
+  m_Name: Stop Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

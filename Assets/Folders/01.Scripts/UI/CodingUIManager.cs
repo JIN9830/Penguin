@@ -52,8 +52,8 @@ public class CodingUIManager : MonoBehaviour
 
 
     [field: Header("플레이 & 정지, 스피드업 버튼")]
-    [field: SerializeField] public Button ExecuteButton { get; private set; }
-    [field: SerializeField] public Button AbortButton { get; private set; }
+    [field: SerializeField] public Button PlayButton { get; private set; }
+    [field: SerializeField] public Button StopButton { get; private set; }
     [field: SerializeField] public Button TimeControlButton { get; private set; }
     [SerializeField] private Sprite _timeControlOn;
     [SerializeField] private Sprite _timeControlOff;
@@ -139,8 +139,8 @@ public class CodingUIManager : MonoBehaviour
         #region =============================== Execution, Stop & TimeControl & Loop Count Plus, Minus OnClickAddListener
         //BlockCodingManager.Instance.changeCompilerRunning += (value) => ExecuteCodingBlock(value);
 
-        ExecuteButton.onClick.AddListener(() => ExecuteCodingBlock());
-        AbortButton.onClick.AddListener(() => AbortCodingBlock());
+        PlayButton.onClick.AddListener(() => ExecuteCodingBlock());
+        StopButton.onClick.AddListener(() => AbortCodingBlock());
         TimeControlButton.onClick.AddListener(() => ControlTimeScale());
         LoopCountPlus.onClick.AddListener(() => ControlLoopCount(true));
         LoopCountMinus.onClick.AddListener(() => ControlLoopCount(false));
@@ -358,8 +358,8 @@ public class CodingUIManager : MonoBehaviour
 
         BlockCodingManager.Instance.BlockCompiler = StartCoroutine(BlockCodingManager.Instance.BlockCompiler_Co());
 
-        ExecuteButton.gameObject.SetActive(false);
-        AbortButton.gameObject.SetActive(true);
+        PlayButton.gameObject.SetActive(false);
+        StopButton.gameObject.SetActive(true);
         LockUIElements(true);
 
         OptionMenuOpenButton.interactable= false;
@@ -380,8 +380,8 @@ public class CodingUIManager : MonoBehaviour
         BlockCodingManager.PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
         BlockCodingManager.PlayerManager_Instance.ResetPlayerPosition();
 
-        AbortButton.gameObject.SetActive(false);
-        UIAnimation.Animation_PlayButtonDelay(ExecuteButton, 1);
+        StopButton.gameObject.SetActive(false);
+        UIAnimation.Animation_PlayButtonDelay(PlayButton, 1);
 
         OptionMenuOpenButton.transform.DOScale(1, 0.5f).SetEase(Ease.InOutExpo);
         OptionMenuOpenButton.interactable = true;
@@ -572,9 +572,9 @@ public class CodingUIManager : MonoBehaviour
     public void Initialize_CodingUIButtonState()
     {
         // 실행 정지 버튼이 표시 상태
-        AbortButton.interactable = true;
-        AbortButton.gameObject.SetActive(false);
-        ExecuteButton.gameObject.SetActive(true);
+        StopButton.interactable = true;
+        StopButton.gameObject.SetActive(false);
+        PlayButton.gameObject.SetActive(true);
 
         // 시간 배속 버튼의 표시 상태
         TimeControlButton.GetComponent<Image>().sprite = _timeControlOff;

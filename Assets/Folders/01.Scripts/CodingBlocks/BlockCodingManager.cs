@@ -86,7 +86,7 @@ public class BlockCodingManager : MonoBehaviour
         //// .. 사용자가 코딩블록 실행 버튼을 누를 때까지 여기서 대기하며 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
         //yield return WaitUntilExecutionTrigger;
 
-        CodingUIManager.Instance.ExecuteButton.interactable = false;
+        CodingUIManager.Instance.PlayButton.interactable = false;
 
         // .. 블록 실행을 누르면 카메라 타겟이 플레이어 위치로 고정
         PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition;
@@ -113,7 +113,7 @@ public class BlockCodingManager : MonoBehaviour
         CodingUIManager.Instance.DisableBlockHighlights();
         CodingUIManager.Instance.LockUIElements(false);
 
-        CodingUIManager.Instance.ExecuteButton.interactable = true;
+        CodingUIManager.Instance.PlayButton.interactable = true;
     }
 
     /// <summary>
