@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using DG.Tweening;
-using static BlockCodingManager;
-using Unity.VisualScripting;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
@@ -48,7 +45,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         // .. 게임 매니저에 PlayerManager 등록
-        Instance.Register_PlayerManager(this.gameObject);
+        BlockCodingManager.Instance.Register_PlayerManager(this.gameObject);
 
         // 코딩시티 씬이 시작될때 카메라 무빙을 시직 (테스트용 코드)
         CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
@@ -64,7 +61,7 @@ public class PlayerManager : MonoBehaviour
     public void ResetPlayerPosition()
     {
         PlayerAnimator.SetTrigger("Reset");
-        PlayerObject.transform.DOMove(PlayerResetPos, 0.5f).OnComplete(() => StageManager_Instance.ResetCoin());
+        PlayerObject.transform.DOMove(PlayerResetPos, 0.5f).OnComplete(() => BlockCodingManager.StageManager_Instance.ResetCoin());
         PlayerObject.transform.DORotateQuaternion(PlayerResetRot, 0.5f);
     }
 }
