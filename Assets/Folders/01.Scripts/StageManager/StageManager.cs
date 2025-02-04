@@ -10,18 +10,22 @@ public class StageManager : MonoBehaviour
 
     public Vector3 StageClearPanelInitPos { get; private set; }
 
-    [Header("카메라 조작 범위값")]
+    [Header("카메라 조작 범위 값")]
 
+    [Header("X 축")]
     [SerializeField] private float _camPanMinValueX;
     [SerializeField] private float _camPanMaxValueX;
 
+    [Header("Y 축")]
     [SerializeField] private float _camPanMinValueY;
     [SerializeField] private float _camPanMaxValueY;
 
+    [Header("Z 축")]
     [SerializeField] private float _camPanMinValueZ;
     [SerializeField] private float _camPanMaxValueZ;
 
-    [field: SerializeField] public float CameraPanSpeed { get; private set; } = 0.35f;
+    [Header("카메라 이동 속도")]
+    [SerializeField] private float CameraPanSpeed = 0.4f;
 
     private BlockCodingManager _gameManager;
     private CodingUIManager _codingUIManager;

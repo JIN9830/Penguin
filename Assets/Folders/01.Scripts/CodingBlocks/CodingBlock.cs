@@ -10,7 +10,6 @@ public abstract class CodingBlock : MonoBehaviour
 
     public IObjectPool<CodingBlock> Pool { get; set; }
 
-    // 테스트용 주석입니다.
     private void Awake()
     {
         _highlight = this.transform.GetChild(0).gameObject;
