@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
-    // => 해당 스크립트는 기본 베이스를 프리팹으로 만들고 내부 데이터를 각 스테이지별로 인스펙터에서 관리한다
     [field: SerializeField] public GameObject[] CoinObject { get; private set; }
     [field: SerializeField] public int CoinCount { get; private set; }
 
@@ -25,7 +24,10 @@ public class StageManager : MonoBehaviour
     [SerializeField] private float _camPanMaxValueZ;
 
     [Header("카메라 이동 속도")]
-    [SerializeField] private float CameraPanSpeed = 0.4f;
+    [SerializeField] private float CameraPanSpeed = 0.5f;
+
+    public GameObject Buildings;
+    public GameObject Platforms;
 
     private BlockCodingManager _gameManager;
     private CodingUIManager _codingUIManager;
@@ -63,6 +65,8 @@ public class StageManager : MonoBehaviour
         // .. 이미 스테이지 배경음악이 재생중이라면 bool 변수를 통해서 스테이지 씬 일때만 이어서 재생
         // .. 배경음악이 재생 중인 상태에서 다른 씬으로 넘어가면 배경음악 소리가 서서히 작아 졌다가 커지는 효과
         // .. 스테이지 씬에서 레벨 셀렉션으로 넘어가면 다른 배경음악 재생 시작
+
+        //WorldEntryAnimation();
     }
 
     public void Update()
@@ -145,5 +149,11 @@ public class StageManager : MonoBehaviour
             PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
             PlayerPrefs.Save();
         }
+    }
+
+    public void WorldEntryAnimation()
+    {
+        Buildings.transform.position = new Vector3(0, -10, 0);
+        Buildings.transform.DOMoveY(0, 1).SetEase(Ease.InOutQuint).SetDelay(0.5f);
     }
 }
