@@ -1286,8 +1286,8 @@ MonoBehaviour:
   <LoopButton>k__BackingField: {fileID: 6500610108367286606}
   <OptionMenuOpenButton>k__BackingField: {fileID: 3792768780833341935}
   <OptionPanel>k__BackingField: {fileID: 1019068405105456801}
-  <OptionMenuBackButton>k__BackingField: {fileID: 4215527638904583600}
-  <OptionMenuExitButton>k__BackingField: {fileID: 8919731236695373178}
+  <OptionMenuExitButton>k__BackingField: {fileID: 4215527638904583600}
+  <OptionMenuQuitButton>k__BackingField: {fileID: 8919731236695373178}
   <TuchBlockPanel>k__BackingField: {fileID: 9124788183127570279}
   <CityNameObj>k__BackingField: {fileID: 8607842141595871428}
   <ClearPanel>k__BackingField: {fileID: 8061024355647797110}
@@ -2543,7 +2543,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Back
+  m_text: Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
@@ -2570,8 +2570,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 85
-  m_fontSizeBase: 85
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6287,7 +6287,7 @@ GameObject:
   - component: {fileID: 6663096541097493878}
   - component: {fileID: 8919731236695373178}
   m_Layer: 5
-  m_Name: Button Option Menu Exit
+  m_Name: Button Option Menu Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6755,7 +6755,7 @@ GameObject:
   - component: {fileID: 1746697590943777363}
   - component: {fileID: 4215527638904583600}
   m_Layer: 5
-  m_Name: Button Option Menu Back
+  m_Name: Button Option Menu Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

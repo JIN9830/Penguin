@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
+    public Transform coinInitPos;
     private void OnEnable()
     {
         // .. 内牢 积己 局聪皋捞记
@@ -23,7 +24,11 @@ public class Coin : MonoBehaviour
         {
             BlockCodingManager.StageManager_Instance.UpdateCoin();
             AudioManager.Instance.Play_PlayerSFX("EatCoin");
-            this.gameObject.SetActive(false);
+
+            Vector3 coinPos = gameObject.transform.position;
+
+            gameObject.transform.DOMoveY(1, 0.5f).SetEase(Ease.OutBack);
+            gameObject.transform.DOScale(0, 1);
         }
     }
 

@@ -71,8 +71,8 @@ public class CodingUIManager : MonoBehaviour
     [field: SerializeField] public Button OptionMenuOpenButton { get; private set; }
     public bool IsOptionMenuOpen { get; private set; } = false;
     [field: SerializeField] public GameObject OptionPanel { get; private set; }
-    [field: SerializeField] public Button OptionMenuBackButton { get; private set; }
     [field: SerializeField] public Button OptionMenuExitButton { get; private set; }
+    [field: SerializeField] public Button OptionMenuQuitButton { get; private set; }
     [field: SerializeField] public GameObject TuchBlockPanel { get; private set; }
     [field: SerializeField] public TextMeshProUGUI CityNameObj { get; private set; }
 
@@ -148,8 +148,8 @@ public class CodingUIManager : MonoBehaviour
 
         #region =============================== Option & Clear OnClickAddListener 
         OptionMenuOpenButton.onClick.AddListener(() => ActiveOption());
-        OptionMenuExitButton.onClick.AddListener(() => ActiveOption());
-        OptionMenuBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene_Co(0)));
+        OptionMenuQuitButton.onClick.AddListener(() => ActiveOption());
+        OptionMenuExitButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene_Co(0)));
 
         ClearBackButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadIndexScene_Co(0)));
         ClearNextButton.onClick.AddListener(() => StartCoroutine(GameSceneManager.Instance.LoadNextScene_Co()));

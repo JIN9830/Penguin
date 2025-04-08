@@ -15,7 +15,7 @@ public class LevelSelection : MonoBehaviour
 
     private void Start()
     {
-        // 레벨버튼에 각 씬의 인덱스값을 대입 하는 코드
+        // 레벨 버튼에 각 씬의 인덱스 값을 대입 하는 코드
         for (int i = 0; i < levelsButton.Length; i++)
         {
             int index = i;
@@ -27,7 +27,7 @@ public class LevelSelection : MonoBehaviour
         AudioManager.Instance.Play_Music("LevelSelectionTheme");
     }
 
-    public void StageStatus() // 플레이어의 스테이지 진행도에 따라서 각 레벨씬으로 이동 버튼의 활성화 상태를 업데이트하는 코드
+    public void StageStatus() // 플레이어의 스테이지 진행도에 따라서 각 레벨 씬으로 이동 버튼의 활성화 상태를 업데이트 하는 코드
     {
         int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1); // 스테이지 세이브 파일 초기화 코드
 

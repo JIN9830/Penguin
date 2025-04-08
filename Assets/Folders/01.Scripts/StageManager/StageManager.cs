@@ -24,7 +24,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private float _camPanMaxValueZ;
 
     [Header("카메라 이동 속도")]
-    [SerializeField] private float CameraPanSpeed = 0.5f;
+    [SerializeField] private float CameraPanSpeed = 0.35f;
 
     public GameObject Buildings;
     public GameObject Platforms;
@@ -120,7 +120,10 @@ public class StageManager : MonoBehaviour
 
         foreach (GameObject coin in CoinObject)
         {
-            coin.gameObject.SetActive(true);
+            Vector3 coinPos = coin.gameObject.transform.localPosition;
+            coinPos.y = 0.2f;
+            coin.gameObject.transform.localPosition = coinPos;
+            coin.gameObject.transform.DOScale(1.2f, 1);
         }
     }
 
