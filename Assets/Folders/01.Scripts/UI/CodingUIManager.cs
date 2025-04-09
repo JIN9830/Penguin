@@ -372,7 +372,8 @@ public class CodingUIManager : MonoBehaviour
     {
         BlockCodingManager.Instance.IsCompilerRunning = false;
 
-        BlockCodingManager.PlayerManager_Instance.CameraTargetObject.transform.localPosition = BlockCodingManager.PlayerManager_Instance.CamTargetStartPosition;
+        BlockCodingManager.PlayerManager_Instance.CameraTargetObject.transform.localPosition = 
+            BlockCodingManager.PlayerManager_Instance.CamTargetStartPosition;
 
         AudioManager.Instance.Play_UISFX("AbortButton");
 

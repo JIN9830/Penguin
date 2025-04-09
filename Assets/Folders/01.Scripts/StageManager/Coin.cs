@@ -19,14 +19,14 @@ public class Coin : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        // .. 플레이어와 코인의 상호작용 코드
+        // .. 플레이어가 코인에 닿았을 때
         if (other.gameObject.CompareTag("Player"))
         {
+            // .. 코인 갯수를 업데이트, 코인 습득 사운드 재생
             BlockCodingManager.StageManager_Instance.UpdateCoin();
             AudioManager.Instance.Play_PlayerSFX("EatCoin");
 
-            Vector3 coinPos = gameObject.transform.position;
-
+            // .. 코인 습득 애니메이션 재생
             gameObject.transform.DOMoveY(1, 0.5f).SetEase(Ease.OutBack);
             gameObject.transform.DOScale(0, 1);
         }
