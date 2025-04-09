@@ -6006,6 +6006,11 @@ PrefabInstance:
       propertyPath: uiSfxSound.Array.data[7].clip
       value: 
       objectReference: {fileID: 8300000, guid: 8ba9d35968e25554e9c2d34ef95911bd, type: 3}
+    - target: {fileID: 4491440535533065470, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+        type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7192949485946255049, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
         type: 3}
       propertyPath: m_Name
