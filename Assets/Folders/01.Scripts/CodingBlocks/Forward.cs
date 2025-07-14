@@ -13,7 +13,7 @@ public class Forward : CodingBlock
     {
         ToggleHighLight(true);
 
-        // .. 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
+        // 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
         if (Physics.Raycast(PlayerManager_Instance.PlayerObject.transform.localPosition, PlayerManager_Instance.PlayerObject.transform.forward, out _hit, _DISTANCE))
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_BlockShake(this.gameObject);
@@ -23,17 +23,16 @@ public class Forward : CodingBlock
                 AudioManager.Instance.Play_PlayerSFX("HitTheWall");
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("HitTheWall");
                 CodingUIManager.Instance.ShakeUIElements();
-                this.enabled = false;
             }
             else if (_hit.collider.CompareTag("Edge"))
             {
                 AudioManager.Instance.Play_PlayerSFX("ReachTheEdge");
                 PlayerManager_Instance.PlayerAnimator.SetTrigger("ReachTheEdge");
-                this.enabled = false;
             }
 
+            this.enabled = false;
         }
-        // ... 장애물이 없다면 Update에서 앞으로 전진하는 PlayerMove 메서드를 호출하도록 PlayerState를 Forwarding로 변경
+        // 장애물이 없다면 Update에서 앞으로 전진하는 PlayerMove 메서드를 호출 하도록 PlayerState를 Forwarding로 변경
         else
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
@@ -49,12 +48,12 @@ public class Forward : CodingBlock
         PlayerManager_Instance.Initialize_PlayerForwardVector();
     }
 
-    private void OnDisable() // 전진 블록 실행이 종료될 때 초기화해야 할 작업들
+    private void OnDisable() // 전진 블록 실행이 종료될 때 초기화 해야 할 작업들
     {
         transform.localScale = Vector3.one;
         PlayerManager_Instance.EPlayerState = PlayerManager.PlayerState.None;
 
-        // .. 앞으로 전진하는 애니메이션의 발 움직임 싱크를 맞추기위한 설정
+        // 앞으로 전진하는 애니메이션의 발 움직임 싱크를 맞추기 위한 설정
        _deltaTimeCount = 0.70f;
         PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
     }
@@ -63,15 +62,15 @@ public class Forward : CodingBlock
     {
         if (Instance.IsCompilerRunning == false)
         {
-            BlockTweener.Kill();
+            if (BlockTweener != null) BlockTweener.Kill();
             this.enabled = false;
         }
         else if (PlayerManager_Instance.EPlayerState == PlayerManager.PlayerState.Forwarding)
         {
-            PlayerMove();
+            MovePlayerForward();
         }
     }
-    private void PlayerMove()
+    private void MovePlayerForward()
     {
         PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
 
