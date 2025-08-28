@@ -1,21 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CarController : MonoBehaviour
 {
-    [SerializeField]
-    private List<GameObject> _childCarObject =new List<GameObject>();
+    public bool isMoving = false;
 
-    void Start()
+    public void MoveCar(int endValue, int time)
     {
-        int childCount = transform.childCount;
+        Vector3 initPos = transform.position;
 
-        for (int i = 0; i < childCount; i++)
+        isMoving = true;
+
+        transform.DOMoveZ(endValue, time).OnComplete(() =>
         {
-            _childCarObject.Add(transform.GetChild(i).gameObject);
-        }
+            isMoving = false;
+            transform.position = initPos;
+        });
     }
-
 
 }
