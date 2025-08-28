@@ -13,12 +13,13 @@ public class CarController : MonoBehaviour
 
         isMoving = true;
 
-        transform.DOMoveZ(endValue, time).OnComplete(() =>
+        transform.DOLocalMoveZ(endValue, time).OnComplete(() =>
         {
             isMoving = false;
             transform.position = initPos;
             transform.gameObject.SetActive(false);
         });
+
     }
 
 }

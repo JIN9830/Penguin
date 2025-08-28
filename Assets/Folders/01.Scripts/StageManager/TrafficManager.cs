@@ -9,7 +9,7 @@ public class TrafficManager : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> _carObjects = new List<GameObject>();
-
+        
     [SerializeField]
     private int _carSpawnDelay = 5;
 

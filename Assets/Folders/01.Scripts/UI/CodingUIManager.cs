@@ -422,7 +422,7 @@ public class CodingUIManager : MonoBehaviour
                 if (BlockCodingManager.Instance.LoopReaptCount > MinLoopCount) BlockCodingManager.Instance.LoopReaptCount--;
                 break;
         }
-
+        AudioManager.Instance.Play_UISFX("TimeControl");
         LoopCountText.text = BlockCodingManager.Instance.LoopReaptCount.ToString();
     }
 
