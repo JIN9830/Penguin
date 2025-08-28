@@ -17,6 +17,7 @@ public class CarController : MonoBehaviour
         {
             isMoving = false;
             transform.position = initPos;
+            transform.gameObject.SetActive(false);
         });
     }
 

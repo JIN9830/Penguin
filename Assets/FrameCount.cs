@@ -15,7 +15,7 @@ public class FrameCount : MonoBehaviour
 
         float fps = 1.0f / Time.deltaTime;
         float ms = Time.deltaTime * 1000.0f;
-        string text = string.Format("{0:N1} FPS ({1:N1}ms)", fps, ms);
+        string text = string.Format("<b>{0:N1} FPS ({1:N1}ms)</b>", fps, ms);
 
         GUIStyle style = new GUIStyle();
 

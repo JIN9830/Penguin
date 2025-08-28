@@ -61,12 +61,7 @@ public class StageManager : MonoBehaviour
         }
 
         AudioManager.Instance.Play_Music("CityTheme");
-        // .. 오디오 매니저 스크립트의 변수를 참조해서 조건문으로 스테이지 배경음을 재생  
-        // .. 이미 스테이지 배경음악이 재생중이라면 bool 변수를 통해서 스테이지 씬 일때만 이어서 재생
-        // .. 배경음악이 재생 중인 상태에서 다른 씬으로 넘어가면 배경음악 소리가 서서히 작아졌다가 커지는 효과
-        // .. 스테이지 씬에서 레벨 셀렉션으로 넘어가면 다른 배경음악 재생 시작
-
-        //WorldEntryAnimation();
+        //AudioManager.Instance.Play_Background("CityBackground03");
     }
 
     public void Update()

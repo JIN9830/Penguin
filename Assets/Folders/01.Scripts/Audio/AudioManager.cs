@@ -7,9 +7,9 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    public Sound[] musicSounds, uiSfxSound, playerSfxSounds;
-    private Sound _music, _uiSfx, _playerSfx;
-    public AudioSource musicSource, playerSfxSource, uiSfxSource;
+    public Sound[] backgorundSounds, musicSounds, uiSfxSound, playerSfxSounds;
+    private Sound _background, _music, _uiSfx, _playerSfx;
+    public AudioSource backgroundSource, musicSource, playerSfxSource, uiSfxSource;
 
     private void Awake()
     {
@@ -24,6 +24,22 @@ public class AudioManager : MonoBehaviour
         }
 
         LoadVolume();
+    }
+
+    public void Play_Background(string name)
+    {
+        _background = null;
+        _background = Array.Find(backgorundSounds, x => x.name == name);
+
+        if( _background == null )
+        {
+            Debug.Log("Sound Not Found");
+        }
+        else
+        {
+            backgroundSource.clip = _background.clip;
+            backgroundSource.Play();
+        }
     }
 
     public void Play_Music(string name)

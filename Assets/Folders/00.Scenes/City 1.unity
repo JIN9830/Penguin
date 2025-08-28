@@ -639,7 +639,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7a80aa3f2aff86e4a841bf6b4a72b77e,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a80aa3f2aff86e4a841bf6b4a72b77e,
         type: 3}
@@ -3577,9 +3577,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fontSize: 90
-  color: {r: 0.41598436, g: 0.43748996, b: 0.7169812, a: 1}
-  width: 300
-  height: 200
+  color: {r: 0, g: 1, b: 0.9825599, a: 1}
+  width: 200
+  height: 300
 --- !u!4 &1075641808
 Transform:
   m_ObjectHideFlags: 0
@@ -3935,6 +3935,12 @@ Transform:
   - {fileID: 1401627794}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1250209182 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1494205860315683188, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+    type: 3}
+  m_PrefabInstance: {fileID: 4790145621610146005}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1309404266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4578,9 +4584,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _carObjects: []
-  carSpawnDelay: 5
-  carMovingDistance: 10
-  carMovingTime: 8
+  _carSpawnDelay: 5
+  _carMovingDistance: 10
+  _carMovingTime: 8
 --- !u!1001 &1596470245
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7254,12 +7260,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 605735018006937328, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
         type: 3}
-      propertyPath: uiSfxSound.Array.data[7].clip
+      propertyPath: backgroundSource
       value: 
-      objectReference: {fileID: 8300000, guid: 8ba9d35968e25554e9c2d34ef95911bd, type: 3}
-    - target: {fileID: 4491440535533065470, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+      objectReference: {fileID: 1250209182}
+    - target: {fileID: 605735018006937328, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
         type: 3}
-      propertyPath: Loop
+      propertyPath: backgorundSounds.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 605735018006937328, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+        type: 3}
+      propertyPath: backgorundSounds.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 998ade4252ed8d94c8f6161a29eeeb51, type: 3}
+    - target: {fileID: 605735018006937328, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+        type: 3}
+      propertyPath: backgorundSounds.Array.data[0].name
+      value: CityBackground01
+      objectReference: {fileID: 0}
+    - target: {fileID: 605735018006937328, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+        type: 3}
+      propertyPath: backgorundSounds.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6c573280cf214f04aaee9fa4db1b318b, type: 3}
+    - target: {fileID: 605735018006937328, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+        type: 3}
+      propertyPath: backgorundSounds.Array.data[1].name
+      value: CityBackground02
+      objectReference: {fileID: 0}
+    - target: {fileID: 605735018006937328, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+        type: 3}
+      propertyPath: backgorundSounds.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 49913f87d73bbd648a46fcc3741f6d0e, type: 3}
+    - target: {fileID: 605735018006937328, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+        type: 3}
+      propertyPath: backgorundSounds.Array.data[2].name
+      value: CityBackground03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494205860315683188, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
+        type: 3}
+      propertyPath: m_Volume
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7192949485946255049, guid: b337b1d9fb1b67044ad0748a0b3b80c7,
