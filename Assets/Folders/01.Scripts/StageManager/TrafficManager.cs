@@ -1,22 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
-using System.Linq;
-using UnityEngine.Rendering;
 
 public class TrafficManager : MonoBehaviour
 {
     [SerializeField]
-    private List<GameObject> _carObjects = new List<GameObject>();
-        
+    private List<CarController> _cars = new List<CarController>();
+
     [SerializeField]
     private int _carSpawnDelay = 5;
 
     [SerializeField]
     private int _carMovingDistance = 10;
     [SerializeField]
-    private int _carMovingTime = 8;
+    private float _carMovingSpeed = 8;
 
     private void Awake()
     {
@@ -25,15 +22,15 @@ public class TrafficManager : MonoBehaviour
         // .. 자식 오브젝트들을 순회하며 자동차 오브젝트를 리스트에 추가
         for (int i = 0; i < childCount; i++)
         {
-            var car = transform.GetChild(i).gameObject;
-            _carObjects.Add(car);
+            var car = transform.GetChild(i).gameObject.GetComponent<CarController>();
+            _cars.Add(car);
             car.gameObject.SetActive(false);
         }
 
     }
     private void Start()
     {
-        if (_carObjects != null)  StartCoroutine(CarSpawner());
+        if (_cars != null)  StartCoroutine(CarSpawner());
     }
 
     private IEnumerator CarSpawner()
@@ -44,18 +41,18 @@ public class TrafficManager : MonoBehaviour
         while (true)
         {
             // 리스트에 차량이 있는지 먼저 확인합니다.
-            if (_carObjects.Count > 0)
+            if (_cars.Count > 0)
             {
-                int carIndex = Random.Range(0, _carObjects.Count);
+                int carIndex = Random.Range(0, _cars.Count);
 
-                CarController carController = _carObjects[carIndex].transform.GetComponent<CarController>();
+                CarController carController = _cars[carIndex];
 
                 // 2. 저장된 변수(carController)를 사용하여 isMoving 프로퍼티에 접근하고 MoveCar() 메서드를 호출합니다.
                 //    (컴포넌트가 존재하지 않을 경우를 대비해 null 체크를 추가하는 것이 안전합니다.)
                 if (carController != null && !carController.isMoving)
                 {
                     carController.gameObject.SetActive(true);
-                    carController.MoveCar(_carMovingDistance, _carMovingTime);
+                    carController.MoveCar(_carMovingDistance, _carMovingSpeed);
                 }
                 
                 yield return waitForCarSapwnTime;

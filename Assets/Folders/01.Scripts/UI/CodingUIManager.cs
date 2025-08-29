@@ -449,6 +449,7 @@ public class CodingUIManager : MonoBehaviour
 
 
             case false:  // OptionPanel이 현재 비활성화된 경우 OptionPanel을 활성화
+                UIAnimation.Animation_LeftBlockPlay(OptionMenuOpenButton.gameObject);
                 OptionMenuOpenButton.interactable = false;
                 OptionPanel.SetActive(true);
                 TuchBlockPanel.SetActive(true);
