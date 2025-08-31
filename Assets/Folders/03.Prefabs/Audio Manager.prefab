@@ -435,7 +435,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0393ae45ab5a04897b82c0cebb112a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgorundSounds: []
+  backgorundSounds:
+  - name: CityBackground01
+    clip: {fileID: 8300000, guid: 998ade4252ed8d94c8f6161a29eeeb51, type: 3}
+  - name: CityBackground02
+    clip: {fileID: 8300000, guid: 6c573280cf214f04aaee9fa4db1b318b, type: 3}
+  - name: CityBackground03
+    clip: {fileID: 8300000, guid: 49913f87d73bbd648a46fcc3741f6d0e, type: 3}
   musicSounds:
   - name: CityTheme
     clip: {fileID: 8300000, guid: 9e6d7853a91ea4041ad4e5ba8a98b3da, type: 3}
@@ -471,7 +477,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: f4f2af6e7d4288c4c8f5b372bd1a3f7a, type: 3}
   - name: EatCoin
     clip: {fileID: 8300000, guid: 9320c89956615e04090e2c313a2b450c, type: 3}
-  backgroundSource: {fileID: 0}
+  backgroundSource: {fileID: 1494205860315683188}
   musicSource: {fileID: 4491440535533065470}
   playerSfxSource: {fileID: 4263003085804424043}
   uiSfxSource: {fileID: 6392389815903663534}

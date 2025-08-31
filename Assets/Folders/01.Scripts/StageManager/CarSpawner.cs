@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrafficManager : MonoBehaviour
+public class CarSpawner : MonoBehaviour
 {
     [SerializeField]
     private List<CarController> _cars = new List<CarController>();
 
     [SerializeField]
-    private int _carSpawnDelay = 5;
+    private List<GameObject> _roads = new List<GameObject>();
+    private List<GameObject> _raodStartPosition = new List<GameObject>();
 
+    [SerializeField]
+    private int _carSpawnDelay = 5;
     [SerializeField]
     private int _carMovingDistance = 10;
     [SerializeField]
@@ -17,9 +20,9 @@ public class TrafficManager : MonoBehaviour
 
     private void Awake()
     {
+        // .. 본인의 자식 오브젝트를 순회하며 자동차 오브젝트를 리스트에 추가
         int childCount = transform.childCount;
 
-        // .. 자식 오브젝트들을 순회하며 자동차 오브젝트를 리스트에 추가
         for (int i = 0; i < childCount; i++)
         {
             var car = transform.GetChild(i).gameObject.GetComponent<CarController>();
@@ -27,13 +30,22 @@ public class TrafficManager : MonoBehaviour
             car.gameObject.SetActive(false);
         }
 
+        // .. 도로 오브젝트를 순회하며 도로 시작 지점 오브젝트를 리스트에 추가
+        int roadCount = _roads.Count;
+
+        for (int i = 0; i < roadCount; i++)
+        {
+            GameObject roadsStartPoint = _roads[i].gameObject.transform.GetChild(0).gameObject;
+            _raodStartPosition.Add(roadsStartPoint);
+        }
+
     }
     private void Start()
     {
-        if (_cars != null)  StartCoroutine(CarSpawner());
+        if (_cars != null)  StartCoroutine(SpawnCar());
     }
 
-    private IEnumerator CarSpawner()
+    private IEnumerator SpawnCar()
     {
         // 5초 대기는 미리 생성하여 불필요한 메모리 할당을 방지합니다.
         var waitForCarSapwnTime = new WaitForSeconds(_carSpawnDelay);
@@ -52,7 +64,7 @@ public class TrafficManager : MonoBehaviour
                 if (carController != null && !carController.isMoving)
                 {
                     carController.gameObject.SetActive(true);
-                    carController.MoveCar(_carMovingDistance, _carMovingSpeed);
+                    carController.MoveCar(_carMovingDistance, _carMovingSpeed, _raodStartPosition[Random.Range(0, _raodStartPosition.Count)].transform);
                 }
                 
                 yield return waitForCarSapwnTime;

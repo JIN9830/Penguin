@@ -279,7 +279,7 @@ public class CodingUIManager : MonoBehaviour
                         block.transform.SetParent(MainLayout.transform);
 
                         BlockCodingManager.Instance.MainMethodList.Add(block);
-                        block.enabled = false;
+                        block.enabled = false; // 스크립트를 비활성화 (Codingblock 내부의 Update문이 돌아가는걸 방지)
                         UIAnimation.Animation_BlockPop(BlockCodingManager.Instance.MainMethodList.Last().gameObject);
                     }
                     break;
@@ -449,7 +449,7 @@ public class CodingUIManager : MonoBehaviour
 
 
             case false:  // OptionPanel이 현재 비활성화된 경우 OptionPanel을 활성화
-                UIAnimation.Animation_LeftBlockPlay(OptionMenuOpenButton.gameObject);
+                UIAnimation.Animation_BlockPop(OptionMenuOpenButton.gameObject);
                 OptionMenuOpenButton.interactable = false;
                 OptionPanel.SetActive(true);
                 TuchBlockPanel.SetActive(true);

@@ -7,16 +7,20 @@ public class CarController : MonoBehaviour
 {
     public bool isMoving = false;
 
-    public void MoveCar(int endValue, float speed)
+    public void MoveCar(float moveDistance, float moveSpeed, Transform StartPos)
     {
-        Vector3 initPos = transform.position;
+        transform.position = StartPos.position;
+        transform.rotation = StartPos.rotation;
 
         isMoving = true;
 
-        transform.DOLocalMoveZ(endValue, speed).SetSpeedBased().OnComplete(() =>
+        Vector3 targetPosition = transform.position + transform.forward * moveDistance;
+
+        transform.DOMove(targetPosition, moveSpeed).SetSpeedBased().OnComplete(() =>
         {
             isMoving = false;
-            transform.position = initPos;
+            transform.position = StartPos.position;
+            transform.rotation = StartPos.rotation;
             transform.gameObject.SetActive(false);
         });
 
