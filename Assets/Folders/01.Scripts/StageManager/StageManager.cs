@@ -26,8 +26,7 @@ public class StageManager : MonoBehaviour
     [Header("카메라 이동 속도")]
     [SerializeField] private float CameraPanSpeed = 0.35f;
 
-    public GameObject Buildings;
-    public GameObject Platforms;
+    public GameObject CameraTargetObj;
 
     private BlockCodingManager _gameManager;
     private CodingUIManager _codingUIManager;
@@ -151,7 +150,7 @@ public class StageManager : MonoBehaviour
 
     public void WorldEntryAnimation()
     {
-        Buildings.transform.position = new Vector3(0, -10, 0);
-        Buildings.transform.DOMoveY(0, 1).SetEase(Ease.InOutQuint).SetDelay(0.5f);
+        CameraTargetObj.transform.position = new Vector3(0, -10, 0);
+        CameraTargetObj.transform.DOMoveY(0, 1).SetEase(Ease.InOutQuint).SetDelay(0.5f);
     }
 }
