@@ -4889,8 +4889,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cars: []
-  roads: []
-  carSpawnDelay: 6
+  roads:
+  - {fileID: 1774962003}
+  - {fileID: 1898787454}
+  carSpawnDelay: 5
   carMovingDistance: 20
   carMovingSpeed: 1.6
 --- !u!1 &1549721751 stripped
@@ -6135,6 +6137,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1745182535}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1774962003 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8530a470c6d35fb4b9718d6d77999fdf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1350330503}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1784706289 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 28f237b0f84a7e04881f03bb44498313,
@@ -6783,6 +6791,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ba027da324b9a6441a4b230acf6a40fa,
     type: 3}
   m_PrefabInstance: {fileID: 1869357286}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1898787454 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8530a470c6d35fb4b9718d6d77999fdf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1851263531}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1950234916
 PrefabInstance:
