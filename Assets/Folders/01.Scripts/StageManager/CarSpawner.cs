@@ -9,7 +9,7 @@ public class CarSpawner : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> roads = new List<GameObject>();
-    private List<GameObject> roadStartPosition = new List<GameObject>();
+    private List<GameObject> spawnPoints = new List<GameObject>();
 
     [SerializeField]
     private int carSpawnDelay = 5;
@@ -39,16 +39,16 @@ public class CarSpawner : MonoBehaviour
         for (int i = 0; i < roadCount; i++)
         {
             GameObject roadStartPoint = roads[i].gameObject.transform.GetChild(0).gameObject;
-            roadStartPosition.Add(roadStartPoint);
+            spawnPoints.Add(roadStartPoint);
         }
     }
 
     private void Start()
     {
-        if (cars.Count > 0) StartCoroutine(SpawnCar());
+        if (cars.Count > 0) StartCoroutine(SpawnCarRoutine());
     }
 
-    private IEnumerator SpawnCar()
+    private IEnumerator SpawnCarRoutine()
     {
         var waitForCarSpawnTime = new WaitForSeconds(carSpawnDelay);
 
@@ -59,7 +59,7 @@ public class CarSpawner : MonoBehaviour
             if (availableCar != null)
             {
                 availableCar.gameObject.SetActive(true);
-                Transform startPos = roadStartPosition[Random.Range(0, roadStartPosition.Count)].transform;
+                Transform startPos = spawnPoints[Random.Range(0, spawnPoints.Count)].transform;
                 availableCar.MoveCar(carMovingDistance, carMovingSpeed, startPos);
             }
 
