@@ -15,7 +15,7 @@ public class LevelSelection : MonoBehaviour
 
     private void Start()
     {
-        // ·¹º§ ¹öÆ°¿¡ °¢ ¾ÀÀÇ ÀÎµ¦½º °ªÀ» ´ëÀÔ ÇÏ´Â ÄÚµå
+        // ë ˆë²¨ ë²„íŠ¼ì— ê° ì”¬ì˜ ì¸ë±ìŠ¤ ê°’ì„ ëŒ€ì… í•˜ëŠ” ì½”ë“œ
         for (int i = 0; i < levelsButton.Length; i++)
         {
             int index = i;
@@ -27,9 +27,9 @@ public class LevelSelection : MonoBehaviour
         AudioManager.Instance.Play_Music("LevelSelectionTheme");
     }
 
-    public void StageStatus() // ÇÃ·¹ÀÌ¾îÀÇ ½ºÅ×ÀÌÁö ÁøÇàµµ¿¡ µû¶ó¼­ °¢ ·¹º§ ¾ÀÀ¸·Î ÀÌµ¿ ¹öÆ°ÀÇ È°¼ºÈ­ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ® ÇÏ´Â ÄÚµå
+    public void StageStatus() // í”Œë ˆì´ì–´ì˜ ìŠ¤í…Œì´ì§€ ì§„í–‰ë„ì— ë”°ë¼ì„œ ê° ë ˆë²¨ ì”¬ìœ¼ë¡œ ì´ë™ ë²„íŠ¼ì˜ í™œì„±í™” ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸ í•˜ëŠ” ì½”ë“œ
     {
-        int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1); // ½ºÅ×ÀÌÁö ¼¼ÀÌºê ÆÄÀÏ ÃÊ±âÈ­ ÄÚµå
+        int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1); // ìŠ¤í…Œì´ì§€ ì„¸ì´ë¸Œ íŒŒì¼ ì´ˆê¸°í™” ì½”ë“œ
 
         for (int i = 0; i < levelsButton.Length; i++)
         {

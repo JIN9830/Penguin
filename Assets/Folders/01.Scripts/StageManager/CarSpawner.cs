@@ -20,7 +20,7 @@ public class CarSpawner : MonoBehaviour
 
     private void Awake()
     {
-        // .. º»ÀÎÀÇ ÀÚ½Ä ¿ÀºêÁ§Æ®¸¦ ¼øÈ¸ÇÏ¸ç ÀÚµ¿Â÷ ¿ÀºêÁ§Æ®¸¦ ¸®½ºÆ®¿¡ Ãß°¡
+        // .. ë³¸ì¸ì˜ ìì‹ ì˜¤ë¸Œì íŠ¸ë¥¼ ìˆœíšŒí•˜ë©° ìë™ì°¨ ì˜¤ë¸Œì íŠ¸ë¥¼ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
         int childCount = transform.childCount;
 
         for (int i = 0; i < childCount; i++)
@@ -30,7 +30,7 @@ public class CarSpawner : MonoBehaviour
             car.gameObject.SetActive(false);
         }
 
-        // .. µµ·Î ¿ÀºêÁ§Æ®¸¦ ¼øÈ¸ÇÏ¸ç µµ·Î ½ÃÀÛ ÁöÁ¡ ¿ÀºêÁ§Æ®¸¦ ¸®½ºÆ®¿¡ Ãß°¡
+        // .. ë„ë¡œ ì˜¤ë¸Œì íŠ¸ë¥¼ ìˆœíšŒí•˜ë©° ë„ë¡œ ì‹œì‘ ì§€ì  ì˜¤ë¸Œì íŠ¸ë¥¼ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
         int roadCount = _roads.Count;
 
         for (int i = 0; i < roadCount; i++)
@@ -47,20 +47,20 @@ public class CarSpawner : MonoBehaviour
 
     private IEnumerator SpawnCar()
     {
-        // 5ÃÊ ´ë±â´Â ¹Ì¸® »ı¼ºÇÏ¿© ºÒÇÊ¿äÇÑ ¸Ş¸ğ¸® ÇÒ´çÀ» ¹æÁöÇÕ´Ï´Ù.
+        // 5ì´ˆ ëŒ€ê¸°ëŠ” ë¯¸ë¦¬ ìƒì„±í•˜ì—¬ ë¶ˆí•„ìš”í•œ ë©”ëª¨ë¦¬ í• ë‹¹ì„ ë°©ì§€í•©ë‹ˆë‹¤.
         var waitForCarSapwnTime = new WaitForSeconds(_carSpawnDelay);
 
         while (true)
         {
-            // ¸®½ºÆ®¿¡ Â÷·®ÀÌ ÀÖ´ÂÁö ¸ÕÀú È®ÀÎÇÕ´Ï´Ù.
+            // ë¦¬ìŠ¤íŠ¸ì— ì°¨ëŸ‰ì´ ìˆëŠ”ì§€ ë¨¼ì € í™•ì¸í•©ë‹ˆë‹¤.
             if (_cars.Count > 0)
             {
                 int carIndex = Random.Range(0, _cars.Count);
 
                 CarController carController = _cars[carIndex];
 
-                // 2. ÀúÀåµÈ º¯¼ö(carController)¸¦ »ç¿ëÇÏ¿© isMoving ÇÁ·ÎÆÛÆ¼¿¡ Á¢±ÙÇÏ°í MoveCar() ¸Ş¼­µå¸¦ È£ÃâÇÕ´Ï´Ù.
-                //    (ÄÄÆ÷³ÍÆ®°¡ Á¸ÀçÇÏÁö ¾ÊÀ» °æ¿ì¸¦ ´ëºñÇØ null Ã¼Å©¸¦ Ãß°¡ÇÏ´Â °ÍÀÌ ¾ÈÀüÇÕ´Ï´Ù.)
+                // 2. ì €ì¥ëœ ë³€ìˆ˜(carController)ë¥¼ ì‚¬ìš©í•˜ì—¬ isMoving í”„ë¡œí¼í‹°ì— ì ‘ê·¼í•˜ê³  MoveCar() ë©”ì„œë“œë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
+                //    (ì»´í¬ë„ŒíŠ¸ê°€ ì¡´ì¬í•˜ì§€ ì•Šì„ ê²½ìš°ë¥¼ ëŒ€ë¹„í•´ null ì²´í¬ë¥¼ ì¶”ê°€í•˜ëŠ” ê²ƒì´ ì•ˆì „í•©ë‹ˆë‹¤.)
                 if (carController != null && !carController.isMoving)
                 {
                     carController.gameObject.SetActive(true);
@@ -71,8 +71,8 @@ public class CarSpawner : MonoBehaviour
             }
             else
             {
-                // ¸®½ºÆ®°¡ ºñ¾îÀÖÀ» °æ¿ì, ¹«ÇÑ ·çÇÁ°¡ CPU¸¦ °úµµÇÏ°Ô »ç¿ëÇÏ´Â °ÍÀ» ¸·±â À§ÇØ 
-                // ÇÑ ÇÁ·¹ÀÓ ´ë±â ÈÄ ´Ù½Ã ½ÃµµÇÏµµ·Ï ÇÕ´Ï´Ù.
+                // ë¦¬ìŠ¤íŠ¸ê°€ ë¹„ì–´ìˆì„ ê²½ìš°, ë¬´í•œ ë£¨í”„ê°€ CPUë¥¼ ê³¼ë„í•˜ê²Œ ì‚¬ìš©í•˜ëŠ” ê²ƒì„ ë§‰ê¸° ìœ„í•´ 
+                // í•œ í”„ë ˆì„ ëŒ€ê¸° í›„ ë‹¤ì‹œ ì‹œë„í•˜ë„ë¡ í•©ë‹ˆë‹¤.
                 yield return null;
             }
         }

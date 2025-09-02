@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class ShowColliderGizmo : MonoBehaviour
 {
-    public Color gizmoColor = new Color(0f, 1f, 0f, 0.5f); // ¹İÅõ¸í ÃÊ·Ï»ö
+    public Color gizmoColor = new Color(0f, 1f, 0f, 0.5f); // ë°˜íˆ¬ëª… ì´ˆë¡ìƒ‰
 
     private void OnDrawGizmos()
     {
         Gizmos.color = gizmoColor;
 
-        // ¿ÀºêÁ§Æ®ÀÇ Collider Å©±â¿Í À§Ä¡ °¡Á®¿À±â
+        // ì˜¤ë¸Œì íŠ¸ì˜ Collider í¬ê¸°ì™€ ìœ„ì¹˜ ê°€ì ¸ì˜¤ê¸°
         Collider col = GetComponent<Collider>();
         if (col != null)
         {

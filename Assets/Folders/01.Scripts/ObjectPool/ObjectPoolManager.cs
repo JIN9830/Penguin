@@ -28,7 +28,7 @@ public class ObjectPoolManager : MonoBehaviour
 
     public Dictionary<BlockCategory, GameObject> PoolObjectDic { get; private set; } = new Dictionary<BlockCategory, GameObject>();
 
-    [Header("Object Pool Á¤º¸")]
+    [Header("Object Pool ì •ë³´")]
     public ObjectInfo[] objectInfo;
 
 
@@ -82,7 +82,7 @@ public class ObjectPoolManager : MonoBehaviour
     }
     public void OnBlockRelease(CodingBlock block)
     {
-        // .. ¿ÀºêÁ§Æ®¸¦ Ç®¿¡ ¹İÈ¯ÇÏ±â Àü¿¡ ´Ù¸¥ ¿ÀºêÁ§Æ®ÀÇ ÀÚ½ÄÀ¸·Î ÀÌµ¿ÇÕ´Ï´Ù. (Grid Layout Group ³»ºÎÀÇ ¿ÀºêÁ§Æ® ¼ø¼­°¡ ¼¯ÀÌ´Â°ÍÀ» ¹æÁö)
+        // .. ì˜¤ë¸Œì íŠ¸ë¥¼ í’€ì— ë°˜í™˜í•˜ê¸° ì „ì— ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ì˜ ìì‹ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤. (Grid Layout Group ë‚´ë¶€ì˜ ì˜¤ë¸Œì íŠ¸ ìˆœì„œê°€ ì„ì´ëŠ”ê²ƒì„ ë°©ì§€)
         block.transform.SetParent(CodingUIManager.Instance.ReleasedBlocks.transform);
         block.gameObject.SetActive(false);
     }
@@ -91,4 +91,3 @@ public class ObjectPoolManager : MonoBehaviour
         Destroy(block.gameObject);
     }
 }
-

@@ -13,7 +13,7 @@ public class Forward : CodingBlock
     {
         ToggleHighLight(true);
 
-        // ÇÃ·¹ÀÌ¾î ¾Õ¿¡ Àå¾Ö¹°ÀÌ ÀÖ´Ù¸é ¾Ë¸Â´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀ» Àç»ıÇÏ°í ºí·Ï ½ºÅ©¸³Æ®¸¦ ºñÈ°¼ºÈ­ ÇÏ¿© ºí·Ï ½ÇÇàÀ» Á¾·áÇÕ´Ï´Ù.
+        // í”Œë ˆì´ì–´ ì•ì— ì¥ì• ë¬¼ì´ ìˆë‹¤ë©´ ì•Œë§ëŠ” ì• ë‹ˆë©”ì´ì…˜ì„ ì¬ìƒí•˜ê³  ë¸”ë¡ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë¹„í™œì„±í™” í•˜ì—¬ ë¸”ë¡ ì‹¤í–‰ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.
         if (Physics.Raycast(PlayerManager_Instance.PlayerObject.transform.localPosition, PlayerManager_Instance.PlayerObject.transform.forward, out _hit, _DISTANCE))
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_BlockShake(this.gameObject);
@@ -32,7 +32,7 @@ public class Forward : CodingBlock
 
             this.enabled = false;
         }
-        // Àå¾Ö¹°ÀÌ ¾ø´Ù¸é Update¿¡¼­ ¾ÕÀ¸·Î ÀüÁøÇÏ´Â PlayerMove ¸Ş¼­µå¸¦ È£Ãâ ÇÏµµ·Ï PlayerState¸¦ Forwarding·Î º¯°æ
+        // ì¥ì• ë¬¼ì´ ì—†ë‹¤ë©´ Updateì—ì„œ ì•ìœ¼ë¡œ ì „ì§„í•˜ëŠ” PlayerMove ë©”ì„œë“œë¥¼ í˜¸ì¶œ í•˜ë„ë¡ PlayerStateë¥¼ Forwardingë¡œ ë³€ê²½
         else
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
@@ -48,12 +48,12 @@ public class Forward : CodingBlock
         PlayerManager_Instance.Initialize_PlayerForwardVector();
     }
 
-    private void OnDisable() // ÀüÁø ºí·Ï ½ÇÇàÀÌ Á¾·áµÉ ¶§ ÃÊ±âÈ­ ÇØ¾ß ÇÒ ÀÛ¾÷µé
+    private void OnDisable() // ì „ì§„ ë¸”ë¡ ì‹¤í–‰ì´ ì¢…ë£Œë  ë•Œ ì´ˆê¸°í™” í•´ì•¼ í•  ì‘ì—…ë“¤
     {
         transform.localScale = Vector3.one;
         PlayerManager_Instance.EPlayerState = PlayerManager.PlayerState.None;
 
-        // ¾ÕÀ¸·Î ÀüÁøÇÏ´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ ¹ß ¿òÁ÷ÀÓ ½ÌÅ©¸¦ ¸ÂÃß±â À§ÇÑ ¼³Á¤
+        // ì•ìœ¼ë¡œ ì „ì§„í•˜ëŠ” ì• ë‹ˆë©”ì´ì…˜ì˜ ë°œ ì›€ì§ì„ ì‹±í¬ë¥¼ ë§ì¶”ê¸° ìœ„í•œ ì„¤ì •
        _deltaTimeCount = 0.70f;
         PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
     }

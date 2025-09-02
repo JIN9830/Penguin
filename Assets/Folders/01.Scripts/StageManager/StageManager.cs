@@ -9,21 +9,21 @@ public class StageManager : MonoBehaviour
 
     public Vector3 StageClearPanelInitPos { get; private set; }
 
-    [Header("Ä«¸Ş¶ó Á¶ÀÛ ¹üÀ§ °ª")]
+    [Header("ì¹´ë©”ë¼ ì¡°ì‘ ë²”ìœ„ ê°’")]
 
-    [Header("X Ãà")]
+    [Header("X ì¶•")]
     [SerializeField] private float _camPanMinValueX;
     [SerializeField] private float _camPanMaxValueX;
 
-    [Header("Y Ãà")]
+    [Header("Y ì¶•")]
     [SerializeField] private float _camPanMinValueY;
     [SerializeField] private float _camPanMaxValueY;
 
-    [Header("Z Ãà")]
+    [Header("Z ì¶•")]
     [SerializeField] private float _camPanMinValueZ;
     [SerializeField] private float _camPanMaxValueZ;
 
-    [Header("Ä«¸Ş¶ó ÀÌµ¿ ¼Óµµ")]
+    [Header("ì¹´ë©”ë¼ ì´ë™ ì†ë„")]
     [SerializeField] private float CameraPanSpeed = 0.35f;
 
     public GameObject CameraTargetObj;
@@ -37,26 +37,26 @@ public class StageManager : MonoBehaviour
         _gameManager = BlockCodingManager.Instance;
         _codingUIManager= CodingUIManager.Instance;
 
-        // .. °ÔÀÓ ¸Å´ÏÀú¿¡ StageManager µî·Ï
+        // .. ê²Œì„ ë§¤ë‹ˆì €ì— StageManager ë“±ë¡
         BlockCodingManager.Instance.Register_StageManager(this.gameObject);
 
-        // .. ½ºÅ×ÀÌÁöº° ÄÚÀÎ °¹¼ö·Î ÄÚÀÎ Á¤º¸¸¦ °»½Å
+        // .. ìŠ¤í…Œì´ì§€ë³„ ì½”ì¸ ê°¯ìˆ˜ë¡œ ì½”ì¸ ì •ë³´ë¥¼ ê°±ì‹ 
         CoinCount = CoinObject.Length;
 
-        // .. Ä«¸Ş¶ó ÆÒ ¿¹¿Ü Ã³¸®
+        // .. ì¹´ë©”ë¼ íŒ¬ ì˜ˆì™¸ ì²˜ë¦¬
         if (_camPanMinValueX == 0 || _camPanMaxValueX == 0)
         {
-            Debug.Log("Ä«¸Ş¶ó ÆÒ XÃàÀÇ Min, Max °ªÀÌ ÃÊ±âÈ­µÇ¾î ÀÖÁö ¾ÊÀ½!");
+            Debug.Log("ì¹´ë©”ë¼ íŒ¬ Xì¶•ì˜ Min, Max ê°’ì´ ì´ˆê¸°í™”ë˜ì–´ ìˆì§€ ì•ŠìŒ!");
         }
 
         if (_camPanMinValueY == 0 || _camPanMaxValueY == 0)
         {
-            Debug.Log("Ä«¸Ş¶ó ÆÒ YÃàÀÇ Min, Max °ªÀÌ ÃÊ±âÈ­µÇ¾î ÀÖÁö ¾ÊÀ½!");
+            Debug.Log("ì¹´ë©”ë¼ íŒ¬ Yì¶•ì˜ Min, Max ê°’ì´ ì´ˆê¸°í™”ë˜ì–´ ìˆì§€ ì•ŠìŒ!");
         }
 
         if (_camPanMinValueZ == 0 || _camPanMaxValueZ == 0)
         {
-            Debug.Log("Ä«¸Ş¶ó ÆÒ ZÃàÀÇ Min, Max °ªÀÌ ÃÊ±âÈ­µÇ¾î ÀÖÁö ¾ÊÀ½!");
+            Debug.Log("ì¹´ë©”ë¼ íŒ¬ Zì¶•ì˜ Min, Max ê°’ì´ ì´ˆê¸°í™”ë˜ì–´ ìˆì§€ ì•ŠìŒ!");
         }
 
         AudioManager.Instance.Play_Music("CityTheme");
@@ -72,14 +72,14 @@ public class StageManager : MonoBehaviour
     }
 
 
-    public void CameraPan() // CameraTargetÀ» È­¸é ÅÍÄ¡·Î ¿òÁ÷¿©¼­ Ä«¸Ş¶óÀÇ °¢µµ¸¦ Á¶Àı
+    public void CameraPan() // CameraTargetì„ í™”ë©´ í„°ì¹˜ë¡œ ì›€ì§ì—¬ì„œ ì¹´ë©”ë¼ì˜ ê°ë„ë¥¼ ì¡°ì ˆ
     {
         if (_playerManager == null) 
             _playerManager = BlockCodingManager.PlayerManager_Instance;
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            // .. Vector2ÀÇ È­¸é ÅÍÄ¡°ªÀ» ÂüÁ¶ÇÏ¿© °è»êÇÔÀ¸·Î Å¸°ÙÀÇ ¿òÁ÷ÀÓµµ Vector2 Ã³·³ 2°³ÀÇ ÁÂÇ¥·Î¸¸ ¿òÁ÷¿©¾ß ÇÑ´Ù.
+            // .. Vector2ì˜ í™”ë©´ í„°ì¹˜ê°’ì„ ì°¸ì¡°í•˜ì—¬ ê³„ì‚°í•¨ìœ¼ë¡œ íƒ€ê²Ÿì˜ ì›€ì§ì„ë„ Vector2 ì²˜ëŸ¼ 2ê°œì˜ ì¢Œí‘œë¡œë§Œ ì›€ì§ì—¬ì•¼ í•œë‹¤.
             Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
             Vector3 newPosition = _playerManager.CameraTargetObject.transform.position + new Vector3(touchDeltaPosition.x, -touchDeltaPosition.y, -touchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
 
@@ -96,7 +96,7 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    public void UpdateCoin() // Coin.cs¿¡¼­ ÄÚÀÎÀÌ ÇÃ·¹ÀÌ¾î Äİ¶óÀÌ´õ¿¡ ´ê¾Æ ÄÚÀÎ ¿ÀºêÁ§Æ®°¡ ºñÈ°¼ºÈ­ µÉ ¶§ È£Ãâ
+    public void UpdateCoin() // Coin.csì—ì„œ ì½”ì¸ì´ í”Œë ˆì´ì–´ ì½œë¼ì´ë”ì— ë‹¿ì•„ ì½”ì¸ ì˜¤ë¸Œì íŠ¸ê°€ ë¹„í™œì„±í™” ë  ë•Œ í˜¸ì¶œ
     {
         if (CoinCount != 0)
             CoinCount--;

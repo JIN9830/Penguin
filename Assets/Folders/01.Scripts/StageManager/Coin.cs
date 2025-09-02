@@ -6,27 +6,27 @@ public class Coin : MonoBehaviour
     public Transform coinInitPos;
     private void OnEnable()
     {
-        // .. ÄÚÀÎ »ı¼º ¾Ö´Ï¸ŞÀÌ¼Ç
+        // .. ì½”ì¸ ìƒì„± ì• ë‹ˆë©”ì´ì…˜
         gameObject.transform.localScale = new Vector3(0, 0, 0);
         gameObject.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 1.5f).SetEase(Ease.OutBounce);
     }
 
     private void Start()
     {
-        // .. ÄÚÀÎ IDLE ¾Ö´Ï¸ŞÀÌ¼Ç
+        // .. ì½”ì¸ IDLE ì• ë‹ˆë©”ì´ì…˜
         gameObject.transform.DORotate(new Vector3(0, -360, 0), 1.5f, RotateMode.FastBeyond360).SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        // .. ÇÃ·¹ÀÌ¾î°¡ ÄÚÀÎ¿¡ ´ê¾ÒÀ» ¶§
+        // .. í”Œë ˆì´ì–´ê°€ ì½”ì¸ì— ë‹¿ì•˜ì„ ë•Œ
         if (other.gameObject.CompareTag("Player"))
         {
-            // .. ÄÚÀÎ °¹¼ö¸¦ ¾÷µ¥ÀÌÆ®, ÄÚÀÎ ½Àµæ »ç¿îµå Àç»ı
+            // .. ì½”ì¸ ê°¯ìˆ˜ë¥¼ ì—…ë°ì´íŠ¸, ì½”ì¸ ìŠµë“ ì‚¬ìš´ë“œ ì¬ìƒ
             BlockCodingManager.StageManager_Instance.UpdateCoin();
             AudioManager.Instance.Play_PlayerSFX("EatCoin");
 
-            // .. ÄÚÀÎ ½Àµæ ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+            // .. ì½”ì¸ ìŠµë“ ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
             gameObject.transform.DOMoveY(1, 0.5f).SetEase(Ease.OutBack);
             gameObject.transform.DOScale(0, 1);
         }
