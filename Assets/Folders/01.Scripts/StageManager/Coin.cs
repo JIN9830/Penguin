@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    public Transform coinInitPos;
     private void OnEnable()
     {
         // .. 코인 생성 애니메이션

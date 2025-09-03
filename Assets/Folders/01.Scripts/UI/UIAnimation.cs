@@ -7,91 +7,87 @@ public class UIAnimation
     public Tweener Animation_BlockShake(GameObject blockObj)
     {
         Vector3 blockInit = blockObj.transform.localPosition;
-        Tweener blockTweener = blockObj.transform.DOShakePosition(1, 10, 10, 0)
+        return blockObj.transform.DOShakePosition(1, 10, 10, 0)
             .OnComplete(() => blockObj.transform.localPosition = blockInit);
-        return blockTweener;
     }
 
     public Tweener Animation_ForwardBlockPlay(GameObject blockObj)
     {
-        blockObj.gameObject.transform.localScale = Vector3.zero;
-        Tweener blockTweener = blockObj.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo);
-        return blockTweener;
+        blockObj.transform.localScale = Vector3.zero;
+        return blockObj.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutExpo);
     }
 
     public Tweener Animation_LeftBlockPlay(GameObject blockObj)
     {
-        blockObj.gameObject.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        Tweener blockTweener = blockObj.gameObject.transform.DOLocalRotate(new Vector3(0f, 0f, 20), 0.6f).SetEase(Ease.OutElastic)
-            .OnComplete(() => blockObj.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.4f).SetEase(Ease.OutBounce));
-        return blockTweener;
+        blockObj.transform.localRotation = Quaternion.identity;
+        return blockObj.transform.DOLocalRotate(new Vector3(0f, 0f, 20), 0.6f).SetEase(Ease.OutElastic)
+            .OnComplete(() => blockObj.transform.DOLocalRotate(Vector3.zero, 0.4f).SetEase(Ease.OutBounce));
     }
 
     public Tweener Animation_RightBlockPlay(GameObject blockObj)
     {
-        blockObj.gameObject.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
-        Tweener blockTweener = blockObj.gameObject.transform.DOLocalRotate(new Vector3(0f, 0f, -20f), 0.6f).SetEase(Ease.OutElastic)
-            .OnComplete(() => blockObj.transform.DOLocalRotate(new Vector3(0f, 0f, 0f), 0.4f).SetEase(Ease.OutBounce));
-        return blockTweener;
+        blockObj.transform.localRotation = Quaternion.identity;
+        return blockObj.transform.DOLocalRotate(new Vector3(0f, 0f, -20f), 0.6f).SetEase(Ease.OutElastic)
+            .OnComplete(() => blockObj.transform.DOLocalRotate(Vector3.zero, 0.4f).SetEase(Ease.OutBounce));
     }
 
-    public void Animation_TimeControl(Button blockObj)
+    public Tweener Animation_TimeControl(Button blockObj)
     {
-        blockObj.gameObject.transform.DORotate(new Vector3(0, 0, -20), 1f).SetEase(Ease.OutElastic)
-            .OnComplete(() => blockObj.gameObject.transform.DORotate(new Vector3(0, 0, 0), 1f).SetEase(Ease.OutElastic));
+        return blockObj.transform.DORotate(new Vector3(0, 0, -20), 1f).SetEase(Ease.OutElastic)
+            .OnComplete(() => blockObj.transform.DORotate(Vector3.zero, 1f).SetEase(Ease.OutElastic));
     }
 
-    public void Animation_BlockPop(GameObject blockObj)
+    public Tweener Animation_BlockPop(GameObject blockObj)
     {
-        blockObj.gameObject.transform.localScale = Vector3.zero;
-        blockObj.gameObject.transform.DOScale(1, 0.5f).SetEase(Ease.OutExpo);
+        blockObj.transform.localScale = Vector3.zero;
+        return blockObj.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutExpo);
     }
 
-    public void Animation_CodingBlockPop(GameObject blockObj)
+    public Tweener Animation_CodingBlockPop(GameObject blockObj)
     {
-        blockObj.gameObject.transform.DOScale(0.9f, 0.1f).SetEase(Ease.OutCirc)
-            .OnComplete(()=> { blockObj.gameObject.transform.DOScale(0.75f, 0.1f).SetEase(Ease.OutCirc); });
+        return blockObj.transform.DOScale(0.9f, 0.1f).SetEase(Ease.OutCirc)
+            .OnComplete(()=> { blockObj.transform.DOScale(0.75f, 0.1f).SetEase(Ease.OutCirc); });
     }
 
-    public void Animation_ButtonDelay(Button blockObj, float delayTime)
+    public Tweener Animation_ButtonDelay(Button blockObj, float delayTime)
     {
         blockObj.interactable = false;
-        blockObj.gameObject.transform.DOScale(1, 0).SetDelay(delayTime).OnComplete(() => blockObj.gameObject.GetComponent<Button>().interactable = true);
+        return blockObj.transform.DOScale(1, 0).SetDelay(delayTime).OnComplete(() => blockObj.interactable = true);
     }
 
-    public void Animation_PlayButtonDelay(Button blockObj, float delayTime)
+    public Tweener Animation_PlayButtonDelay(Button blockObj, float delayTime)
     {
         blockObj.gameObject.SetActive(true);
-        blockObj.gameObject.transform.localScale = Vector3.zero;
-        blockObj.gameObject.transform.DOScale(1, delayTime).SetEase(Ease.OutExpo);
+        blockObj.transform.localScale = Vector3.zero;
+        return blockObj.transform.DOScale(Vector3.one, delayTime).SetEase(Ease.OutExpo);
     }
 
-    public void Animation_UIShake(GameObject blockObj)
+    public Tweener Animation_UIShake(GameObject blockObj)
     {
         Vector3 blockInit = blockObj.transform.localPosition;
-        blockObj.transform.DOShakePosition(1, 5, 10, 10)
+        return blockObj.transform.DOShakePosition(1, 5, 10, 10)
             .OnComplete(() => blockObj.transform.localPosition = blockInit);
     }
 
-    public void Animation_DelayPopUpButton(Button blockObj)
+    public Tweener Animation_DelayPopUpButton(Button blockObj)
     {
-        blockObj.gameObject.transform.localScale = Vector3.zero;
+        blockObj.transform.localScale = Vector3.zero;
         blockObj.interactable = false;
         blockObj.gameObject.SetActive(true);
-        blockObj.gameObject.transform.DOScale(1, 1f).SetEase(Ease.OutExpo).SetDelay(0.5f).OnComplete(() => blockObj.interactable = true);
+        return blockObj.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutExpo).SetDelay(0.5f).OnComplete(() => blockObj.interactable = true);
     }
 
     public void Animation_LoadingCurtain(GameObject Upper, GameObject Lower, bool enable)
     {
         if(enable)
         {
-            Upper.gameObject.transform.DOScaleY(21, 1.0f).SetEase(Ease.InOutExpo); 
-            Lower.gameObject.transform.DOScaleY(21, 1.0f).SetEase(Ease.InOutExpo);
+            Upper.transform.DOScaleY(21, 1.0f).SetEase(Ease.InOutExpo);
+            Lower.transform.DOScaleY(21, 1.0f).SetEase(Ease.InOutExpo);
         }
         else
         {
-            Upper.gameObject.transform.DOScaleY(0, 1.0f).SetEase(Ease.InOutExpo).SetDelay(0.4f); 
-            Lower.gameObject.transform.DOScaleY(0, 1.0f).SetEase(Ease.InOutExpo).SetDelay(0.4f);
+            Upper.transform.DOScaleY(0, 1.0f).SetEase(Ease.InOutExpo).SetDelay(0.4f);
+            Lower.transform.DOScaleY(0, 1.0f).SetEase(Ease.InOutExpo).SetDelay(0.4f);
         }
     }
 }
