@@ -140,7 +140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0 / 2
+  m_text: 0 / 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 12d904ce75681f943a0dce6f7e39b056, type: 2}
   m_sharedMaterial: {fileID: -1985068637911056007, guid: 12d904ce75681f943a0dce6f7e39b056,
@@ -1429,6 +1429,7 @@ MonoBehaviour:
   <ClearPanel>k__BackingField: {fileID: 8061024355647797110}
   <ClearNextButton>k__BackingField: {fileID: 7347093317191361025}
   <ClearBackButton>k__BackingField: {fileID: 705640171520509869}
+  <CoinCounter>k__BackingField: {fileID: 5243637802164997176}
 --- !u!1 &1592614914511953501
 GameObject:
   m_ObjectHideFlags: 0
@@ -3442,7 +3443,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: City 1
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 785c2428696ab4b47964c7ceef96c277, type: 2}
   m_sharedMaterial: {fileID: 7462599495780046181, guid: 785c2428696ab4b47964c7ceef96c277,

@@ -62,15 +62,12 @@ public class StageManager : MonoBehaviour
             Debug.Log("카메라 팬 Z축의 Min, Max 값이 초기화되어 있지 않음!");
         }
 
-        if (coinCounterObject != null)
+        if (coinCounterObject == null)
         {
+            coinCounterObject = CodingUIManager.Instance.CoinCounter;
             var coinText = coinCounterObject.transform.GetChild(1).gameObject;
             coinCountText = coinText.GetComponent<TextMeshProUGUI>();
             coinCountText.text = $"{CoinCount} / {CoinObject.Length}";
-        }
-        else
-        {
-            Debug.Log("코인 카운터 초기화 실패!");
         }
 
         AudioManager.Instance.Play_Music("CityTheme");
@@ -128,7 +125,7 @@ public class StageManager : MonoBehaviour
 
         CoinCount = CoinObject.Length;
         coinCountText.text = $"{CoinCount} / {CoinObject.Length}";
-        
+
         foreach (GameObject coin in CoinObject)
         {
             Vector3 coinPos = coin.gameObject.transform.localPosition;

@@ -82,6 +82,7 @@ public class CodingUIManager : MonoBehaviour
     public Vector3 ClearPanelInitPos { get; private set; }
     [field: SerializeField] public Button ClearNextButton { get; private set; }
     [field: SerializeField] public Button ClearBackButton { get; private set; }
+    [field: SerializeField] public GameObject CoinCounter { get; private set; } 
 
 
     // ============= TEST CODE ============= //
