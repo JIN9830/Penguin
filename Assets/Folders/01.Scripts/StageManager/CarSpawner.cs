@@ -18,6 +18,9 @@ public class CarSpawner : MonoBehaviour
     [SerializeField] private List<GameObject> roads = new List<GameObject>();
     private List<GameObject> spawnPoints = new List<GameObject>();
 
+    // [개선] 균일한 스폰을 위해 현재 스폰 지점 인덱스를 추적합니다.
+    private int _currentSpawnIndex = 0;
+
     [Tooltip("자동차 스폰 사이의 대기 시간(초)입니다.")]
     [SerializeField] private int carSpawnDelay = 5;
 
@@ -52,7 +55,12 @@ public class CarSpawner : MonoBehaviour
 
     private void Start()
     {
-        if (cars.Count > 0) StartCoroutine(SpawnCarRoutine());
+        if (cars.Count > 0 && spawnPoints.Count > 0)
+        {
+            // [개선] 스폰을 시작하기 전에 스폰 지점 목록을 무작위로 섞습니다.
+            ShuffleSpawnPoints();
+            StartCoroutine(SpawnCarRoutine());
+        }
     }
 
     /// <summary>
@@ -69,7 +77,18 @@ public class CarSpawner : MonoBehaviour
                 CarController carToSpawn = availableCars.Dequeue();
 
                 carToSpawn.gameObject.SetActive(true);
-                Transform startPos = spawnPoints[Random.Range(0, spawnPoints.Count)].transform;
+
+                // [개선] 순서대로 스폰 지점을 선택하여 균일한 분포를 보장합니다.
+                Transform startPos = spawnPoints[_currentSpawnIndex].transform;
+                _currentSpawnIndex++;
+
+                // [개선] 모든 스폰 지점을 한 번씩 다 사용했다면, 인덱스를 초기화하고 목록을 다시 섞습니다.
+                if (_currentSpawnIndex >= spawnPoints.Count)
+                {
+                    _currentSpawnIndex = 0;
+                    ShuffleSpawnPoints();
+                }
+
                 carToSpawn.MoveCar(carMovingDistance, carMovingSpeed, startPos);
 
                 StartCoroutine(ReturnCarWhenDone(carToSpawn));
@@ -88,5 +107,19 @@ public class CarSpawner : MonoBehaviour
 
         car.gameObject.SetActive(false);
         availableCars.Enqueue(car);
+    }
+
+    /// <summary>
+    /// [개선] 스폰 지점 목록의 순서를 무작위로 섞습니다. (Fisher-Yates shuffle 알고리즘)
+    /// </summary>
+    private void ShuffleSpawnPoints()
+    {
+        for (int i = 0; i < spawnPoints.Count; i++)
+        {
+            int randomIndex = Random.Range(i, spawnPoints.Count);
+            GameObject temp = spawnPoints[i];
+            spawnPoints[i] = spawnPoints[randomIndex];
+            spawnPoints[randomIndex] = temp;
+        }
     }
 }
