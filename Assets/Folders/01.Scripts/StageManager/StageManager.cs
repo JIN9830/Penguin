@@ -1,11 +1,14 @@
 using DG.Tweening;
 using UnityEngine;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
     [field: SerializeField] public GameObject[] CoinObject { get; private set; }
     [field: SerializeField] public int CoinCount { get; private set; }
+    [SerializeField] private GameObject coinCounterObject;
+    private TextMeshProUGUI coinCountText;
 
     public Vector3 StageClearPanelInitPos { get; private set; }
 
@@ -35,7 +38,7 @@ public class StageManager : MonoBehaviour
     private void Start()
     {
         _gameManager = BlockCodingManager.Instance;
-        _codingUIManager= CodingUIManager.Instance;
+        _codingUIManager = CodingUIManager.Instance;
 
         // .. 게임 매니저에 StageManager 등록
         BlockCodingManager.Instance.Register_StageManager(this.gameObject);
@@ -57,6 +60,17 @@ public class StageManager : MonoBehaviour
         if (_camPanMinValueZ == 0 || _camPanMaxValueZ == 0)
         {
             Debug.Log("카메라 팬 Z축의 Min, Max 값이 초기화되어 있지 않음!");
+        }
+
+        if (coinCounterObject != null)
+        {
+            var coinText = coinCounterObject.transform.GetChild(1).gameObject;
+            coinCountText = coinText.GetComponent<TextMeshProUGUI>();
+            coinCountText.text = $"{CoinCount} / {CoinObject.Length}";
+        }
+        else
+        {
+            Debug.Log("코인 카운터 초기화 실패!");
         }
 
         AudioManager.Instance.Play_Music("CityTheme");
@@ -103,6 +117,8 @@ public class StageManager : MonoBehaviour
 
         if (CoinCount == 0)
             StageClear();
+
+        coinCountText.text = $"{CoinCount} / {CoinObject.Length}";
     }
 
     public void ResetCoin()
@@ -111,7 +127,8 @@ public class StageManager : MonoBehaviour
             return;
 
         CoinCount = CoinObject.Length;
-
+        coinCountText.text = $"{CoinCount} / {CoinObject.Length}";
+        
         foreach (GameObject coin in CoinObject)
         {
             Vector3 coinPos = coin.gameObject.transform.localPosition;

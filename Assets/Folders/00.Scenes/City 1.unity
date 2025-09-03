@@ -5860,6 +5860,12 @@ Transform:
   - {fileID: 667118670}
   m_Father: {fileID: 1701067210}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1735032939 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5243637802164997176, guid: 8b84deb3cf9ed8342a7181304729a753,
+    type: 3}
+  m_PrefabInstance: {fileID: 635202813}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1740891669
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7875,6 +7881,11 @@ PrefabInstance:
       propertyPath: Buildings
       value: 
       objectReference: {fileID: 617043496}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: coinCounterObject
+      value: 
+      objectReference: {fileID: 1735032939}
     - target: {fileID: 5909007862279968272, guid: 8847f110e905c2144ab80c4e008aff78,
         type: 3}
       propertyPath: m_Name
