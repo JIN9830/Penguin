@@ -9,29 +9,24 @@ public class CarSpawner : MonoBehaviour
 {
     [Header("자동차 오브젝트 풀링")]
     [Tooltip("관리할 자동차 오브젝트 목록입니다. 비워두면 실행 시 자식 오브젝트에서 자동으로 찾아 채웁니다.")]
-    [SerializeField]
-    private List<CarController> cars = new List<CarController>();
+    [SerializeField] private List<CarController> cars = new List<CarController>();
     // [개선] 사용 가능한 자동차를 O(1) 시간 복잡도로 관리하기 위한 큐(Queue)
     private Queue<CarController> availableCars = new Queue<CarController>();
 
     [Header("스폰 도로 설정")]
     [Tooltip("자동차의 스폰 지점으로 사용될 도로 목록입니다. 각 도로의 첫 번째 자식 오브젝트가 스폰 지점이 됩니다.")]
-    [SerializeField]
-    private List<GameObject> roads = new List<GameObject>();
+    [SerializeField] private List<GameObject> roads = new List<GameObject>();
     private List<GameObject> spawnPoints = new List<GameObject>();
 
     [Tooltip("자동차 스폰 사이의 대기 시간(초)입니다.")]
-    [SerializeField]
-    private int carSpawnDelay = 5;
+    [SerializeField] private int carSpawnDelay = 5;
 
     [Header("자동차 움직임 설정")]
     [Tooltip("스폰된 자동차가 이동할 거리입니다.")]
-    [SerializeField]
-    private int carMovingDistance = 10;
+    [SerializeField] private int carMovingDistance = 10;
 
     [Tooltip("스폰된 자동차의 이동 속도입니다.")]
-    [SerializeField]
-    private float carMovingSpeed = 8;
+    [SerializeField] private float carMovingSpeed = 8;
 
     private void Awake()
     {
