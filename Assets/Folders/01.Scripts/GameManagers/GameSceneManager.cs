@@ -36,7 +36,7 @@ public class GameSceneManager : MonoBehaviour
         LoadingTouchBlockPanel.SetActive(true);
         CodingUIManager.Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, true);
 
-        yield return Util.WaitForSecond(1.0f);
+        yield return Utils.WaitForSecond(1.0f);
 
         SceneManager.LoadSceneAsync(sceneIndex);
 
@@ -51,7 +51,7 @@ public class GameSceneManager : MonoBehaviour
         LoadingTouchBlockPanel.SetActive(true);
         CodingUIManager.Instance.UIAnimation.Animation_LoadingCurtain(CurtainUpper, CurtainLower, true);
 
-        yield return Util.WaitForSecond(1.0f);
+        yield return Utils.WaitForSecond(1.0f);
 
         if (SceneManager.GetActiveScene().buildIndex >= SceneManager.sceneCountInBuildSettings + 1)
             SceneManager.LoadSceneAsync(0);

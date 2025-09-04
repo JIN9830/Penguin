@@ -90,7 +90,7 @@ public class BlockCodingManager : MonoBehaviour
 
         foreach (CodingBlock block in MainMethodList)
         {
-            yield return Util.WaitForSecond(1.0f);
+            yield return Utils.WaitForSecond(1.0f);
 
             if (!IsCompilerRunning || IsStageClear)
                 break;
@@ -102,7 +102,7 @@ public class BlockCodingManager : MonoBehaviour
             yield return WaitUntilEndOfSubMethod;
         }
 
-        if (IsCompilerRunning && !IsStageClear) yield return Util.WaitForSecond(1.0f);
+        if (IsCompilerRunning && !IsStageClear) yield return Utils.WaitForSecond(1.0f);
 
         PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", IsCompilerRunning);
 
@@ -131,7 +131,7 @@ public class BlockCodingManager : MonoBehaviour
 
                 foreach (CodingBlock codingBlock in FunctionMethodList)
                 {
-                    yield return Util.WaitForSecond(1.0f);
+                    yield return Utils.WaitForSecond(1.0f);
 
                     if (!IsCompilerRunning || IsStageClear)
                         break;
@@ -141,7 +141,7 @@ public class BlockCodingManager : MonoBehaviour
                     codingBlock.MoveOrder();
                 }
 
-                if (IsCompilerRunning || !IsStageClear) yield return Util.WaitForSecond(1.0f);
+                if (IsCompilerRunning || !IsStageClear) yield return Utils.WaitForSecond(1.0f);
 
                 foreach (CodingBlock block in FunctionMethodList)
                 {
@@ -170,7 +170,7 @@ public class BlockCodingManager : MonoBehaviour
 
                     foreach (CodingBlock codingBlock in LoopMethodList)
                     {
-                        yield return Util.WaitForSecond(1.0f);
+                        yield return Utils.WaitForSecond(1.0f);
 
                         if (!IsCompilerRunning || IsStageClear)
                             break;
@@ -183,7 +183,7 @@ public class BlockCodingManager : MonoBehaviour
                     // 블록 실행 중지 버튼이 눌리지 않으면, 1초 딜레이 후 Loop 내부의 블록 하이라이트를 전부 제거합니다.
                     if (IsCompilerRunning || !IsStageClear)
                     {
-                        yield return Util.WaitForSecond(1.0f);
+                        yield return Utils.WaitForSecond(1.0f);
 
                         foreach (CodingBlock block in LoopMethodList)
                         {
