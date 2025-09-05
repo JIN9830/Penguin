@@ -43,15 +43,23 @@ public class CarController : MonoBehaviour
         // 이동하는 동안 장애물 감지
         while (isMoving)
         {
-            // Raycast의 시작 위치를 y축으로 0.5f만큼 올립니다.
-            Vector3 rayOrigin = transform.position + (Vector3.up * 0.5f);
+            // 중앙, 왼쪽, 오른쪽 Raycast 시작 위치 계산 (너비 0.5f)
+            Vector3 centerRayOrigin = transform.position + (transform.up * 0.5f);
+            Vector3 leftRayOrigin = centerRayOrigin - (transform.right * 0.5f);
+            Vector3 rightRayOrigin = centerRayOrigin + (transform.right * 0.5f);
 
             // Scene 뷰에서 Raycast를 시각적으로 표시합니다. (빨간색 선)
-            Debug.DrawRay(rayOrigin, transform.forward * 2.0f, Color.red);
+            Debug.DrawRay(centerRayOrigin, transform.forward * 2.0f, Color.red);
+            Debug.DrawRay(leftRayOrigin, transform.forward * 2.0f, Color.red);
+            Debug.DrawRay(rightRayOrigin, transform.forward * 2.0f, Color.red);
 
             RaycastHit hit;
-            // 차 앞 3 유닛에서 Raycast 발사
-            if (Physics.Raycast(rayOrigin, transform.forward, out hit, 2.0f))
+            // 3개의 Raycast 중 하나라도 감지되면 true
+            bool isHit = Physics.Raycast(centerRayOrigin, transform.forward, out hit, 2.0f) ||
+                         Physics.Raycast(leftRayOrigin, transform.forward, out hit, 2.0f) ||
+                         Physics.Raycast(rightRayOrigin, transform.forward, out hit, 2.0f);
+
+            if (isHit)
             {
                 // 플레이어나 다른 차가 감지되면 일시정지
                 if ((hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car")) && !_isSlowingDown)
