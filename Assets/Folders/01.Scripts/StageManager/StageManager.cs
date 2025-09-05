@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class StageManager : MonoBehaviour
 {
     [field: SerializeField] public GameObject[] CoinObject { get; private set; }
-    [field: SerializeField] public int CoinCount { get; private set; }
+    private int _collectedCoinCount;
     [SerializeField] private GameObject coinCounterObject;
     private TextMeshProUGUI coinCountText;
 
@@ -44,7 +44,7 @@ public class StageManager : MonoBehaviour
         BlockCodingManager.Instance.Register_StageManager(this.gameObject);
 
         // .. 스테이지별 코인 갯수로 코인 정보를 갱신
-        CoinCount = CoinObject.Length;
+        _collectedCoinCount = 0;
 
         // .. 카메라 팬 예외 처리
         if (_camPanMinValueX == 0 || _camPanMaxValueX == 0)
@@ -67,7 +67,7 @@ public class StageManager : MonoBehaviour
             coinCounterObject = CodingUIManager.Instance.CoinCounter;
             var coinText = coinCounterObject.transform.GetChild(1).gameObject;
             coinCountText = coinText.GetComponent<TextMeshProUGUI>();
-            coinCountText.text = $"{CoinCount} / {CoinObject.Length}";
+            coinCountText.text = $"{_collectedCoinCount} / {CoinObject.Length}";
         }
 
         AudioManager.Instance.Play_Music("CityTheme");
@@ -85,7 +85,7 @@ public class StageManager : MonoBehaviour
 
     public void CameraPan() // CameraTarget을 화면 터치로 움직여서 카메라의 각도를 조절
     {
-        if (_playerManager == null) 
+        if (_playerManager == null)
             _playerManager = BlockCodingManager.PlayerManager_Instance;
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
@@ -109,22 +109,21 @@ public class StageManager : MonoBehaviour
 
     public void UpdateCoin() // Coin.cs에서 코인이 플레이어 콜라이더에 닿아 코인 오브젝트가 비활성화 될 때 호출
     {
-        if (CoinCount != 0)
-            CoinCount--;
+        _collectedCoinCount++;
 
-        if (CoinCount == 0)
+        coinCountText.text = $"{_collectedCoinCount} / {CoinObject.Length}";
+
+        if (_collectedCoinCount >= CoinObject.Length)
             StageClear();
-
-        coinCountText.text = $"{CoinCount} / {CoinObject.Length}";
     }
 
     public void ResetCoin()
     {
-        if (CoinCount == CoinObject.Length)
+        if (_collectedCoinCount == 0)
             return;
 
-        CoinCount = CoinObject.Length;
-        coinCountText.text = $"{CoinCount} / {CoinObject.Length}";
+        _collectedCoinCount = 0;
+        coinCountText.text = $"{_collectedCoinCount} / {CoinObject.Length}";
 
         foreach (GameObject coin in CoinObject)
         {
@@ -162,9 +161,8 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    public void WorldEntryAnimation()
-    {
-        CameraTargetObj.transform.position = new Vector3(0, -10, 0);
-        CameraTargetObj.transform.DOMoveY(0, 1).SetEase(Ease.InOutQuint).SetDelay(0.5f);
-    }
+    // public void WorldEntryAnimation()
+    // {
+        
+    // }
 }

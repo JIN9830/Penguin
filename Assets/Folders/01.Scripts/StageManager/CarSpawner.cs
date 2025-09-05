@@ -22,11 +22,11 @@ public class CarSpawner : MonoBehaviour
     private int _currentSpawnIndex = 0;
 
     [Tooltip("자동차 스폰 사이의 대기 시간(초)입니다.")]
-    [SerializeField] private int carSpawnDelay = 5;
+    [SerializeField] private float carSpawnDelay = 5;
 
     [Header("자동차 움직임 설정")]
     [Tooltip("스폰된 자동차가 이동할 거리입니다.")]
-    [SerializeField] private int carMovingDistance = 10;
+    [SerializeField] private float carMovingDistance = 10;
 
     [Tooltip("스폰된 자동차의 이동 속도입니다.")]
     [SerializeField] private float carMovingSpeed = 8;
@@ -45,12 +45,14 @@ public class CarSpawner : MonoBehaviour
             }
         }
 
-        int roadCount = roads.Count;
-        for (int i = 0; i < roadCount; i++)
-        {
-            GameObject roadStartPoint = roads[i].gameObject.transform.GetChild(0).gameObject;
-            spawnPoints.Add(roadStartPoint);
-        }
+
+            int roadCount = roads.Count;
+            for (int i = 0; i < roadCount; i++)
+            {
+                GameObject roadStartPoint = roads[i].gameObject.transform.GetChild(0).gameObject;
+                spawnPoints.Add(roadStartPoint);
+            }
+        
     }
 
     private void Start()
@@ -89,7 +91,7 @@ public class CarSpawner : MonoBehaviour
                     ShuffleSpawnPoints();
                 }
 
-                carToSpawn.MoveCar(carMovingDistance, carMovingSpeed, startPos);
+                carToSpawn.StartMove(carMovingDistance, carMovingSpeed, startPos);
 
                 StartCoroutine(ReturnCarWhenDone(carToSpawn));
             }

@@ -3,58 +3,70 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 게임 내 옵션 UI(사운드, FPS 등)를 제어하는 클래스입니다.
+/// </summary>
 public class OptionUIController : MonoBehaviour
 {
-    [field: SerializeField] public Slider musicSlider, uiSfxSlider, playerSfxSlider;
+    [Header("UI Sliders")]
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Slider uiSfxSlider;
+    [SerializeField] private Slider playerSfxSlider;
 
-    public void Start()
+    private AudioManager _audioManager;
+
+    private void Start()
     {
-        musicSlider.value = AudioManager.Instance.musicSource.volume;
+        _audioManager = AudioManager.Instance;
+        if (_audioManager == null)
+        {
+            Debug.LogError("AudioManager 인스턴스를 찾을 수 없습니다.");
+            return;
+        }
 
-        uiSfxSlider.value = AudioManager.Instance.uiSfxSource.volume;
+        // 슬라이더 초기 값 설정
+        musicSlider.value = _audioManager.musicSource.volume;
+        uiSfxSlider.value = _audioManager.uiSfxSource.volume;
+        playerSfxSlider.value = _audioManager.playerSfxSource.volume;
 
-        playerSfxSlider.value = AudioManager.Instance.playerSfxSource.volume;
+        // 슬라이더 이벤트 리스너 등록
+        musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+        uiSfxSlider.onValueChanged.AddListener(OnUISFXVolumeChanged);
+        playerSfxSlider.onValueChanged.AddListener(OnPlayerSFXVolumeChanged);
     }
 
     public void ToggleMusic()
     {
-        AudioManager.Instance.ToggleMusic();
+        _audioManager.ToggleMusic();
     }
 
     public void ToggleUISFX()
     {
-        AudioManager.Instance.ToggleUISFX();
+        _audioManager.ToggleUISFX();
     }
 
     public void TogglePlayerSFX()
     {
-        AudioManager.Instance.TogglePlayerSFX();
+        _audioManager.TogglePlayerSFX();
     }
 
-    public void MusicVolume()
+    public void OnMusicVolumeChanged(float value)
     {
-        AudioManager.Instance.MusicVolume(musicSlider.value);
+        _audioManager.MusicVolume(value);
     }
 
-    public void UISFXVolume()
+    public void OnUISFXVolumeChanged(float value)
     {
-        AudioManager.Instance.UISFXVolume(uiSfxSlider.value);
+        _audioManager.UISFXVolume(value);
     }
 
-    public void PlayerSFXVolume()
+    public void OnPlayerSFXVolumeChanged(float value)
     {
-        AudioManager.Instance.PlayerSFXVolume(playerSfxSlider.value);
+        _audioManager.PlayerSFXVolume(value);
     }
 
     public void ChangeFPS()
     {
-        if(Application.targetFrameRate >= 120)
-        {
-            Application.targetFrameRate = 60;
-        }
-        else
-        {
-            Application.targetFrameRate = 120;
-        }
+        Application.targetFrameRate = (Application.targetFrameRate >= 120) ? 60 : 120;
     }
 }
