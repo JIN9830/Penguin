@@ -9,8 +9,11 @@ public class CarController : MonoBehaviour
     private Tweener _timeScaleTween;
 
     // 트윈 중복 생성을 막기 위한 상태 변수
-    private bool _isSlowingDown = false;
-    private bool _isSpeedingUp = false;
+    [SerializeField] private bool _isSlowingDown = false;
+    [SerializeField] private bool _isSpeedingUp = false;
+
+    // 교차로 내부에 있는지 확인하는 플래그
+    [SerializeField] private bool isInsideIntersection = false;
 
     public void StartMove(float moveDistance, float moveSpeed, Transform startPos)
     {
@@ -48,28 +51,35 @@ public class CarController : MonoBehaviour
             Vector3 leftRayOrigin = centerRayOrigin - (transform.right * 0.5f);
             Vector3 rightRayOrigin = centerRayOrigin + (transform.right * 0.5f);
 
+            float raydistance = 2.0f;
             // Scene 뷰에서 Raycast를 시각적으로 표시합니다. (빨간색 선)
-            Debug.DrawRay(centerRayOrigin, transform.forward * 2.0f, Color.red);
-            Debug.DrawRay(leftRayOrigin, transform.forward * 2.0f, Color.red);
-            Debug.DrawRay(rightRayOrigin, transform.forward * 2.0f, Color.red);
+            Debug.DrawRay(centerRayOrigin, transform.forward * raydistance, Color.red);
+            Debug.DrawRay(leftRayOrigin, transform.forward * raydistance, Color.red);
+            Debug.DrawRay(rightRayOrigin, transform.forward * raydistance, Color.red);
 
             RaycastHit hit;
             // 3개의 Raycast 중 하나라도 감지되면 true
-            bool isHit = Physics.Raycast(centerRayOrigin, transform.forward, out hit, 2.0f) ||
-                         Physics.Raycast(leftRayOrigin, transform.forward, out hit, 2.0f) ||
-                         Physics.Raycast(rightRayOrigin, transform.forward, out hit, 2.0f);
+            bool isHit = Physics.Raycast(centerRayOrigin, transform.forward, out hit, raydistance) ||
+                         Physics.Raycast(leftRayOrigin, transform.forward, out hit, raydistance) ||
+                         Physics.Raycast(rightRayOrigin, transform.forward, out hit, raydistance);
 
             if (isHit)
             {
                 // 플레이어나 다른 차가 감지되면 일시정지
-                if ((hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car")) && !_isSlowingDown)
+                // 교차로 내부에 있을 때는 신호등을 무시합니다.
+                bool shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car");
+                if (!isInsideIntersection)
+                {
+                    shouldStop = shouldStop || hit.collider.CompareTag("TrafficLight");
+                }
+                if (shouldStop && !_isSlowingDown)
                 {
                     _isSlowingDown = true;
                     _isSpeedingUp = false;
 
                     // 부드럽게 감속하여 정지
                     _timeScaleTween?.Kill(); // 이전 트윈이 있다면 종료
-                    _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 0, 0.5f);
+                    _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 0, 0.25f);
                 }
             }
             else if (!_isSpeedingUp) // 장애물이 없으면 다시 부드럽게 가속
@@ -78,10 +88,28 @@ public class CarController : MonoBehaviour
                 _isSlowingDown = false;
 
                 _timeScaleTween?.Kill(); // 이전 트윈이 있다면 종료
-                _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 0.5f);
+                _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 1.0f);
             }
 
             yield return null; // 다음 프레임까지 대기
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // 교차로에 진입했는지 확인
+        if (other.CompareTag("Intersection"))
+        {
+            isInsideIntersection = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        // 교차로에서 빠져나왔는지 확인
+        if (other.CompareTag("Intersection"))
+        {
+            isInsideIntersection = false;
         }
     }
 }

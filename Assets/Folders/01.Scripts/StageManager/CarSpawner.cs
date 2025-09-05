@@ -107,7 +107,6 @@ public class CarSpawner : MonoBehaviour
     {
         yield return new WaitUntil(() => !car.isMoving);
 
-        car.gameObject.SetActive(false);
         availableCars.Enqueue(car);
     }
 

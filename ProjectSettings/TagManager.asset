@@ -9,6 +9,8 @@ TagManager:
   - Edge
   - CameraPan
   - Car
+  - TrafficLight
+  - Intersection
   layers:
   - Default
   - TransparentFX
