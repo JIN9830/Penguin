@@ -46,22 +46,16 @@ public class CarController : MonoBehaviour
         // 이동하는 동안 장애물 감지
         while (isMoving)
         {
-            // 중앙, 왼쪽, 오른쪽 Raycast 시작 위치 계산 (너비 0.5f)
-            Vector3 centerRayOrigin = transform.position + (transform.up * 0.5f);
-            Vector3 leftRayOrigin = centerRayOrigin - (transform.right * 0.5f);
-            Vector3 rightRayOrigin = centerRayOrigin + (transform.right * 0.5f);
+            // [개선] 3개의 Raycast 대신 SphereCast를 사용하여 물리 쿼리 비용을 줄입니다.
+            float carWidth = 0.5f;
+            Vector3 sphereCastOrigin = transform.position + (transform.up * 0.5f);
+            float rayDistance = 2.0f;
 
-            float raydistance = 2.0f;
-            // Scene 뷰에서 Raycast를 시각적으로 표시합니다. (빨간색 선)
-            Debug.DrawRay(centerRayOrigin, transform.forward * raydistance, Color.red);
-            Debug.DrawRay(leftRayOrigin, transform.forward * raydistance, Color.red);
-            Debug.DrawRay(rightRayOrigin, transform.forward * raydistance, Color.red);
+            // Scene 뷰에서 SphereCast를 시각적으로 표시합니다.
+            Debug.DrawRay(sphereCastOrigin, transform.forward * rayDistance, Color.red);
 
             RaycastHit hit;
-            // 3개의 Raycast 중 하나라도 감지되면 true
-            bool isHit = Physics.Raycast(centerRayOrigin, transform.forward, out hit, raydistance) ||
-                         Physics.Raycast(leftRayOrigin, transform.forward, out hit, raydistance) ||
-                         Physics.Raycast(rightRayOrigin, transform.forward, out hit, raydistance);
+            bool isHit = Physics.SphereCast(sphereCastOrigin, carWidth, transform.forward, out hit, rayDistance);
 
             if (isHit)
             {
