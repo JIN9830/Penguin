@@ -12,9 +12,6 @@ public class CarController : MonoBehaviour
     [SerializeField] private bool _isSlowingDown = false;
     [SerializeField] private bool _isSpeedingUp = false;
 
-    // 교차로 내부에 있는지 확인하는 플래그
-    [SerializeField] private bool isInsideIntersection = false;
-
     public void StartMove(float moveDistance, float moveSpeed, Transform startPos)
     {
         StartCoroutine(MoveCarRoutine(moveDistance, moveSpeed, startPos));
@@ -43,6 +40,9 @@ public class CarController : MonoBehaviour
             gameObject.SetActive(false);
         });
 
+        // [성능 개선] 물리 쿼리 주기를 조절하기 위한 변수
+        var checkInterval = new WaitForSeconds(0.1f); // 0.1초마다 장애물 감지
+
         // 이동하는 동안 장애물 감지
         while (isMoving)
         {
@@ -59,13 +59,8 @@ public class CarController : MonoBehaviour
 
             if (isHit)
             {
-                // 플레이어나 다른 차가 감지되면 일시정지
-                // 교차로 내부에 있을 때는 신호등을 무시합니다.
-                bool shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car");
-                if (!isInsideIntersection)
-                {
-                    shouldStop = shouldStop || hit.collider.CompareTag("TrafficLight");
-                }
+                // 플레이어, 다른 차, 또는 신호등이 감지되면 정지합니다.
+                bool shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car") || hit.collider.CompareTag("TrafficLight");
                 if (shouldStop && !_isSlowingDown)
                 {
                     _isSlowingDown = true;
@@ -73,7 +68,7 @@ public class CarController : MonoBehaviour
 
                     // 부드럽게 감속하여 정지
                     _timeScaleTween?.Kill(); // 이전 트윈이 있다면 종료
-                    _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 0, 0.25f);
+                    _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 0, 0.5f);
                 }
             }
             else if (!_isSpeedingUp) // 장애물이 없으면 다시 부드럽게 가속
@@ -85,25 +80,7 @@ public class CarController : MonoBehaviour
                 _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 1.0f);
             }
 
-            yield return null; // 다음 프레임까지 대기
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        // 교차로에 진입했는지 확인
-        if (other.CompareTag("Intersection"))
-        {
-            isInsideIntersection = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        // 교차로에서 빠져나왔는지 확인
-        if (other.CompareTag("Intersection"))
-        {
-            isInsideIntersection = false;
+            yield return checkInterval; // [성능 개선] 매 프레임 대신 0.1초 대기
         }
     }
 }
