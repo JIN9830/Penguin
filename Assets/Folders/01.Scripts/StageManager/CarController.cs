@@ -74,13 +74,13 @@ public class CarController : MonoBehaviour
             bool isHit = Physics.SphereCast(sphereCastOrigin, carWidth, transform.forward, out hit, rayDistance, _obstacleLayer);
 
             if (isHit && !_isInIntersection)
-            {    
+            {
                 // 플레이어, 다른 차, 또는 신호등이 감지되면 정지합니다.
                 // [수정] 교차로 내부에 있을 경우 신호등을 무시합니다.
                 bool isTrafficLight = hit.collider.CompareTag("TrafficLight");
                 bool shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car") || (isTrafficLight && !_isInIntersection);
 
-                if (shouldStop && !_isSlowingDown) 
+                if (shouldStop && !_isSlowingDown)
                 {
                     _isSlowingDown = true;
                     _isSpeedingUp = false;
@@ -96,9 +96,9 @@ public class CarController : MonoBehaviour
                 _isSlowingDown = false;
 
                 _timeScaleTween?.Kill(); // 이전 트윈이 있다면 종료
-                _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 1.0f);
+                _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 1.0f).SetDelay(0.5f);
             }
-            
+
             yield return checkInterval; // [성능 개선] 매 프레임 대신 0.1초 대기
         }
     }
