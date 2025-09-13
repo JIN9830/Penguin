@@ -10,7 +10,7 @@ public class CarController : MonoBehaviour
     private Tweener _timeScaleTween;
 
     // [추가] 교차로 내부에 있는지 여부를 나타내는 상태 변수
-    [SerializeField] private bool _isInIntersection = false;
+    private bool _isInIntersection = false;
 
     // 트윈 중복 생성을 막기 위한 상태 변수
     [SerializeField] private bool _isSlowingDown = false;
@@ -56,7 +56,7 @@ public class CarController : MonoBehaviour
         });
 
         // [성능 개선] 물리 쿼리 주기를 조절하기 위한 변수
-        var checkInterval = new WaitForSeconds(0.1f); // 0.1초마다 장애물 감지
+        var checkInterval = new WaitForSeconds(0.25f); // 0.25초마다 장애물 감지
 
         // 이동하는 동안 장애물 감지
         while (isMoving)
@@ -73,12 +73,10 @@ public class CarController : MonoBehaviour
             // [수정] 지정된 _obstacleLayer만 감지하도록 LayerMask 파라미터 추가
             bool isHit = Physics.SphereCast(sphereCastOrigin, carWidth, transform.forward, out hit, rayDistance, _obstacleLayer);
 
-            if (isHit && !_isInIntersection)
+            if (isHit && !_isInIntersection) // 교차로 내부에 있을 경우 신호등을 무시합니다.
             {
                 // 플레이어, 다른 차, 또는 신호등이 감지되면 정지합니다.
-                // [수정] 교차로 내부에 있을 경우 신호등을 무시합니다.
-                bool isTrafficLight = hit.collider.CompareTag("TrafficLight");
-                bool shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car") || (isTrafficLight && !_isInIntersection);
+                bool shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car") || hit.collider.CompareTag("TrafficLight");
 
                 if (shouldStop && !_isSlowingDown)
                 {
@@ -90,16 +88,17 @@ public class CarController : MonoBehaviour
                     _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 0, 1.0f);
                 }
             }
-            else if (!_isSpeedingUp) // 장애물이 없으면 다시 부드럽게 가속
+            else if (!_isSpeedingUp) // (isHit이 false라면) 장애물이 없으면 다시 부드럽게 가속
             {
                 _isSpeedingUp = true;
                 _isSlowingDown = false;
 
                 _timeScaleTween?.Kill(); // 이전 트윈이 있다면 종료
-                _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 1.0f).SetDelay(0.5f);
+                _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 1.0f).SetDelay(0.3f);
             }
 
-            yield return checkInterval; // [성능 개선] 매 프레임 대신 0.1초 대기
+            yield return checkInterval; // [성능 개선] 매 프레임 대신 0.25초 대기
+
         }
     }
 

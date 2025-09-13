@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5929739454539761604}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: hair.01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 789929004716007497}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6336626134357173071}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2064780060983150511}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: feet.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6254576783279499887}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: feet.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8323393964724898532}
   - component: {fileID: 5058556223783536946}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8737223265733610107}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 3958810865935571176}
   - component: {fileID: 296728512882613290}
   - component: {fileID: 1690892333251303168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
@@ -414,7 +414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 328756680173311540}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wing.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,7 +445,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4949161171393116298}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: wing.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,7 +476,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8188519401574222877}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CameraTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5845784015662874704}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tail.01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -538,7 +538,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7668268793655963322}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -699,6 +699,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Footstep
       objectReference: {fileID: 0}
+    - target: {fileID: 2282438384830233661, guid: 7697a49ea05824642b45a2fab61c81c4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -832,6 +837,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Landing Dust
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282438384830233661, guid: 7697a49ea05824642b45a2fab61c81c4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
