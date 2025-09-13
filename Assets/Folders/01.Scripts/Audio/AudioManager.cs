@@ -60,31 +60,33 @@ public class AudioManager : MonoBehaviour
 
     public void Play_PlayerSFX(string name)
     {
-        _uiSfx = null;
-        _uiSfx = Array.Find(playerSfxSounds, x => x.name == name);
+        
+        _playerSfx = null;
+        _playerSfx = Array.Find(playerSfxSounds, x => x.name == name);
 
-        if (_uiSfx == null)
+
+        if (_playerSfx == null)
         {
             Debug.Log("Player Sound Not Found");
         }
         else
         {
-            playerSfxSource.PlayOneShot(_uiSfx.clip);
+            playerSfxSource.PlayOneShot(_playerSfx.clip);
         }
     }
 
     public void Play_UISFX(string name)
     {
-        _playerSfx = null;
-        _playerSfx = Array.Find(uiSfxSound, x => x.name == name);
+        _uiSfx = null;
+        _uiSfx = Array.Find(uiSfxSound, x => x.name == name);
 
-        if (_playerSfx == null)
+        if (_uiSfx == null)
         {
             Debug.Log("UI Sound Not Found");
         }
         else
         {
-            uiSfxSource.PlayOneShot(_playerSfx.clip);
+            uiSfxSource.PlayOneShot(_uiSfx.clip);
         }
     }
 
