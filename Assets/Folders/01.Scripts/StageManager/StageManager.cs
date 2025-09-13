@@ -160,9 +160,5 @@ public class StageManager : MonoBehaviour
             PlayerPrefs.Save();
         }
     }
-
-    // public void WorldEntryAnimation()
-    // {
-        
-    // }
+    
 }
