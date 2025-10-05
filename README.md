@@ -9,6 +9,9 @@
 
  #### 장르 및 플랫폼: Android, iOS
 
+
+
+
 ## 2. 개발 환경 및 사용 기술 (Tech Stack)
 + 게임 엔진: Unity
 
@@ -19,6 +22,10 @@
 + 형상 관리: Git, GitHub Desktop
 
 + 기타 툴: Figma
+
+
+
+
 
 
 ## 3. 주요 기능 상세 설명 (Key Features)
@@ -62,6 +69,10 @@ public bool AddItem(ItemData_SO itemData, int amount = 1)
 (실제 인벤토리가 작동하는 모습을 캡처한 GIF 이미지 삽입)
 
 
+
+
+
+
 ## 4. 트러블 슈팅 (Troubleshooting)
 지원자의 문제 해결 능력을 보여주는 가장 중요한 파트입니다. 단순히 '만들었다'에서 끝나는 게 아니라, '어려움이 있었지만 이렇게 해결했다'를 보여주는 것이 실무자들에게 깊은 인상을 남깁니다.
 
@@ -74,6 +85,10 @@ public bool AddItem(ItemData_SO itemData, int amount = 1)
 결과 및 배운 점: 문제 해결 후 어떤 결과(성능 개선 수치 등)를 얻었으며, 이 경험을 통해 무엇을 배우게 되었는지 작성
 
 
+
+
+
+
 ## 5. 프로젝트 회고 (Post-mortem)
 프로젝트를 통해 무엇을 배웠고, 어떤 점이 아쉬웠는지 솔직하게 작성하며 성장 가능성을 보여주는 부분입니다.
 
@@ -82,5 +97,10 @@ public bool AddItem(ItemData_SO itemData, int amount = 1)
 아쉬운 점: 다시 만든다면 개선하고 싶은 부분 (예: 코드 구조를 더 객체지향적으로 설계, 기획 단계에 시간을 더 투자하고 싶은 점 등)
 
 배운 점: 이 프로젝트를 통해 얻게 된 기술적, 협업적 교훈
+
+
+
+
+
 
 ## 6. 기술 문서
