@@ -23,7 +23,7 @@
 
 + 라이브러리/플러그인: DOTween
 
-+ 형상 관리: Git, GitHub Desktop
++ 형상 관리: GitHub, GitHub Desktop
 
 + 기타 툴: Figma
 
