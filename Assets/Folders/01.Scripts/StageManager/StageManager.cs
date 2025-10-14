@@ -71,7 +71,6 @@ public class StageManager : MonoBehaviour
         }
 
         AudioManager.Instance.Play_Music("CityTheme");
-        //AudioManager.Instance.Play_Background("CityBackground03");
     }
 
     public void Update()

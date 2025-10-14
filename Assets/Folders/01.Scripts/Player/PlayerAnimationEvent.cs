@@ -1,48 +1,31 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAnimationEvent : MonoBehaviour
 {
     private Animator _playerAnimator;
-    private float _timer = 0;
-
-    private bool _isHit = false;
-    private bool _isSad = false;
 
     private void Awake()
     {
-        _playerAnimator = this.GetComponent<Animator>();
+        // GetComponent는 비용이 많이 들 수 있으므로 Awake에서 한 번만 호출합니다.
+        _playerAnimator = GetComponent<Animator>();
     }
 
-    private void Update()
+    // Animation Event: Death (0:04)
+    public void HitTheWallEvent()
     {
-        if (_isHit)
-        {
-            _isHit = AnimationTimer(1.0f);
-            _playerAnimator.SetBool("IsHit", _isHit);
-        }
-        else if (_isSad)
-        {
-            _isSad = AnimationTimer(1.0f);
-            _playerAnimator.SetBool("IsSad", _isSad);
-        }
+        StartCoroutine(SetBoolForSeconds("IsHit", 1.0f));
     }
 
-
-    public void HitTheWallEvent() // Event called (Death 0:04)
+    // Animation Event: Idle B (0:01)
+    public void ReachTheEdgeEvent()
     {
-        _isHit = true;
-    }
-
-    public void ReachTheEdgeEvent() // Event called (Idle B 0:01)
-    {
-        _isSad = true;
+        StartCoroutine(SetBoolForSeconds("IsSad", 1.0f));
     }
 
     public void WalkingSound()
     {
+        // AudioManager의 싱글톤 인스턴스를 통해 플레이어 SFX를 재생합니다.
         AudioManager.Instance.Play_PlayerSFX("Walking");
     }
 
@@ -51,22 +34,21 @@ public class PlayerAnimationEvent : MonoBehaviour
         AudioManager.Instance.Play_PlayerSFX("Turning");
     }
 
-
     public void LandingDustParticle()
     {
+        // BlockCodingManager를 통해 PlayerManager의 LandingDust 파티클을 재생합니다.
         BlockCodingManager.PlayerManager_Instance.LandingDust.Play();
     }
 
-    private bool AnimationTimer(float limitTime)
+    /// <summary>
+    /// 지정된 시간(초) 동안 Animator의 bool 파라미터를 true로 설정했다가 false로 되돌립니다.
+    /// </summary>
+    /// <param name="parameterName">Animator의 bool 파라미터 이름</param>
+    /// <param name="duration">true로 유지할 시간(초)</param>
+    private IEnumerator SetBoolForSeconds(string parameterName, float duration)
     {
-        _timer += Time.deltaTime;
-
-        if (_timer > limitTime)
-        {
-            _timer = 0;
-            return false;
-        }
-
-        return true;
+        _playerAnimator.SetBool(parameterName, true);
+        yield return new WaitForSeconds(duration);
+        _playerAnimator.SetBool(parameterName, false);
     }
 }

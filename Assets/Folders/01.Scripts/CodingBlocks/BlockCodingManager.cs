@@ -25,18 +25,6 @@ public class BlockCodingManager : MonoBehaviour
     public List<CodingBlock> LoopMethodList { get; private set; } = new List<CodingBlock>();
     public int LoopReaptCount { get; set; } = 1;
 
-    //public Action<bool> changeCompilerRunning;
-    //private bool IsCompilerRunning = false;
-    //public bool IsCompilerRunning
-    //{
-    //    get { return IsCompilerRunning; }
-    //    set
-    //    {
-    //        IsCompilerRunning = value;
-    //        changeCompilerRunning?.Invoke(value);
-    //    }
-    //}
-
     public bool IsCompilerRunning { get; set; } = false;
     public bool IsStageClear { get; set; } = false;
 
@@ -69,12 +57,6 @@ public class BlockCodingManager : MonoBehaviour
         WaitUntilEndOfSubMethod = new WaitUntil(() => ECurrentMethod == CurrentMethod.Main);
 
         Application.targetFrameRate = 144;
-    }
-
-    private void Start()
-    {
-        //BlockCompiler = StartCoroutine(BlockCompiler_Co());
-        //SubBlockCompiler = StartCoroutine(SubBlockCompiler_Co());
     }
 
     /// <summary>
@@ -119,10 +101,6 @@ public class BlockCodingManager : MonoBehaviour
     /// </summary>
     public IEnumerator SubBlockCompiler_Co()
     {
-
-        //// .. MainLayout에서 [Func], [Loop] 블록이 실행될때까지 여기서 대기하며 코드 제어권을 Unity 이벤트 함수에 넘깁니다.
-        //yield return WaitUntilSubMethodTrigger;
-
         switch (ECurrentMethod)
         {
 
