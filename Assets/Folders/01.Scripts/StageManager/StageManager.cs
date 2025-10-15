@@ -5,31 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
-    [field: SerializeField] public GameObject[] CoinObject { get; private set; }
+    [field: SerializeField] public GameObject[] CoinGameObjects { get; private set; }
     private int _collectedCoinCount;
-    [SerializeField] private GameObject coinCounterObject;
-    private TextMeshProUGUI coinCountText;
+    [SerializeField] private GameObject _coinCounterUIObject;
+    private TextMeshProUGUI _coinCountText;
 
     public Vector3 StageClearPanelInitPos { get; private set; }
 
-    [Header("카메라 조작 범위 값")]
-
-    [Header("X 축")]
-    [SerializeField] private float _camPanMinValueX;
-    [SerializeField] private float _camPanMaxValueX;
-
-    [Header("Y 축")]
-    [SerializeField] private float _camPanMinValueY;
-    [SerializeField] private float _camPanMaxValueY;
-
-    [Header("Z 축")]
-    [SerializeField] private float _camPanMinValueZ;
-    [SerializeField] private float _camPanMaxValueZ;
+    [Header("카메라 조작 범위 값 (Offset)")]
+    [SerializeField] private Vector3 _minCamPanOffset;
+    [SerializeField] private Vector3 _maxCamPanOffset;
 
     [Header("카메라 이동 속도")]
-    [SerializeField] private float CameraPanSpeed = 0.35f;
-
-    public GameObject CameraTargetObj;
+    [SerializeField] private float _cameraPanSpeed = 0.35f;
+    
+    private const float COIN_RESET_Y_POSITION = 0.2f;
 
     private BlockCodingManager _gameManager;
     private CodingUIManager _codingUIManager;
@@ -37,83 +27,77 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
+        // .. 매니저 인스턴스 초기화
         _gameManager = BlockCodingManager.Instance;
         _codingUIManager = CodingUIManager.Instance;
+        _playerManager = BlockCodingManager.PlayerManager_Instance;
 
         // .. 게임 매니저에 StageManager 등록
-        BlockCodingManager.Instance.Register_StageManager(this.gameObject);
+        _gameManager.Register_StageManager(this.gameObject);
 
         // .. 스테이지별 코인 갯수로 코인 정보를 갱신
         _collectedCoinCount = 0;
 
-        // .. 카메라 팬 예외 처리
-        if (_camPanMinValueX == 0 || _camPanMaxValueX == 0)
+        // .. 카메라 팬 값 예외 처리
+        if (_minCamPanOffset == Vector3.zero || _maxCamPanOffset == Vector3.zero)
         {
-            Debug.Log("카메라 팬 X축의 Min, Max 값이 초기화되어 있지 않음!");
+            Debug.LogWarning("카메라 팬 Min/Max Offset 값이 설정되지 않았습니다!");
         }
 
-        if (_camPanMinValueY == 0 || _camPanMaxValueY == 0)
+        // .. 코인 카운터 UI 초기화
+        if (_coinCounterUIObject == null)
         {
-            Debug.Log("카메라 팬 Y축의 Min, Max 값이 초기화되어 있지 않음!");
+            _coinCounterUIObject = _codingUIManager.CoinCounter;
         }
-
-        if (_camPanMinValueZ == 0 || _camPanMaxValueZ == 0)
-        {
-            Debug.Log("카메라 팬 Z축의 Min, Max 값이 초기화되어 있지 않음!");
-        }
-
-        if (coinCounterObject == null)
-        {
-            coinCounterObject = CodingUIManager.Instance.CoinCounter;
-            var coinText = coinCounterObject.transform.GetChild(1).gameObject;
-            coinCountText = coinText.GetComponent<TextMeshProUGUI>();
-            coinCountText.text = $"{_collectedCoinCount} / {CoinObject.Length}";
-        }
+        var coinTextObject = _coinCounterUIObject.transform.GetChild(1).gameObject;
+        _coinCountText = coinTextObject.GetComponent<TextMeshProUGUI>();
+        _coinCountText.text = $"{_collectedCoinCount} / {CoinGameObjects.Length}";
 
         AudioManager.Instance.Play_Music("CityTheme");
     }
 
-    public void Update()
+    private void Update()
     {
         if (_gameManager.IsCompilerRunning || _codingUIManager.IsOptionMenuOpen)
             return;
 
-        CameraPan();
+        HandleCameraPan();
     }
 
-
-    public void CameraPan() // CameraTarget을 화면 터치로 움직여서 카메라의 각도를 조절
+    // CameraTarget을 화면 터치로 움직여서 카메라의 각도를 조절합니다.
+    private void HandleCameraPan()
     {
-        if (_playerManager == null)
-            _playerManager = BlockCodingManager.PlayerManager_Instance;
-
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
-            // .. Vector2의 화면 터치값을 참조하여 계산함으로 타겟의 움직임도 Vector2 처럼 2개의 좌표로만 움직여야 한다.
             Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            Vector3 newPosition = _playerManager.CameraTargetObject.transform.position + new Vector3(touchDeltaPosition.x, -touchDeltaPosition.y, -touchDeltaPosition.x) * CameraPanSpeed * Time.deltaTime;
+            
+            // 터치 x입력으로 카메라의 x, z축을 함께 움직여 입체적인 이동 효과를 줍니다.
+            Vector3 moveDirection = new Vector3(touchDeltaPosition.x, -touchDeltaPosition.y, -touchDeltaPosition.x);
+            Vector3 newPosition = _playerManager.CameraTargetObject.transform.position + moveDirection * _cameraPanSpeed * Time.deltaTime;
 
-            newPosition.x = Mathf.Clamp(newPosition.x, _playerManager.CamTargetStartWorldPosition.x + _camPanMinValueX,
-                _playerManager.CamTargetStartWorldPosition.x + _camPanMaxValueX);
+            // 카메라 이동 범위 제한
+            Vector3 startPos = _playerManager.CamTargetStartWorldPosition;
+            Vector3 minBounds = startPos + _minCamPanOffset;
+            Vector3 maxBounds = startPos + _maxCamPanOffset;
 
-            newPosition.y = Mathf.Clamp(newPosition.y, _playerManager.CamTargetStartWorldPosition.y + _camPanMinValueY,
-                _playerManager.CamTargetStartWorldPosition.y + _camPanMaxValueY);
-
-            newPosition.z = Mathf.Clamp(newPosition.z, _playerManager.CamTargetStartWorldPosition.z + _camPanMinValueZ,
-                _playerManager.CamTargetStartWorldPosition.z + _camPanMaxValueZ);
+            newPosition.x = Mathf.Clamp(newPosition.x, minBounds.x, maxBounds.x);
+            newPosition.y = Mathf.Clamp(newPosition.y, minBounds.y, maxBounds.y);
+            newPosition.z = Mathf.Clamp(newPosition.z, minBounds.z, maxBounds.z);
 
             _playerManager.CameraTargetObject.transform.position = newPosition;
         }
     }
 
-    public void UpdateCoin() // Coin.cs에서 코인이 플레이어 콜라이더에 닿아 코인 오브젝트가 비활성화 될 때 호출
+    // Coin.cs에서 코인이 플레이어와 충돌했을 때 호출됩니다.
+    public void UpdateCoin() 
     {
         _collectedCoinCount++;
+        _coinCountText.text = $"{_collectedCoinCount} / {CoinGameObjects.Length}";
 
-        coinCountText.text = $"{_collectedCoinCount} / {CoinObject.Length}";
-
-        if (_collectedCoinCount >= CoinObject.Length)
+        if (_collectedCoinCount >= CoinGameObjects.Length)
+        {
             StageClear();
+        }
     }
 
     public void ResetCoin()
@@ -122,42 +106,39 @@ public class StageManager : MonoBehaviour
             return;
 
         _collectedCoinCount = 0;
-        coinCountText.text = $"{_collectedCoinCount} / {CoinObject.Length}";
+        _coinCountText.text = $"{_collectedCoinCount} / {CoinGameObjects.Length}";
 
-        foreach (GameObject coin in CoinObject)
+        foreach (GameObject coin in CoinGameObjects)
         {
-            Vector3 coinPos = coin.gameObject.transform.localPosition;
-            coinPos.y = 0.2f;
-            coin.gameObject.transform.localPosition = coinPos;
-            coin.gameObject.transform.DOScale(1.2f, 1);
+            Vector3 coinPos = coin.transform.localPosition;
+            coinPos.y = COIN_RESET_Y_POSITION;
+            coin.transform.localPosition = coinPos;
+            coin.transform.DOScale(1.2f, 1);
         }
     }
 
     public void StageClear()
     {
-        CodingUIManager.Instance.StopButton.interactable = false;
-
-        CodingUIManager.Instance.OptionMenuOpenButton.interactable = true;
-
-        BlockCodingManager.Instance.IsStageClear = true;
+        _codingUIManager.StopButton.interactable = false;
+        _codingUIManager.OptionMenuOpenButton.interactable = true;
+        _gameManager.IsStageClear = true;
 
         UnlockNewLevel();
 
         Time.timeScale = 1;
 
-        CodingUIManager.Instance.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo);
-        CodingUIManager.Instance.ActiveStageClearUI();
-
+        _codingUIManager.ClearPanel.transform.DOLocalMove(Vector3.zero, 1f).SetEase(Ease.OutExpo);
+        _codingUIManager.ActiveStageClearUI();
     }
 
     public void UnlockNewLevel()
     {
-        if (SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        if (currentSceneIndex >= PlayerPrefs.GetInt("ReachedIndex"))
         {
-            PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
+            PlayerPrefs.SetInt("ReachedIndex", currentSceneIndex + 1);
             PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1) + 1);
             PlayerPrefs.Save();
         }
     }
-    
 }

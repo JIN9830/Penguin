@@ -603,6 +603,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &176801193 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3587770456362237750, guid: 8847f110e905c2144ab80c4e008aff78,
+    type: 3}
+  m_PrefabInstance: {fileID: 3209202506747992512}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &185336673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4722,6 +4728,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1309404266}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1313362506 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5392982204865541290, guid: 8847f110e905c2144ab80c4e008aff78,
+    type: 3}
+  m_PrefabInstance: {fileID: 3209202506747992512}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1332260783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6860,6 +6872,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1745182535}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1769344808 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 279173987025756158, guid: 8847f110e905c2144ab80c4e008aff78,
+    type: 3}
+  m_PrefabInstance: {fileID: 3209202506747992512}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1774962003 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8530a470c6d35fb4b9718d6d77999fdf,
@@ -8927,6 +8945,56 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: _maxCamPanOffset.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: _maxCamPanOffset.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: _maxCamPanOffset.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: _minCamPanOffset.x
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: _minCamPanOffset.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: _minCamPanOffset.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: <CoinGameObjects>k__BackingField.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: '<CoinGameObjects>k__BackingField.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1313362506}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: '<CoinGameObjects>k__BackingField.Array.data[1]'
+      value: 
+      objectReference: {fileID: 176801193}
+    - target: {fileID: 2168536233107928435, guid: 8847f110e905c2144ab80c4e008aff78,
+        type: 3}
+      propertyPath: '<CoinGameObjects>k__BackingField.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1769344808}
     - target: {fileID: 5909007862279968272, guid: 8847f110e905c2144ab80c4e008aff78,
         type: 3}
       propertyPath: m_Name
