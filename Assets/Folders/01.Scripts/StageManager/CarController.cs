@@ -56,7 +56,7 @@ public class CarController : MonoBehaviour
         });
 
         // [성능 개선] 물리 쿼리 주기를 조절하기 위한 변수
-        var checkInterval = new WaitForSeconds(0.25f); // 0.25초마다 장애물 감지
+        var checkInterval = new WaitForSeconds(0.1f); // 0.1초마다 장애물 감지
 
         // 이동하는 동안 장애물 감지
         while (isMoving)
@@ -72,32 +72,51 @@ public class CarController : MonoBehaviour
             RaycastHit hit;
             // [수정] 지정된 _obstacleLayer만 감지하도록 LayerMask 파라미터 추가
             bool isHit = Physics.SphereCast(sphereCastOrigin, carWidth, transform.forward, out hit, rayDistance, _obstacleLayer);
-
-            if (isHit && !_isInIntersection) // 교차로 내부에 있을 경우 신호등을 무시합니다.
+ 
+            if (isHit)
             {
-                // 플레이어, 다른 차, 또는 신호등이 감지되면 정지합니다.
-                bool shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car") || hit.collider.CompareTag("TrafficLight");
-
+                bool shouldStop;
+                // [개선] 교차로 내부와 외부의 정지 조건을 명확히 분리합니다.
+                if (_isInIntersection)
+                {
+                    // 교차로 내부: 플레이어 또는 다른 차만 장애물로 인식합니다. (신호등 무시)
+                    shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car");
+                }
+                else
+                {
+                    // 교차로 외부: 플레이어, 다른 차, 신호등을 모두 장애물로 인식합니다.
+                    shouldStop = hit.collider.CompareTag("Player") || hit.collider.CompareTag("Car") || hit.collider.CompareTag("TrafficLight");
+                }
+ 
                 if (shouldStop && !_isSlowingDown)
                 {
+                    // 정지해야 하는 장애물 앞에서 부드럽게 감속합니다.
                     _isSlowingDown = true;
                     _isSpeedingUp = false;
-
-                    // 부드럽게 감속하여 정지
+ 
                     _timeScaleTween?.Kill(); // 이전 트윈이 있다면 종료
                     _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 0, 1.0f);
                 }
+                else if (!shouldStop && !_isSpeedingUp)
+                {
+                    // 무시해도 되는 장애물이거나 장애물이 사라졌을 때 다시 가속합니다.
+                    _isSpeedingUp = true;
+                    _isSlowingDown = false;
+
+                    _timeScaleTween?.Kill(); // 이전 트윈이 있다면 종료
+                    _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 1.0f).SetDelay(0.3f);
+                }
             }
-            else if (!_isSpeedingUp) // (isHit이 false라면) 장애물이 없으면 다시 부드럽게 가속
+            else if (!_isSpeedingUp) // 장애물이 감지되지 않았을 때 다시 가속합니다.
             {
                 _isSpeedingUp = true;
                 _isSlowingDown = false;
-
+ 
                 _timeScaleTween?.Kill(); // 이전 트윈이 있다면 종료
                 _timeScaleTween = DOTween.To(() => _moveTween.timeScale, x => _moveTween.timeScale = x, 1, 1.0f).SetDelay(0.3f);
             }
 
-            yield return checkInterval; // [성능 개선] 매 프레임 대신 0.25초 대기
+            yield return checkInterval; // [성능 개선] 매 프레임 대신 0.1초 대기
 
         }
     }
