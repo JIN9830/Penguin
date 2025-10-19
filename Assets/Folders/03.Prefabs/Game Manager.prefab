@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a15366e8c4c654ab5ceff70dc88ec7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  <BlockCodingManager>k__BackingField: {fileID: 4056482644413891519}
+  <CodingUIManager>k__BackingField: {fileID: 0}
+  <PlayerManager>k__BackingField: {fileID: 0}
+  <StageManager>k__BackingField: {fileID: 0}
 --- !u!114 &4056482644413891519
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,5 @@
 using DG.Tweening;
 using UnityEngine;
-using static BlockCodingManager;
 
 public class Forward : CodingBlock
 {
@@ -14,20 +13,20 @@ public class Forward : CodingBlock
         ToggleHighLight(true);
 
         // 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
-        if (Physics.Raycast(PlayerManager_Instance.PlayerObject.transform.localPosition, PlayerManager_Instance.PlayerObject.transform.forward, out _hit, _DISTANCE))
+        if (Physics.Raycast(GameManager.Instance.PlayerManager.PlayerObject.transform.localPosition, GameManager.Instance.PlayerManager.PlayerObject.transform.forward, out _hit, _DISTANCE))
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_BlockShake(this.gameObject);
 
             if (_hit.collider.CompareTag("Wall"))
             {
                 AudioManager.Instance.Play_PlayerSFX("HitTheWall");
-                PlayerManager_Instance.PlayerAnimator.SetTrigger("HitTheWall");
+                GameManager.Instance.PlayerManager.PlayerAnimator.SetTrigger("HitTheWall");
                 CodingUIManager.Instance.ShakeUIElements();
             }
             else if (_hit.collider.CompareTag("Edge"))
             {
                 AudioManager.Instance.Play_PlayerSFX("ReachTheEdge");
-                PlayerManager_Instance.PlayerAnimator.SetTrigger("ReachTheEdge");
+                GameManager.Instance.PlayerManager.PlayerAnimator.SetTrigger("ReachTheEdge");
             }
 
             this.enabled = false;
@@ -36,8 +35,21 @@ public class Forward : CodingBlock
         else
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
-            PlayerManager_Instance.EPlayerState = PlayerManager.PlayerState.Forwarding;
-            PlayerManager_Instance.FootStepDust.Play();
+            GameManager.Instance.PlayerManager.EPlayerState = PlayerManager.PlayerState.Forwarding;
+            GameManager.Instance.PlayerManager.FootStepDust.Play();
+        }
+    }
+
+    private void Update()
+    {
+        if (BlockCodingManager.IsCompilerRunning == false)
+        {
+            if (BlockTweener != null) BlockTweener.Kill();
+            this.enabled = false;
+        }
+        else if (PlayerManager.EPlayerState == PlayerManager.PlayerState.Forwarding)
+        {
+            MovePlayerForward();
         }
     }
 
@@ -45,38 +57,27 @@ public class Forward : CodingBlock
     {
         _deltaTimeCount = 0;
 
-        PlayerManager_Instance.Initialize_PlayerForwardVector();
+        PlayerManager.Initialize_PlayerForwardVector();
     }
 
     private void OnDisable() // 전진 블록 실행이 종료될 때 초기화 해야 할 작업들
     {
         transform.localScale = Vector3.one;
-        PlayerManager_Instance.EPlayerState = PlayerManager.PlayerState.None;
+        PlayerManager.EPlayerState = PlayerManager.PlayerState.None;
 
         // 앞으로 전진하는 애니메이션의 발 움직임 싱크를 맞추기 위한 설정
        _deltaTimeCount = 0.70f;
-        PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
+        PlayerManager.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
     }
 
-    private void Update()
-    {
-        if (Instance.IsCompilerRunning == false)
-        {
-            if (BlockTweener != null) BlockTweener.Kill();
-            this.enabled = false;
-        }
-        else if (PlayerManager_Instance.EPlayerState == PlayerManager.PlayerState.Forwarding)
-        {
-            MovePlayerForward();
-        }
-    }
+    
     private void MovePlayerForward()
     {
-        PlayerManager_Instance.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
+        PlayerManager.PlayerAnimator.SetFloat("Forward", _deltaTimeCount);
 
         _deltaTimeCount += Time.deltaTime;
-        Vector3 newPos = Vector3.Lerp(PlayerManager_Instance.PlayerStartPos, PlayerManager_Instance.PlayerNewPos, _deltaTimeCount * _PLAYER_MOVESPEED);
-        PlayerManager_Instance.PlayerObject.transform.localPosition = newPos;
+        Vector3 newPos = Vector3.Lerp(PlayerManager.PlayerStartPos, PlayerManager.PlayerNewPos, _deltaTimeCount * _PLAYER_MOVESPEED);
+        PlayerManager.PlayerObject.transform.localPosition = newPos;
 
         if (_deltaTimeCount > 1)
         {

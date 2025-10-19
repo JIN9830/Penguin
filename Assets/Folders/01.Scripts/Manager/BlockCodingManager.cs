@@ -15,8 +15,8 @@ public class BlockCodingManager : MonoBehaviour
     public CurrentMethod ECurrentMethod { get; set; } = CurrentMethod.Main;
 
     public static BlockCodingManager Instance { get; private set; }
-    public static PlayerManager PlayerManager_Instance { get; private set; }
-    public static StageManager StageManager_Instance { get; private set; }
+
+    private PlayerManager PlayerManager => GameManager.Instance.PlayerManager;
 
 
     public List<CodingBlock> MainMethodList { get; private set; } = new List<CodingBlock>();
@@ -67,8 +67,8 @@ public class BlockCodingManager : MonoBehaviour
     {
         CodingUIManager.Instance.PlayButton.interactable = false;
 
-        // .. 블록 실행을 누르면 카메라 타겟이 플레이어 위치로 고정
-        PlayerManager_Instance.CameraTargetObject.transform.localPosition = PlayerManager_Instance.CamTargetStartPosition;
+        // 블록 실행을 누르면 카메라 타겟이 플레이어 위치로 고정
+        PlayerManager.CameraTargetObject.transform.localPosition = PlayerManager.CamTargetStartPosition;
 
         foreach (CodingBlock block in MainMethodList)
         {
@@ -80,13 +80,13 @@ public class BlockCodingManager : MonoBehaviour
             AudioManager.Instance.Play_UISFX("ActiveCodingBlock");
             block.enabled = true;
             block.MoveOrder();
-            // .. Func, Loop 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
+            // Func, Loop 블록이 실행중이라면 실행이 끝날때까지 대기합니다.
             yield return WaitUntilEndOfSubMethod;
         }
 
         if (IsCompilerRunning && !IsStageClear) yield return Utils.WaitForSecond(1.0f);
 
-        PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", IsCompilerRunning);
+        PlayerManager.PlayerAnimator.SetBool("WaitEmote", IsCompilerRunning);
 
         IsCompilerRunning = false;
         CodingUIManager.Instance.DisableBlockHighlights();
@@ -187,7 +187,7 @@ public class BlockCodingManager : MonoBehaviour
 
     public void Initialize_CodingMethod()
     {
-        // .. 레이아웃에 있는 블록 오브젝트들을 오브젝트 풀에 전부 반환.
+        // 레이아웃에 있는 블록 오브젝트들을 오브젝트 풀에 전부 반환.
         foreach (CodingBlock blockObj in MainMethodList)
         {
             blockObj.ReleaseBlock();
@@ -201,28 +201,29 @@ public class BlockCodingManager : MonoBehaviour
             blockObj.ReleaseBlock();
         }
 
-        // .. 각 리스트 내부의 코딩블럭 데이터를 전부 삭제.
+        // 각 리스트 내부의 코딩블럭 데이터를 전부 삭제.
         MainMethodList.Clear();
         FunctionMethodList.Clear();
         LoopMethodList.Clear();
 
-        // .. 블럭 컴파일러의 실행 상태 & 게임 클리어 상태를 저장하는 변수를 변수의 기본 값인 false로 초기화.
+        // 블럭 컴파일러의 실행 상태 & 게임 클리어 상태를 저장하는 변수를 변수의 기본 값인 false로 초기화.
         IsCompilerRunning = false;
         IsStageClear = false;
 
-        // .. 루프문의 반복 횟수를 기본 값인 1로 초기화.
+        // 루프문의 반복 횟수를 기본 값인 1로 초기화 후 UI에 업데이트
         LoopReaptCount = 1;
         CodingUIManager.Instance.LoopCountText.text = Instance.LoopReaptCount.ToString();
     }
 
-    public void Register_PlayerManager(GameObject obj)
-    {
-        obj.TryGetComponent(out PlayerManager instance);
-        PlayerManager_Instance = instance;
-    }
-    public void Register_StageManager(GameObject obj)
-    {
-        obj.TryGetComponent(out StageManager instance);
-        StageManager_Instance = instance;
-    }
+    // public void Register_PlayerManager(GameObject obj)
+    // {
+    //     obj.TryGetComponent(out PlayerManager instance);
+    //     PlayerManager_Instance = instance;
+    // }
+
+    // public void Register_StageManager(GameObject obj)
+    // {
+    //     obj.TryGetComponent(out StageManager instance);
+    //     StageManager_Instance = instance;
+    // }
 }

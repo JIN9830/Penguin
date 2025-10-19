@@ -37,7 +37,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     public void LandingDustParticle()
     {
         // BlockCodingManager를 통해 PlayerManager의 LandingDust 파티클을 재생합니다.
-        BlockCodingManager.PlayerManager_Instance.LandingDust.Play();
+        GameManager.Instance.PlayerManager.LandingDust.Play();
     }
 
     /// <summary>

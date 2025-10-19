@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using TMPro;
+using Unity.Android.Gradle;
 
 public class CodingUIManager : MonoBehaviour
 {
@@ -16,7 +17,10 @@ public class CodingUIManager : MonoBehaviour
 
 
     public static CodingUIManager Instance { get; private set; }
+    private BlockCodingManager BlockCodingManager => GameManager.Instance.BlockCodingManager;
+    private PlayerManager PlayerManager => GameManager.Instance.PlayerManager;
 
+    
     public UIAnimation UIAnimation { get; private set; } = new UIAnimation();
 
     [field: SerializeField] public GameObject ReleasedBlocks { get; private set; }
@@ -254,16 +258,16 @@ public class CodingUIManager : MonoBehaviour
             ObjectPoolManager.Instance.EBlockCategory == ObjectPoolManager.BlockCategory.Loop) 
         {
             
-            if (BlockCodingManager.Instance.MainMethodList.Count < 10)
+            if (BlockCodingManager.MainMethodList.Count < 10)
             {
                 SelectMethod(CurrentLayout.Main);
 
                 CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.EBlockCategory);
                 block.transform.SetParent(MainLayout.transform);
 
-                BlockCodingManager.Instance.MainMethodList.Add(block);
+                BlockCodingManager.MainMethodList.Add(block);
                 block.enabled = false;
-                UIAnimation.Animation_BlockPop(BlockCodingManager.Instance.MainMethodList.Last().gameObject);
+                UIAnimation.Animation_BlockPop(BlockCodingManager.MainMethodList.Last().gameObject);
             }
 
         }
@@ -273,41 +277,41 @@ public class CodingUIManager : MonoBehaviour
             switch (ECurrentLayout)
             {
                 case CurrentLayout.Main:
-                    if (BlockCodingManager.Instance.MainMethodList.Count < 10)
+                    if (BlockCodingManager.MainMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 MainLayout에 블록을 넣어줍니다.
                         CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.EBlockCategory);
                         block.transform.SetParent(MainLayout.transform);
 
-                        BlockCodingManager.Instance.MainMethodList.Add(block);
+                        BlockCodingManager.MainMethodList.Add(block);
                         block.enabled = false; // 스크립트를 비활성화 (Codingblock 내부의 Update문이 돌아가는걸 방지)
-                        UIAnimation.Animation_BlockPop(BlockCodingManager.Instance.MainMethodList.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(BlockCodingManager.MainMethodList.Last().gameObject);
                     }
                     break;
 
                 case CurrentLayout.Function:
-                    if (BlockCodingManager.Instance.FunctionMethodList.Count < 10)
+                    if (BlockCodingManager.FunctionMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 FunctionLayout에 블록을 넣어줍니다.
                         CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.EBlockCategory);
                         block.transform.SetParent(FunctionLayout.transform);
 
-                        BlockCodingManager.Instance.FunctionMethodList.Add(block);
+                        BlockCodingManager.FunctionMethodList.Add(block);
                         block.enabled = false;
-                        UIAnimation.Animation_BlockPop(BlockCodingManager.Instance.FunctionMethodList.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(BlockCodingManager.FunctionMethodList.Last().gameObject);
                     }
                     break;
 
                 case CurrentLayout.Loop:
-                    if (BlockCodingManager.Instance.LoopMethodList.Count < 10)
+                    if (BlockCodingManager.LoopMethodList.Count < 10)
                     {
                         // .. ObjectPool에서 블록을 가져오고 LoopLayout에 블록을 넣어줍니다.
                         CodingBlock block = ObjectPoolManager.Instance.SelectBlockFromPool(ObjectPoolManager.Instance.EBlockCategory);
                         block.transform.SetParent(LoopLayout.transform);
 
-                        BlockCodingManager.Instance.LoopMethodList.Add(block);
+                        BlockCodingManager.LoopMethodList.Add(block);
                         block.enabled = false;
-                        UIAnimation.Animation_BlockPop(BlockCodingManager.Instance.LoopMethodList.Last().gameObject);
+                        UIAnimation.Animation_BlockPop(BlockCodingManager.LoopMethodList.Last().gameObject);
                     }
                     break;
             }
@@ -319,31 +323,31 @@ public class CodingUIManager : MonoBehaviour
         switch (currentLayout)
         {
             case CurrentLayout.Main:
-                if (BlockCodingManager.Instance.MainMethodList.Count > 0)
+                if (BlockCodingManager.MainMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
-                    CodingBlock lastblock = BlockCodingManager.Instance.MainMethodList.Last();
-                    BlockCodingManager.Instance.MainMethodList.Remove(lastblock);
+                    CodingBlock lastblock = BlockCodingManager.MainMethodList.Last();
+                    BlockCodingManager.MainMethodList.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
                 }
                 break;
 
             case CurrentLayout.Function:
-                if (BlockCodingManager.Instance.FunctionMethodList.Count > 0)
+                if (BlockCodingManager.FunctionMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
-                    CodingBlock lastblock = BlockCodingManager.Instance.FunctionMethodList.Last();
-                    BlockCodingManager.Instance.FunctionMethodList.Remove(lastblock);
+                    CodingBlock lastblock = BlockCodingManager.FunctionMethodList.Last();
+                    BlockCodingManager.FunctionMethodList.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
                 }
                 break;
 
             case CurrentLayout.Loop:
-                if (BlockCodingManager.Instance.LoopMethodList.Count > 0)
+                if (BlockCodingManager.LoopMethodList.Count > 0)
                 {
                     AudioManager.Instance.Play_UISFX("DeleteCodingBlock");
-                    CodingBlock lastblock = BlockCodingManager.Instance.LoopMethodList.Last();
-                    BlockCodingManager.Instance.LoopMethodList.Remove(lastblock);
+                    CodingBlock lastblock = BlockCodingManager.LoopMethodList.Last();
+                    BlockCodingManager.LoopMethodList.Remove(lastblock);
                     lastblock.gameObject.transform.DOScale(0f, 0.3f).OnComplete(() => lastblock.ReleaseBlock());
                 }
                 break;
@@ -355,9 +359,9 @@ public class CodingUIManager : MonoBehaviour
         //if (!isRunning)
         //    return;
 
-        BlockCodingManager.Instance.IsCompilerRunning = true;
+        BlockCodingManager.IsCompilerRunning = true;
 
-        BlockCodingManager.Instance.BlockCompiler = StartCoroutine(BlockCodingManager.Instance.BlockCompiler_Co());
+        BlockCodingManager.BlockCompiler = StartCoroutine(BlockCodingManager.BlockCompiler_Co());
 
         PlayButton.gameObject.SetActive(false);
         StopButton.gameObject.SetActive(true);
@@ -371,16 +375,15 @@ public class CodingUIManager : MonoBehaviour
 
     public void AbortCodingBlock()
     {
-        BlockCodingManager.Instance.IsCompilerRunning = false;
+        BlockCodingManager.IsCompilerRunning = false;
 
-        BlockCodingManager.PlayerManager_Instance.CameraTargetObject.transform.localPosition = 
-            BlockCodingManager.PlayerManager_Instance.CamTargetStartPosition;
+        PlayerManager.CameraTargetObject.transform.localPosition = PlayerManager.CamTargetStartPosition;
 
         AudioManager.Instance.Play_UISFX("AbortButton");
 
         AbortCodingBlocksAnimation();
-        BlockCodingManager.PlayerManager_Instance.PlayerAnimator.SetBool("WaitEmote", false);
-        BlockCodingManager.PlayerManager_Instance.ResetPlayerPosition();
+        PlayerManager.PlayerAnimator.SetBool("WaitEmote", false);
+        PlayerManager.ResetPlayerPosition();
 
         StopButton.gameObject.SetActive(false);
         UIAnimation.Animation_PlayButtonDelay(PlayButton, 1);
@@ -416,15 +419,15 @@ public class CodingUIManager : MonoBehaviour
         switch (increase)
         {
             case true: // LoopReaptCount ++
-                if (BlockCodingManager.Instance.LoopReaptCount < MaxLoopCount) BlockCodingManager.Instance.LoopReaptCount++;
+                if (BlockCodingManager.LoopReaptCount < MaxLoopCount) BlockCodingManager.LoopReaptCount++;
                 break;
 
             case false: // LoopReaptCount --
-                if (BlockCodingManager.Instance.LoopReaptCount > MinLoopCount) BlockCodingManager.Instance.LoopReaptCount--;
+                if (BlockCodingManager.LoopReaptCount > MinLoopCount) BlockCodingManager.LoopReaptCount--;
                 break;
         }
         AudioManager.Instance.Play_UISFX("TimeControl");
-        LoopCountText.text = BlockCodingManager.Instance.LoopReaptCount.ToString();
+        LoopCountText.text = BlockCodingManager.LoopReaptCount.ToString();
     }
 
     public void ActiveOption()
@@ -518,26 +521,26 @@ public class CodingUIManager : MonoBehaviour
 
     public void DisableBlockHighlights()
     {
-        if (BlockCodingManager.Instance.MainMethodList.Count > 0)
+        if (BlockCodingManager.MainMethodList.Count > 0)
         {
-            foreach (CodingBlock block in BlockCodingManager.Instance.MainMethodList)
+            foreach (CodingBlock block in BlockCodingManager.MainMethodList)
             {
                 block.ToggleHighLight(false);
             }
 
         }
 
-        if (BlockCodingManager.Instance.FunctionMethodList.Count > 0)
+        if (BlockCodingManager.FunctionMethodList.Count > 0)
         {
-            foreach (CodingBlock block in BlockCodingManager.Instance.FunctionMethodList)
+            foreach (CodingBlock block in BlockCodingManager.FunctionMethodList)
             {
                 block.ToggleHighLight(false);
             }
         }
 
-        if (BlockCodingManager.Instance.LoopMethodList.Count > 0)
+        if (BlockCodingManager.LoopMethodList.Count > 0)
         {
-            foreach (CodingBlock block in BlockCodingManager.Instance.LoopMethodList)
+            foreach (CodingBlock block in BlockCodingManager.LoopMethodList)
             {
                 block.ToggleHighLight(false);
             }
@@ -547,25 +550,25 @@ public class CodingUIManager : MonoBehaviour
 
     public void AbortCodingBlocksAnimation()
     {
-        if (BlockCodingManager.Instance.MainMethodList.Count > 0)
+        if (BlockCodingManager.MainMethodList.Count > 0)
         {
-            foreach (CodingBlock block in BlockCodingManager.Instance.MainMethodList)
+            foreach (CodingBlock block in BlockCodingManager.MainMethodList)
             {
                 UIAnimation.Animation_BlockShake(block.gameObject);
             }
         }
 
-        if (BlockCodingManager.Instance.FunctionMethodList.Count > 0)
+        if (BlockCodingManager.FunctionMethodList.Count > 0)
         {
-            foreach (CodingBlock block in BlockCodingManager.Instance.FunctionMethodList)
+            foreach (CodingBlock block in BlockCodingManager.FunctionMethodList)
             {
                 UIAnimation.Animation_BlockShake(block.gameObject);
             }
         }
 
-        if (BlockCodingManager.Instance.LoopMethodList.Count > 0)
+        if (BlockCodingManager.LoopMethodList.Count > 0)
         {
-            foreach (CodingBlock block in BlockCodingManager.Instance.LoopMethodList)
+            foreach (CodingBlock block in BlockCodingManager.LoopMethodList)
             {
                 UIAnimation.Animation_BlockShake(block.gameObject);
             }

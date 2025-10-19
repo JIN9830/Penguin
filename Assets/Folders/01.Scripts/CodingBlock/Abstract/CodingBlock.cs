@@ -4,6 +4,9 @@ using UnityEngine.Pool;
 
 public abstract class CodingBlock : MonoBehaviour
 {
+    protected PlayerManager PlayerManager => GameManager.Instance.PlayerManager;
+    protected BlockCodingManager BlockCodingManager => GameManager.Instance.BlockCodingManager;
+
     private GameObject _highlight;
     public Tweener BlockTweener { get; protected set; }
     public Tweener PlayerTweener { get; protected set; }

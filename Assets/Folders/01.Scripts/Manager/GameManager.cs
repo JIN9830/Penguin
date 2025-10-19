@@ -5,8 +5,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public PlayerManager playerManager { get; private set; }
-    public StageManager stageManager { get; private set; }
+
+    [field: SerializeField] public BlockCodingManager BlockCodingManager { get; private set; }
+    [field: SerializeField] public CodingUIManager CodingUIManager { get; private set; }
+    [field: SerializeField] public PlayerManager PlayerManager { get; private set; }
+    [field: SerializeField] public StageManager StageManager { get; private set; }
 
 
     private void Awake()
@@ -22,6 +25,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+        public void Register_PlayerManager(GameObject obj)
+    {
+        obj.TryGetComponent(out PlayerManager instance);
+        PlayerManager = instance;
+    }
+
+    public void Register_StageManager(GameObject obj)
+    {
+        obj.TryGetComponent(out StageManager instance);
+        StageManager = instance;
+    }
 
 }

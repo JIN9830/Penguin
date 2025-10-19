@@ -22,7 +22,7 @@ public class Coin : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             // .. 코인 갯수를 업데이트, 코인 습득 사운드 재생
-            BlockCodingManager.StageManager_Instance.UpdateCoin();
+            GameManager.Instance.StageManager.UpdateCoin();
             AudioManager.Instance.Play_PlayerSFX("EatCoin");
 
             // .. 코인 습득 애니메이션 재생

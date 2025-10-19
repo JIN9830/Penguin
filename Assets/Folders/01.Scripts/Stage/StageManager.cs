@@ -21,10 +21,17 @@ public class StageManager : MonoBehaviour
     
     private const float COIN_RESET_Y_POSITION = 0.2f;
 
-    private BlockCodingManager _gameManager;
-    private CodingUIManager _codingUIManager;
-    [SerializeField] private PlayerManager _playerManager;
-    
+    private BlockCodingManager _blockCodingManager => GameManager.Instance.BlockCodingManager;
+    private CodingUIManager _codingUIManager => GameManager.Instance.CodingUIManager;
+    private PlayerManager _playerManager => GameManager.Instance.PlayerManager;
+
+
+    private void Awake()
+    {
+        // 게임 매니저에 StageManager를 등록합니다.
+        GameManager.Instance.Register_StageManager(this.gameObject);
+    }
+
     private void Start()
     {
         InitializeStage();
@@ -34,7 +41,7 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        if (_gameManager.IsCompilerRunning || _codingUIManager.IsOptionMenuOpen)
+        if (_blockCodingManager.IsCompilerRunning || _codingUIManager.IsOptionMenuOpen)
             return;
 
         HandleCameraPan();
@@ -42,14 +49,6 @@ public class StageManager : MonoBehaviour
 
     private void InitializeStage()
     {
-         // .. 매니저 인스턴스 초기화
-        _gameManager = BlockCodingManager.Instance;
-        _codingUIManager = CodingUIManager.Instance;
-        _playerManager = BlockCodingManager.PlayerManager_Instance;
-
-        // .. 게임 매니저에 StageManager 등록
-        _gameManager.Register_StageManager(this.gameObject);
-
         // .. 스테이지별 코인 갯수로 코인 정보를 갱신
         _collectedCoinCount = 0;
 
@@ -126,7 +125,7 @@ public class StageManager : MonoBehaviour
     {
         _codingUIManager.StopButton.interactable = false;
         _codingUIManager.OptionMenuOpenButton.interactable = true;
-        _gameManager.IsStageClear = true;
+        _blockCodingManager.IsStageClear = true;
 
         UnlockNewLevel();
 

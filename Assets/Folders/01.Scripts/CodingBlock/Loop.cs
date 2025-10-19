@@ -9,14 +9,14 @@ public class Loop : CodingBlock
         ToggleHighLight(true);
         BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_ForwardBlockPlay(this.gameObject);
 
-        BlockCodingManager.Instance.ECurrentMethod = BlockCodingManager.CurrentMethod.Loop;
+        BlockCodingManager.ECurrentMethod = BlockCodingManager.CurrentMethod.Loop;
         CodingUIManager.Instance.SelectMethod(CodingUIManager.CurrentLayout.Loop);
 
-        BlockCodingManager.Instance.SubBlockCompiler = StartCoroutine(BlockCodingManager.Instance.SubBlockCompiler_Co());
+        BlockCodingManager.SubBlockCompiler = StartCoroutine(BlockCodingManager.SubBlockCompiler_Co());
     }
     private void Update()
     {
-        if (BlockCodingManager.Instance.IsCompilerRunning == false)
+        if (BlockCodingManager.IsCompilerRunning == false)
         {
             BlockTweener.Kill();
             transform.localScale = Vector3.one;
