@@ -23,11 +23,26 @@ public class StageManager : MonoBehaviour
 
     private BlockCodingManager _gameManager;
     private CodingUIManager _codingUIManager;
-    private PlayerManager _playerManager;
-
+    [SerializeField] private PlayerManager _playerManager;
+    
     private void Start()
     {
-        // .. 매니저 인스턴스 초기화
+        InitializeStage();
+
+        AudioManager.Instance.Play_Music("CityTheme");
+    }
+
+    private void Update()
+    {
+        if (_gameManager.IsCompilerRunning || _codingUIManager.IsOptionMenuOpen)
+            return;
+
+        HandleCameraPan();
+    }
+
+    private void InitializeStage()
+    {
+         // .. 매니저 인스턴스 초기화
         _gameManager = BlockCodingManager.Instance;
         _codingUIManager = CodingUIManager.Instance;
         _playerManager = BlockCodingManager.PlayerManager_Instance;
@@ -52,25 +67,15 @@ public class StageManager : MonoBehaviour
         var coinTextObject = _coinCounterUIObject.transform.GetChild(1).gameObject;
         _coinCountText = coinTextObject.GetComponent<TextMeshProUGUI>();
         _coinCountText.text = $"{_collectedCoinCount} / {CoinGameObjects.Length}";
-
-        AudioManager.Instance.Play_Music("CityTheme");
     }
 
-    private void Update()
-    {
-        if (_gameManager.IsCompilerRunning || _codingUIManager.IsOptionMenuOpen)
-            return;
-
-        HandleCameraPan();
-    }
-
-    // CameraTarget을 화면 터치로 움직여서 카메라의 각도를 조절합니다.
+    // CameraTarget 오브젝트를 움직여서 카메라의 각도를 조절합니다.
     private void HandleCameraPan()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
         {
             Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            
+
             // 터치 x입력으로 카메라의 x, z축을 함께 움직여 입체적인 이동 효과를 줍니다.
             Vector3 moveDirection = new Vector3(touchDeltaPosition.x, -touchDeltaPosition.y, -touchDeltaPosition.x);
             Vector3 newPosition = _playerManager.CameraTargetObject.transform.position + moveDirection * _cameraPanSpeed * Time.deltaTime;

@@ -15,7 +15,6 @@ public class BlockCodingManager : MonoBehaviour
     public CurrentMethod ECurrentMethod { get; set; } = CurrentMethod.Main;
 
     public static BlockCodingManager Instance { get; private set; }
-
     public static PlayerManager PlayerManager_Instance { get; private set; }
     public static StageManager StageManager_Instance { get; private set; }
 
@@ -24,6 +23,7 @@ public class BlockCodingManager : MonoBehaviour
     public List<CodingBlock> FunctionMethodList { get; private set; } = new List<CodingBlock>();
     public List<CodingBlock> LoopMethodList { get; private set; } = new List<CodingBlock>();
     public int LoopReaptCount { get; set; } = 1;
+
 
     public bool IsCompilerRunning { get; set; } = false;
     public bool IsStageClear { get; set; } = false;
