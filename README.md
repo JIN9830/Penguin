@@ -35,7 +35,7 @@
 포트폴리오의 핵심이자, 기술력을 증명하는 부분입니다. 자신이 구현한 기능 중 가장 자신 있거나 의미 있는 기능 2~3개를 골라 상세히 설명합니다.
 
 <details>
-<summary>유연하고 확장 가능한 블록 구조 설계 (추상 클래스 활용 중심) [접기/펼치기]</summary>
+<summary>[접기/펼치기] 유연하고 확장 가능한 블록 구조 설계 (추상 클래스 활용 중심)</summary>
 CodingBlock 구조    
   
   1. CodingBlock.cs [Abstract]
@@ -65,7 +65,7 @@ CodingBlock 호출로 여러가지 하위 블록을 호출하는 코드
 </details>
  
 <details>
-<summary>블록 코딩의 실시간 구문 분석 및 실행 엔진 [접기/펼치기]</summary>
+<summary>[접기/펼치기] 블록 코딩의 실시간 구문 분석 및 실행 엔진</summary>
 # 어떤 기능인가?
 플레이어가 입력한 블록을 순차적으로 실행하는 기능입니다.    
 블록의 종류를 나열 및 설명
@@ -76,12 +76,12 @@ CodingBlock 호출로 여러가지 하위 블록을 호출하는 코드
 </details>
 
 <details>
-<summary>오브젝트 풀링을 통한 오브젝트 최적화 (성능 개선) [접기/펼치기]</summary>    
+<summary>[접기/펼치기] 오브젝트 풀링을 통한 오브젝트 최적화 (성능 개선)</summary>    
 ObjectPoolManager.cs
 </details>
 
 <details>
-<summary>블럭코딩 레이아웃 구현 [접기/펼치기]</summary> 
+<summary>[접기/펼치기] 블럭코딩 레이아웃 구현</summary> 
 아이템의 추가, 삭제, 사용이 유연하게 이루어져야 하며, 추후 아이템 종류가 늘어나도 쉽게 확장할 수 있는 구조를 목표로 했습니다.
  
 ```
