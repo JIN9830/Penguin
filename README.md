@@ -60,7 +60,7 @@ GIF 이미지나 짧은 영상으로 실제 작동 모습을 보여주면 이해
 3. 핵심 로직 및 코드
 아이템 데이터를 ScriptableObject로 관리하여 기획자가 쉽게 아이템을 추가/수정할 수 있도록 설계했습니다. 인벤토리 UI는 슬롯을 미리 생성해두는 '오브젝트 풀링' 기법을 적용하여 UI를 열 때 발생하는 순간적인 렉을 방지했습니다.
 <details>
-<summary>CodingBlock 추상 클래스의 다형성 [접기/펼치기]</summary>
+<summary>유연하고 확장 가능한 블록 구조 설계 (추상 클래스 활용 중심) [접기/펼치기]</summary>
 CodingBlock 구조    
   
   1. CodingBlock.cs [Abstract]
@@ -90,7 +90,7 @@ CodingBlock 호출로 여러가지 하위 블록을 호출하는 코드
 </details>
  
 <details>
-<summary>블록코딩이 컴파일 되는 과정을 설명 [접기/펼치기]</summary>
+<summary>블록 코딩의 실시간 구문 분석 및 실행 엔진 [접기/펼치기]</summary>
 # 어떤 기능인가?
 플레이어가 입력한 블록을 순차적으로 실행하는 기능입니다.    
 블록의 종류를 나열 및 설명
@@ -101,7 +101,7 @@ CodingBlock 호출로 여러가지 하위 블록을 호출하는 코드
 </details>
 
 <details>
-<summary>오브젝트 풀링을 그림(Figma)로 풀어서 설명 [접기/펼치기]</summary>    
+<summary>오브젝트 풀링을 통한 오브젝트 최적화 (성능 개선) [접기/펼치기]</summary>    
 ObjectPoolManager.cs
 </details>
 
