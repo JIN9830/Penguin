@@ -117,7 +117,7 @@ CodingBlock 호출로 여러가지 하위 블록을 호출하는 코드
 </details>
 
 <details>
-<summary>📲 오브젝트 풀링을 통한 오브젝트 최적화 및 성능 개선👈[접기/펼치기]</summary>
+<summary>🧩 오브젝트 풀링을 통한 오브젝트 최적화 및 성능 개선 👈[접기/펼치기]</summary>
   
 ### 어떤 기능인가?
 
@@ -134,7 +134,7 @@ CodingBlock 호출로 여러가지 하위 블록을 호출하는 코드
 </details>
 
 <details>
-<summary>[접기/펼치기] 블럭코딩 레이아웃 구현</summary> 
+<summary>📱 블럭코딩 레이아웃 구현 👈[접기/펼치기]</summary> 
 
 ### 어떤 기능인가?
 
