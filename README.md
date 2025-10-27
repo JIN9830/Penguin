@@ -46,15 +46,15 @@
   
   1. CodingBlock.cs [Abstract]
   
-  2. Forward.cs [Class :Abstract]
+  2. Forward.cs [Class : Abstract]
      
-  4. TurnRight.cs [Class :Abstract]
+  4. TurnRight.cs [Class : Abstract]
   
-  5. TurnLeft.cs [Class :Abstract]
+  5. TurnLeft.cs [Class : Abstract]
   
-  6. Funtion.cs [Class :Abstract]
+  6. Funtion.cs [Class : Abstract]
   
-  7. Loop.cs [Class :Abstract]
+  7. Loop.cs [Class : Abstract]
   ```
 
   ***추상 클래스와 블록들의 관계도 그림***
