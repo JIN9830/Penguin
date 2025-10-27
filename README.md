@@ -158,9 +158,6 @@ public bool AddItem(ItemData_SO itemData, int amount = 1)
 ```
 </details>
 
-4. 실행 결과 (GIF)
-(실제 인벤토리가 작동하는 모습을 캡처한 GIF 이미지 삽입)
-
 ## 💡 트러블 슈팅 (Troubleshooting)
 지원자의 문제 해결 능력을 보여주는 가장 중요한 파트입니다. 단순히 '만들었다'에서 끝나는 게 아니라, '어려움이 있었지만 이렇게 해결했다'를 보여주는 것이 실무자들에게 깊은 인상을 남깁니다.
 
