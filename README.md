@@ -35,27 +35,29 @@
 포트폴리오의 핵심이자, 기술력을 증명하는 부분입니다. 자신이 구현한 기능 중 가장 자신 있거나 의미 있는 기능 2~3개를 골라 상세히 설명합니다.
 
 <details>
-<summary>🧩 추상 클래스로 유연하고 확장 가능한 코딩 블록 구조 설계 👈[접기/펼치기]</summary>
+<summary>🧩 추상 클래스를 활용한 유연하고 확장 가능한 코딩 블록 설계 👈[접기/펼치기]</summary>
+  
+  ### 🧩 재사용 가능한 컴포넌트를 위한 추상 클래스 기반의 유연한 설계 원칙
+  
+  게임에서 유저가 자주 사용하는 코딩 블록은 추상 클래스로 구현하였습니다.
 
   ```
   코딩 블록 추상 클래스 구조
   
   1. CodingBlock.cs [Abstract]
   
-  2. Forward.cs [Class]
+  2. Forward.cs [Class :Abstract]
      
-  4. TurnRight.cs [Class]
+  4. TurnRight.cs [Class :Abstract]
   
-  5. TurnLeft.cs [Class]
+  5. TurnLeft.cs [Class :Abstract]
   
-  6. Funtion.cs [Class]
+  6. Funtion.cs [Class :Abstract]
   
-  7. Loop.cs [Class]
+  7. Loop.cs [Class :Abstract]
   ```
 
   ***추상 클래스와 블록들의 관계도 그림***
-  
-  게임에서 유저가 자주 사용하는 코딩블록은 추상 클래스로 구현하였습니다.
 
   ***추상 클래스 내부 코드 사진 (추상 클래스내부의 가상 메소드 사진)***
   
@@ -95,6 +97,9 @@
 CodingBlock 호출로 여러가지 하위 블록을 호출하는 코드
     
 모든 블록을 추상 클래스인 CodingBlock의 MoveOrder 메서드로 호출하고 있습니다. 
+
+---
+
 </details>
  
 <details>
@@ -128,35 +133,8 @@ CodingBlock 호출로 여러가지 하위 블록을 호출하는 코드
 코딩블록의 객체를 자주 생성하고 파괴하는 대신, 미리 생성해둔 객체들을 재사용하여 생성/소멸 비용을 줄이고, 메모리 할당 및 가비지 컬렉션으로 인한 프레임 드랍 현상을 방지합니다.
 
 ### 어떻게 구현했는가?
-
-
-
 </details>
 
-<details>
-<summary>📱 블럭코딩 레이아웃 구현 👈[접기/펼치기]</summary> 
-
-### 어떤 기능인가?
-
-아이템의 추가, 삭제, 사용이 유연하게 이루어져야 하며, 추후 아이템 종류가 늘어나도 쉽게 확장할 수 있는 구조를 목표로 했습니다.
-
-### 왜 만들었는가?
-
-비고
-
-### 어떻게 구현했는가?
-
-비고
-
- 
-```
-// 인벤토리에 아이템을 추가하는 핵심 로직
-public bool AddItem(ItemData_SO itemData, int amount = 1)
-{
-    // ... (코드 내용)
-}
-```
-</details>
 
 ## 💡 트러블 슈팅 (Troubleshooting)
 지원자의 문제 해결 능력을 보여주는 가장 중요한 파트입니다. 단순히 '만들었다'에서 끝나는 게 아니라, '어려움이 있었지만 이렇게 해결했다'를 보여주는 것이 실무자들에게 깊은 인상을 남깁니다.
