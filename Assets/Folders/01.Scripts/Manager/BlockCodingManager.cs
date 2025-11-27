@@ -201,12 +201,12 @@ public class BlockCodingManager : MonoBehaviour
             blockObj.ReleaseBlock();
         }
 
-        // 각 리스트 내부의 코딩블럭 데이터를 전부 삭제.
+        // 각 리스트 내부의 코딩 블록 데이터를 전부 삭제.
         MainMethodList.Clear();
         FunctionMethodList.Clear();
         LoopMethodList.Clear();
 
-        // 블럭 컴파일러의 실행 상태 & 게임 클리어 상태를 저장하는 변수를 변수의 기본 값인 false로 초기화.
+        // 블록 컴파일러의 실행 상태 & 게임 클리어 상태를 저장하는 변수를 변수의 기본 값인 false로 초기화.
         IsCompilerRunning = false;
         IsStageClear = false;
 
@@ -214,16 +214,4 @@ public class BlockCodingManager : MonoBehaviour
         LoopReaptCount = 1;
         CodingUIManager.Instance.LoopCountText.text = Instance.LoopReaptCount.ToString();
     }
-
-    // public void Register_PlayerManager(GameObject obj)
-    // {
-    //     obj.TryGetComponent(out PlayerManager instance);
-    //     PlayerManager_Instance = instance;
-    // }
-
-    // public void Register_StageManager(GameObject obj)
-    // {
-    //     obj.TryGetComponent(out StageManager instance);
-    //     StageManager_Instance = instance;
-    // }
 }

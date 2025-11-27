@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 
@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         // 게임 매니저에 PlayerManager 등록
-        GameManager.Instance.Register_PlayerManager(this.gameObject);
+        GameManager.Instance.RegisterManager(this);
         
         PlayerAnimator = PlayerObject.GetComponent<Animator>();
 
@@ -47,7 +47,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        // 코딩시티 씬이 시작될때 카메라 무빙을 시작 (테스트용 코드)
+        // 씬이 시작될때 카메라 무빙을 시작 (테스트용 코드)
         CameraTargetObject.transform.localPosition = new Vector3(0, 2.5f, 0);
         CameraTargetObject.transform.DOLocalMoveY(0, 0.8f).SetDelay(0.2f).OnComplete(()=> CodingUIManager.Instance.CityNameObj.text = SceneManager.GetActiveScene().name);
     }

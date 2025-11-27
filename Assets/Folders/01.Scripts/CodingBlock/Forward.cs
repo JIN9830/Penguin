@@ -12,7 +12,8 @@ public class Forward : CodingBlock
     {
         ToggleHighLight(true);
 
-        // 플레이어 앞에 장애물이 있다면 알맞는 애니메이션을 재생하고 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
+        // 플레이어 앞에 장애물이 있다면 넘어지는 애니메이션을 재생하고,
+        // 블록 스크립트를 비활성화 하여 블록 실행을 종료합니다.
         if (Physics.Raycast(GameManager.Instance.PlayerManager.PlayerObject.transform.localPosition, GameManager.Instance.PlayerManager.PlayerObject.transform.forward, out _hit, _DISTANCE))
         {
             BlockTweener = CodingUIManager.Instance.UIAnimation.Animation_BlockShake(this.gameObject);

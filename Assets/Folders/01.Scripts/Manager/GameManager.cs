@@ -25,16 +25,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-        public void Register_PlayerManager(GameObject obj)
+    public void RegisterManager<T>(T manager) where T : MonoBehaviour
     {
-        obj.TryGetComponent(out PlayerManager instance);
-        PlayerManager = instance;
+        if (manager is PlayerManager playerManager)
+        {
+            PlayerManager = playerManager;
+        }
+        else if (manager is StageManager stageManager)
+        {
+            StageManager = stageManager;
+        }
+        else if (manager is BlockCodingManager blockCodingManager)
+        {
+            BlockCodingManager = blockCodingManager;
+        }
     }
-
-    public void Register_StageManager(GameObject obj)
-    {
-        obj.TryGetComponent(out StageManager instance);
-        StageManager = instance;
-    }
-
 }

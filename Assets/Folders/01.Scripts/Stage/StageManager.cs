@@ -29,7 +29,7 @@ public class StageManager : MonoBehaviour
     private void Awake()
     {
         // 게임 매니저에 StageManager를 등록합니다.
-        GameManager.Instance.Register_StageManager(this.gameObject);
+        GameManager.Instance.RegisterManager(this);
     }
 
     private void Start()

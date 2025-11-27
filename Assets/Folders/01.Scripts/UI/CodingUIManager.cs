@@ -253,7 +253,7 @@ public class CodingUIManager : MonoBehaviour
     {
         AudioManager.Instance.Play_UISFX("InsertCodingBlock");
 
-        // 유저가 클릭한 블록이 함수(Function) 또는 반복문(Loop) 블록인 경우, 이를 MainLayout에 추가합니다.
+        // 유저가 터치한 블록이 함수(Function) 또는 반복문(Loop) 블록인 경우, 이를 MainLayout에 추가합니다.
         if (ObjectPoolManager.Instance.EBlockCategory == ObjectPoolManager.BlockCategory.Function ||  
             ObjectPoolManager.Instance.EBlockCategory == ObjectPoolManager.BlockCategory.Loop) 
         {
@@ -273,7 +273,7 @@ public class CodingUIManager : MonoBehaviour
         }
         else
         {
-            // 유저가 클릭한 블록을 오브젝트 풀에서 꺼내어 현재 선택된 레이아웃에 추가합니다.
+            // 유저가 터치한 블록을 오브젝트 풀에서 꺼내어 현재 선택된 레이아웃에 추가합니다.
             switch (ECurrentLayout)
             {
                 case CurrentLayout.Main:
